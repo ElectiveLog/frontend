@@ -119,6 +119,129 @@
         </div>
       </div>
     </div>
+    <br />
+
+    <!-- Form -->
+    <h2>Les formulaires</h2>
+    <a
+      >Les différents formulaires du site, notamment utilisés pour l'inscription
+      et la connexion seront comme ci-dessous :</a
+    >
+    <div class="form-body">
+      <div class="row">
+        <div class="form-holder">
+          <div class="form-content">
+            <div class="form-items">
+              <h3>Formulaire type</h3>
+              <p>Merci de compléter les différentes informations.</p>
+              <form class="requires-validation" novalidate>
+                <div class="col-md-12">
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="name"
+                    placeholder="Nom"
+                    required
+                  />
+                  <div class="valid-feedback">Nom valide</div>
+                  <div class="invalid-feedback">Nom invalide</div>
+                </div>
+
+                <div class="col-md-12">
+                  <input
+                    class="form-control"
+                    type="email"
+                    name="email"
+                    placeholder="Adresse e-mail"
+                    required
+                  />
+                  <div class="valid-feedback">Email valide</div>
+                  <div class="invalid-feedback">Email invalide</div>
+                </div>
+                <div class="col-md-12">
+                  <select class="form-select mt-3" required>
+                    <option selected disabled value="">Liste</option>
+                    <option value="option1">Option 1</option>
+                    <option value="option2">Option 2</option>
+                    <option value="option3">Option 3</option>
+                  </select>
+                  <div class="valid-feedback">Choix valide</div>
+                  <div class="invalid-feedback">Choix invalide</div>
+                </div>
+
+                <div class="col-md-12">
+                  <input
+                    class="form-control"
+                    type="password"
+                    name="password"
+                    placeholder="Mot de passe"
+                    required
+                  />
+                  <div class="valid-feedback">Mot de passe valide</div>
+                  <div class="invalid-feedback">Mot de passe invalide</div>
+                </div>
+
+                <div class="col-md-12 mt-3">
+                  <label class="mb-3 mr-1" for="gender">Liste à puce : </label>
+                  &ensp;
+
+                  <input
+                    type="radio"
+                    class="btn-check"
+                    name="liste"
+                    id="option1"
+                    autocomplete="off"
+                    required
+                  />
+                  <label
+                    class="blue_button styled_button small_button"
+                    for="option1"
+                    >Option 1</label
+                  >
+                  &ensp;
+                  <input
+                    type="radio"
+                    class="btn-check"
+                    name="liste"
+                    id="option2"
+                    autocomplete="off"
+                    required
+                  />
+                  <!-- <label class="btn btn-sm btn-outline-secondary" for="option2" -->
+                  <label
+                    class="blue_button styled_button small_button"
+                    for="option2"
+                    >Option 2</label
+                  >
+                  <div class="valid-feedback mv-up">Selection valide</div>
+                  <div class="invalid-feedback mv-up">Selection invalide</div>
+                </div>
+
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="invalidCheck"
+                    required
+                  />
+                  <label class="form-check-label"
+                    >Je confirme les informations saisies</label
+                  >
+                  <div class="invalid-feedback">Merci de confirmer.</div>
+                </div>
+
+                <div class="form-button mt-3">
+                  <button class="green_button styled_button" type="submit">
+                    Valider
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 

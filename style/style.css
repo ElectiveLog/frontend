@@ -59,9 +59,11 @@ h4 {
 body {
   font-family: "Anek Latin", sans-serif;
   color: #282828;
+  padding-bottom: 0 !important;
 }
 
 .styled_button {
+  text-decoration: none;
   border: 0;
   line-height: 2.5;
   padding: 0 20px;

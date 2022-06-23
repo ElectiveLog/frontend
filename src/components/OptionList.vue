@@ -9,7 +9,11 @@
       />
     </div>
     <div class="payment">
-      <router-link class="payment-button" to="/cart">Panier</router-link>
+      <router-link to="/cart"
+        ><button class="blue_button styled_button center">
+          Panier
+        </button></router-link
+      >
     </div>
   </div>
 </template>
@@ -33,3 +37,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.payment {
+  display: block;
+  text-align: center;
+}
+</style>

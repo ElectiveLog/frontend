@@ -4,18 +4,22 @@
     <transition name="fade" mode="out-in">
       <router-view />
     </transition>
+    <!-- Add anything else here -->
+    <Footer />
   </div>
 </template>
 
 <script>
 import { mapMutations } from "vuex";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import data from "@/data.json";
 
 export default {
   name: "App",
   components: {
     Header,
+    Footer,
   },
   created() {
     document.title = "CES'EATS";

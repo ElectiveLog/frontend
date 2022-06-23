@@ -12,7 +12,7 @@
         </li>
       </ul>
       <div class="payment">
-        <button class="payment-button">Paiement</button>
+        <button class="green_button styled_button center">Paiement</button>
       </div>
     </div>
   </div>
@@ -28,3 +28,10 @@ export default {
   },
 };
 </script>
+
+<!-- <style scoped>
+.payment {
+  display: block;
+  text-align: center;
+}
+</style> -->

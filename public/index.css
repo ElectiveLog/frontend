@@ -1,4 +1,4 @@
-*,
+/* *,
 ::before,
 ::after {
   box-sizing: border-box;
@@ -27,10 +27,10 @@ code {
   padding: 0 15px;
   display: block;
   margin: 0 auto;
-}
+} */
 
 /* Header */
-.header {
+/* .header {
   height: 74px;
   display: flex;
   flex-direction: row;
@@ -43,10 +43,10 @@ code {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-}
+} */
 
 /* Header right */
-.header-right {
+/* .header-right {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -74,18 +74,18 @@ code {
 .header-user img,
 .header-cart img {
   height: 25px;
-}
+} */
 
 /* Places */
-.places {
+/* .places {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   grid-gap: 30px;
   margin-bottom: 30px;
-}
+} */
 
 /* Place */
-.place {
+/* .place {
   text-decoration: none;
 }
 
@@ -112,10 +112,10 @@ code {
   margin-top: 5px;
   font-size: 14px;
   color: #757575;
-}
+} */
 
 /* Search */
-.search {
+/* .search {
   position: relative;
   width: 100%;
   margin: 10px 0 30px;
@@ -143,10 +143,10 @@ code {
 
 .search input:focus {
   outline: none;
-}
+} */
 
 /* Place page */
-.place-header {
+/* .place-header {
   height: 300px;
   width: 100%;
   display: flex;
@@ -178,10 +178,10 @@ code {
   text-align: left;
   border-radius: 4px;
   background-color: #fff;
-}
+} */
 
 /* Option */
-.options {
+/* .options {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
   grid-gap: 30px;
@@ -225,10 +225,10 @@ code {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-}
+} */
 
 /* payment */
-.payment {
+/* .payment {
   display: block;
   text-align: center;
   padding: 24px;
@@ -243,11 +243,12 @@ code {
 
 @media screen and (max-width: 720px) {
   .payment {
-    position: fixed;
     left: 0;
-    bottom: 0;
     margin: 0;
-    width: 100%;
+    width: 50%;
+  }
+  .styled_button {
+    line-height: 1.7 !important;
   }
 }
 
@@ -266,10 +267,10 @@ code {
   color: #fff;
   border: none;
   text-decoration: none;
-}
+} */
 
 /* cart component */
-.cart-title {
+/* .cart-title {
   font-size: 2em;
   margin: 30px 0;
 }
@@ -307,14 +308,14 @@ code {
 
 .card-order {
   font-size: 1em;
-}
+} */
 
 /* transition between pages */
-.fade-enter-active,
+/* .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s;
 }
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
-}
+} */

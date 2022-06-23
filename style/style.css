@@ -1,0 +1,173 @@
+:root {
+  --green-color: #4caf50;
+  --cleargreen-color: #82da85;
+  --red-color: #e02029;
+  --blue-color: #00adb5;
+  --grey-color: #393e46;
+  --clearblue-color: #30dee7;
+}
+
+a {
+  display: block;
+  margin-bottom: 10px;
+}
+
+h1 {
+  margin: 1em 0 0.5em 0;
+  text-transform: uppercase;
+  color: var(--grey-color);
+  font-style: italic;
+  font-family: "Anek Latin", sans-serif;
+  font-size: xx-large;
+  font-weight: bold;
+}
+
+h2 {
+  margin: 1em 0 0.5em 0;
+  text-transform: uppercase;
+  color: var(--grey-color);
+  font-style: italic;
+  font-size: 26px;
+  line-height: 40px;
+  font-weight: bold;
+  font-family: "Anek Latin", sans-serif;
+}
+
+h3 {
+  margin: 1em 0 0.5em 0;
+  color: var(--grey-color);
+  font-size: 22px;
+  line-height: 40px;
+  font-weight: 100;
+  text-transform: uppercase;
+  font-family: "Anek Latin", sans-serif;
+  letter-spacing: 1px;
+  font-style: italic;
+}
+
+h4 {
+  margin: 1em 0 0.5em 0;
+  color: var(--grey-color);
+  font-size: 18px;
+  line-height: 20px;
+  font-style: italic;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: "Anek Latin", sans-serif;
+}
+
+body {
+  font-family: "Anek Latin", sans-serif;
+  color: #282828;
+}
+
+.styled_button {
+  border: 0;
+  line-height: 2.5;
+  padding: 0 20px;
+  font-size: 1rem;
+  text-align: center;
+  color: #fff;
+  border-radius: 10px;
+  transition-duration: 0.4s;
+}
+
+.styled_button:active {
+  box-shadow: inset -2px -2px 3px rgba(255, 255, 255, 0.6),
+    inset 2px 2px 3px rgba(0, 0, 0, 0.6);
+}
+
+.green_button {
+  background-color: var(--green-color);
+  border: 2px solid var(--green-color);
+}
+
+.green_button:hover {
+  background-color: white;
+  color: black;
+  border: 2px solid var(--green-color);
+}
+
+.blue_button {
+  background-color: var(--blue-color);
+  border: 2px solid var(--blue-color);
+}
+
+.blue_button:hover {
+  background-color: white;
+  color: black;
+  border: 2px solid var(--blue-color);
+}
+
+.grey_button {
+  background-color: var(--grey-color);
+  border: 2px solid var(--grey-color);
+}
+
+.grey_button:hover {
+  background-color: white;
+  color: black;
+  border: 2px solid var(--grey-color);
+}
+
+.red_button {
+  background-color: var(--red-color);
+  border: 2px solid var(--red-color);
+}
+
+.red_button:hover {
+  background-color: white;
+  color: black;
+  border: 2px solid var(--red-color);
+}
+
+img {
+  width: 70%;
+  margin: 40px;
+}
+
+.logo_round {
+  width: 10%;
+}
+
+.logo_mini {
+  width: 5%;
+}
+
+.logo_rec {
+  width: 30%;
+  border-radius: 10px;
+}
+
+.circle {
+  margin-top: 1em;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.green_background {
+  background: var(--green-color);
+}
+
+.red_background {
+  background: var(--red-color);
+}
+
+.blue_background {
+  background: var(--blue-color);
+}
+
+.grey_background {
+  background: var(--grey-color);
+}
+
+.clearblue_background {
+  background: var(--clearblue-color);
+}
+
+.cleargreen_background {
+  background: var(--cleargreen-color);
+}

@@ -5,10 +5,13 @@
         ><img class="logo" src="../../dist/assets/logo.png" alt="CES'EATS LOGO"
       /></router-link>
       <div class="header-right">
-        <router-link class="header-cart" to="/account"
+        Style Guide<router-link class="header-cart" to="/styleguide"
           ><img src="/assets/user.svg" alt="Not logged user icon"
         /></router-link>
-        <router-link class="header-cart" to="/cart"
+        Account<router-link class="header-cart" to="/account"
+          ><img src="/assets/user.svg" alt="Not logged user icon"
+        /></router-link>
+        Cart<router-link class="header-cart" to="/cart"
           ><img src="/assets/cart.svg" alt="Cart icon"
         /></router-link>
         <span>{{ orders }}</span>

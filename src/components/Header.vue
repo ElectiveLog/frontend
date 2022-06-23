@@ -6,7 +6,7 @@
       /></router-link>
       <div class="header-right">
         <router-link to="/statistics"
-          ><button class="red_button styled_button" type="button">
+          ><button class="cleargreen_button styled_button" type="button">
             Statistiques
             <b-icon-bar-chart-line-fill
               class="icon"

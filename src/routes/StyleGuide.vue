@@ -103,6 +103,6 @@
 
 <script>
 export default {
-  name: "StyleGuide",
+  name: "StyleGuide"
 };
 </script>

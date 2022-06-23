@@ -12,20 +12,20 @@ export default {
   props: {
     id: {
       type: Number,
-      default: null,
+      default: null
     },
     title: {
       type: String,
-      default: "",
+      default: ""
     },
     category: {
       type: String,
-      default: "",
+      default: ""
     },
     img: {
       type: String,
-      default: "",
-    },
-  },
+      default: ""
+    }
+  }
 };
 </script>

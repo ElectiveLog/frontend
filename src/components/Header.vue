@@ -5,6 +5,15 @@
         ><img class="logo" src="../../dist/assets/logo.png" alt="CES'EATS LOGO"
       /></router-link>
       <div class="header-right">
+        <a v-if="currentUser" class="header-cart" href @click.prevent="logOut"
+          >Logout</a
+        >
+        <router-link v-if="!currentUser" class="header-cart" to="/register"
+          >Register</router-link
+        >
+        <router-link v-if="!currentUser" class="header-cart" to="/login"
+          >Login</router-link
+        >
         Style Guide<router-link class="header-cart" to="/styleguide"
           ><img src="/assets/user.svg" alt="Not logged user icon"
         /></router-link>
@@ -27,7 +36,16 @@ export default {
     orders() {
       return this.$store.state.cart.length;
     },
+    currentUser() {
+      return this.$store.state.auth.user;
+    }
   },
+  methods: {
+    logOut() {
+      this.$store.dispatch("auth/logout");
+      this.$router.push("/login");
+    }
+  }
 };
 </script>
 

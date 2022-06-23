@@ -21,15 +21,15 @@ export default {
   props: {
     list: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     idPlace: {
       type: Number,
-      default: null,
-    },
+      default: null
+    }
   },
   components: {
-    OptionItem,
-  },
+    OptionItem
+  }
 };
 </script>

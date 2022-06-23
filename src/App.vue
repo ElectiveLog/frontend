@@ -15,15 +15,15 @@ import data from "@/data.json";
 export default {
   name: "App",
   components: {
-    Header,
+    Header
   },
   created() {
     document.title = "CES'EATS";
     this.setPlaces(data);
   },
   methods: {
-    ...mapMutations(["setPlaces"]),
-  },
+    ...mapMutations(["setPlaces"])
+  }
 };
 </script>
 

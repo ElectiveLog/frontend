@@ -1,13 +1,16 @@
 import Vue from "vue";
 import Vuex from "vuex";
-
+import { auth } from "./store/auth.module";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     places: [],
     cart: [],
-    search: "",
+    search: ""
+  },
+  modules: {
+    auth
   },
   mutations: {
     setPlaces(state, places) {
@@ -18,23 +21,23 @@ export default new Vuex.Store({
     },
     setSearch(state, search) {
       state.search = search;
-    },
+    }
   },
   actions: {
     addToCart({ commit, state }, { item, place }) {
-      if (state.cart.some((order) => order.id === item.id)) return;
+      if (state.cart.some(order => order.id === item.id)) return;
 
       const newItem = { ...item, place };
       commit("addToCart", newItem);
-    },
+    }
   },
   getters: {
     filteredList({ places, search }) {
       return search
-        ? places.filter((item) =>
+        ? places.filter(item =>
             item.title.toLowerCase().includes(search.toLowerCase().trim())
           )
         : places;
-    },
-  },
+    }
+  }
 });

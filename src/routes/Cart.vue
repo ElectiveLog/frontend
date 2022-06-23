@@ -24,7 +24,7 @@ export default {
   computed: {
     list() {
       return this.$store.state.cart;
-    },
-  },
+    }
+  }
 };
 </script>

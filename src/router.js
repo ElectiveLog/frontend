@@ -3,6 +3,8 @@ import Router from "vue-router";
 import Home from "@/routes/Home.vue";
 import Cart from "@/routes/Cart.vue";
 import StyleGuide from "@/routes/StyleGuide.vue";
+import Login from "@/routes/Login.vue";
+import Register from "@/routes/Register.vue";
 
 Vue.use(Router);
 
@@ -13,23 +15,33 @@ export default new Router({
     {
       path: "/",
       name: "home",
-      component: Home,
+      component: Home
     },
     {
       path: "/cart",
       name: "cart",
-      component: Cart,
+      component: Cart
     },
     {
       path: "/styleguide",
       name: "styleguide",
-      component: StyleGuide,
+      component: StyleGuide
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: Login
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: Register
     },
     {
       path: "/:id",
       name: "place",
       component: () =>
-        import(/* webpackChunkName: "place" */ "@/routes/Place.vue"),
-    },
-  ],
+        import(/* webpackChunkName: "place" */ "@/routes/Place.vue")
+    }
+  ]
 });

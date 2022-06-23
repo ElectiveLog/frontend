@@ -14,16 +14,20 @@
         <router-link v-if="!currentUser" class="header-cart" to="/login"
           >Login</router-link
         >
-        Style Guide<router-link class="header-cart" to="/styleguide"
-          ><img src="/assets/user.svg" alt="Not logged user icon"
-        /></router-link>
-        Account<router-link class="header-cart" to="/account"
-          ><img src="/assets/user.svg" alt="Not logged user icon"
-        /></router-link>
-        Cart<router-link class="header-cart" to="/cart"
-          ><img src="/assets/cart.svg" alt="Cart icon"
-        /></router-link>
-        <span>{{ orders }}</span>
+        <router-link to="/account"
+          ><button class="blue_button styled_button" type="button">
+            Compte
+            <b-icon-person-fill class="icon"></b-icon-person-fill></button
+        ></router-link>
+        <a> &emsp;</a>
+        <router-link to="/cart"
+          ><button class="grey_button styled_button" type="button">
+            Panier
+            <b-icon-cart-fill class="icon"></b-icon-cart-fill>&ensp;<span>{{
+              orders
+            }}</span>
+          </button>
+        </router-link>
       </div>
     </div>
   </div>
@@ -51,10 +55,11 @@ export default {
 
 <style scoped>
 .logo {
-  width: 50px;
-  height: 50px;
+  width: 75px;
+  height: 75px;
 }
-.button {
-  cursor: pointer;
+.header {
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 </style>

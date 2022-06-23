@@ -1,7 +1,8 @@
 <template>
   <main class="container">
     <div class="search">
-      <img src="/assets/search.svg" alt="Search Icon" /><input
+      <!-- <b-icon-search class="icon"></b-icon-search> -->
+      <input
         type="text"
         placeholder="Rechercher un restaurant"
         v-model="search"

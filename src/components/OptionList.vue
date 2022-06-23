@@ -9,7 +9,11 @@
       />
     </div>
     <div class="payment">
-      <router-link class="payment-button" to="/cart">Panier</router-link>
+      <router-link to="/cart"
+        ><div @click="scrollToTop">
+          <button class="blue_button styled_button center">Panier</button>
+        </div></router-link
+      >
     </div>
   </div>
 </template>
@@ -30,6 +34,18 @@ export default {
   },
   components: {
     OptionItem
+  },
+  methods: {
+    scrollToTop() {
+      window.scrollTo(0, 0);
+    }
   }
 };
 </script>
+
+<style scoped>
+.payment {
+  display: block;
+  text-align: center;
+}
+</style>

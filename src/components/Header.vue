@@ -5,6 +5,14 @@
         ><img class="logo" src="../../dist/assets/logo.png" alt="CES'EATS LOGO"
       /></router-link>
       <div class="header-right">
+        <router-link to="/statistics"
+          ><button class="red_button styled_button" type="button">
+            Statistiques
+            <b-icon-bar-chart-line-fill
+              class="icon"
+            ></b-icon-bar-chart-line-fill></button
+        ></router-link>
+        <a> &emsp;</a>
         <router-link to="/account"
           ><button class="blue_button styled_button" type="button">
             Compte

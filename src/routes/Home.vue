@@ -18,7 +18,7 @@ import PlaceList from "@/components/PlaceList";
 export default {
   name: "home",
   components: {
-    PlaceList,
+    PlaceList
   },
   computed: {
     search: {
@@ -27,8 +27,8 @@ export default {
       },
       set(value) {
         this.$store.commit("setSearch", value);
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>

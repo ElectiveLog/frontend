@@ -18,34 +18,34 @@ export default {
   props: {
     id: {
       type: Number,
-      default: null,
+      default: null
     },
     img: {
       type: String,
-      default: "",
+      default: ""
     },
     name: {
       type: String,
-      default: "",
+      default: ""
     },
     price: {
       type: Number,
-      default: null,
+      default: null
     },
     idPlace: {
       type: Number,
-      default: null,
-    },
+      default: null
+    }
   },
   methods: {
     ...mapActions(["addToCart"]),
     handleAddToCart() {
       const place = this.$store.state.places.find(
-        (item) => item.id === this.idPlace
+        item => item.id === this.idPlace
       );
-      const item = place.options.find((item) => item.id === this.id);
+      const item = place.options.find(item => item.id === this.id);
       this.addToCart({ item, place });
-    },
-  },
+    }
+  }
 };
 </script>

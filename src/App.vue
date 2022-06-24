@@ -6,6 +6,7 @@
     </transition>
     <!-- Add anything else here -->
     <Footer />
+    <notifications group="foo" />
   </div>
 </template>
 
@@ -19,15 +20,15 @@ export default {
   name: "App",
   components: {
     Header,
-    Footer,
+    Footer
   },
   created() {
     document.title = "CES'EATS";
     this.setPlaces(data);
   },
   methods: {
-    ...mapMutations(["setPlaces"]),
-  },
+    ...mapMutations(["setPlaces"])
+  }
 };
 </script>
 

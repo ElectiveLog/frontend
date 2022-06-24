@@ -15,19 +15,19 @@ import VueApexCharts from "vue-apexcharts";
 
 export default {
   components: {
-    VueApexCharts,
+    VueApexCharts
   },
   data() {
     return {
       series: [
         {
           name: "Infos",
-          data: [1, 2, 36, 5, 8, 8],
-        },
+          data: [1, 2, 36, 5, 8, 8]
+        }
       ],
-      chartOptions: {},
+      chartOptions: {}
     };
-  },
+  }
 };
 </script>
 

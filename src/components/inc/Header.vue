@@ -8,6 +8,28 @@
           alt="CES'EATS LOGO"
       /></router-link>
       <div class="header-right">
+        <button
+          v-if="currentUser"
+          href
+          @click.prevent="logOut"
+          class="grey_button styled_button"
+          type="button"
+        >
+          Déconnexion
+        </button>
+
+        <router-link v-if="!currentUser" to="/register"
+          ><button class="grey_button styled_button" type="button">
+            Inscription
+          </button></router-link
+        >
+        &emsp;
+        <router-link v-if="!currentUser" to="/login"
+          ><button class="grey_button styled_button" type="button">
+            Connexion
+          </button></router-link
+        >
+        &emsp;
         <router-link to="/statistics"
           ><button class="cleargreen_button styled_button" type="button">
             Statistiques
@@ -16,7 +38,7 @@
             ></b-icon-bar-chart-line-fill></button
         ></router-link>
         <a> &emsp;</a>
-        <router-link to="/account"
+        <router-link v-if="currentUser" to="/account"
           ><button class="blue_button styled_button" type="button">
             Compte
             <b-icon-person-fill class="icon"></b-icon-person-fill></button
@@ -42,7 +64,16 @@ export default {
     orders() {
       return this.$store.state.cart.length;
     },
+    currentUser() {
+      return this.$store.state.auth.user;
+    }
   },
+  methods: {
+    logOut() {
+      this.$store.dispatch("auth/logout");
+      this.$router.push("/login");
+    }
+  }
 };
 </script>
 

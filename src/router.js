@@ -6,6 +6,7 @@ import StyleGuide from "@/routes/StyleGuide.vue";
 import Login from "@/routes/Login.vue";
 import Register from "@/routes/Register.vue";
 import Statistics from "@/routes/Statistics.vue";
+import Account from "@/routes/Account.vue";
 
 Vue.use(Router);
 
@@ -42,6 +43,11 @@ export default new Router({
       path: "/register",
       name: "register",
       component: Register
+    },
+    {
+      path: "/account",
+      name: "account",
+      component: Account
     },
     {
       path: "/:id",

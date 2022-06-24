@@ -11,10 +11,17 @@ export const auth = {
       console.log(user);
       return AuthService.login(user).then(
         user => {
-          commit("loginSuccess", user);
-          return Promise.resolve(user);
+          console.log("le" + JSON.stringify(user));
+          if (user.data.accessToken) {
+            commit("loginSuccess", user);
+            return Promise.resolve(user);
+          } else {
+            commit("loginFailure");
+            return Promise.reject(user);
+          }
         },
         error => {
+          console.log("erre" + error);
           commit("loginFailure");
           return Promise.reject(error);
         }

@@ -12,22 +12,21 @@
           class="grey_button styled_button"
           type="button"
         >
-          Logout
+          Déconnexion
         </button>
 
-        <router-link v-if="!currentUser" class="header-cart" to="/register"
+        <router-link v-if="!currentUser" to="/register"
           ><button class="grey_button styled_button" type="button">
-            Register
+            Inscription
           </button></router-link
         >
-        <a> &emsp;</a>
-        <a> &emsp;</a>
-        <a> &emsp;</a>
-        <router-link v-if="!currentUser" class="header-cart" to="/login"
+        &emsp;
+        <router-link v-if="!currentUser" to="/login"
           ><button class="grey_button styled_button" type="button">
-            Login
+            Connexion
           </button></router-link
         >
+        &emsp;
         <router-link to="/statistics"
           ><button class="cleargreen_button styled_button" type="button">
             Statistiques
@@ -36,7 +35,7 @@
             ></b-icon-bar-chart-line-fill></button
         ></router-link>
         <a> &emsp;</a>
-        <router-link to="/account"
+        <router-link v-if="currentUser" to="/account"
           ><button class="blue_button styled_button" type="button">
             Compte
             <b-icon-person-fill class="icon"></b-icon-person-fill></button

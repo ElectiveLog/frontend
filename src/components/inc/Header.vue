@@ -2,7 +2,10 @@
   <div class="header">
     <div class="container">
       <router-link to="/"
-        ><img class="logo" src="../../dist/assets/logo.png" alt="CES'EATS LOGO"
+        ><img
+          class="logo"
+          src="../../../dist/assets/logo.png"
+          alt="CES'EATS LOGO"
       /></router-link>
       <div class="header-right">
         <router-link to="/statistics"

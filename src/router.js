@@ -4,6 +4,7 @@ import Home from "@/routes/Home.vue";
 import Cart from "@/routes/Cart.vue";
 import StyleGuide from "@/routes/StyleGuide.vue";
 import Statistics from "@/routes/Statistics.vue";
+import Mongo from "@/routes/Mongo.vue";
 
 Vue.use(Router);
 
@@ -30,6 +31,11 @@ export default new Router({
       path: "/styleguide",
       name: "styleguide",
       component: StyleGuide,
+    },
+    {
+      path: "/mongo",
+      name: "mongo",
+      component: Mongo,
     },
     {
       path: "/:id",

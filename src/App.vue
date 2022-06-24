@@ -11,8 +11,8 @@
 
 <script>
 import { mapMutations } from "vuex";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import Header from "@/components/inc/Header";
+import Footer from "@/components/inc/Footer";
 import data from "@/data.json";
 
 export default {

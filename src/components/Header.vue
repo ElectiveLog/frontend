@@ -28,6 +28,13 @@
             Login
           </button></router-link
         >
+        <router-link to="/statistics"
+          ><button class="cleargreen_button styled_button" type="button">
+            Statistiques
+            <b-icon-bar-chart-line-fill
+              class="icon"
+            ></b-icon-bar-chart-line-fill></button
+        ></router-link>
         <a> &emsp;</a>
         <router-link to="/account"
           ><button class="blue_button styled_button" type="button">

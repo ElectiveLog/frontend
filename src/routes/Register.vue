@@ -1,66 +1,91 @@
 <template>
-  <div class="col-md-12">
-    <div class="card card-container">
-      <img
-        id="profile-img"
-        src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-        class="profile-img-card"
-      />
-      <form name="form" @submit.prevent="handleRegister">
-        <div v-if="!successful">
-          <div class="form-group">
-            <label for="username">Username</label>
-            <input
-              v-model="user.username"
-              type="text"
-              class="form-control"
-              name="username"
-            />
-            <div
-              v-if="submitted && errors.has('username')"
-              class="alert-danger"
+  <div class="form-body">
+    <div class="row">
+      <div class="form-holder">
+        <div class="form-content">
+          <div class="form-items">
+            <h3>Inscription</h3>
+            <p>Merci de compléter les différentes informations.</p>
+            <form
+              class="requires-validation"
+              novalidate
+              @submit.prevent="handleRegister"
             >
-              {{ errors.first("username") }}
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input
-              v-model="user.email"
-              type="email"
-              class="form-control"
-              name="email"
-            />
-            <div v-if="submitted && errors.has('email')" class="alert-danger">
-              {{ errors.first("email") }}
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input
-              v-model="user.password"
-              type="password"
-              class="form-control"
-              name="password"
-            />
-            <div
-              v-if="submitted && errors.has('password')"
-              class="alert-danger"
-            >
-              {{ errors.first("password") }}
-            </div>
-          </div>
-          <div class="form-group">
-            <button class="btn btn-primary btn-block">Sign Up</button>
+              <div class="col-md-12">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="name"
+                  placeholder="Nom"
+                  required
+                  v-model="user.username"
+                />
+                <div class="valid-feedback">Nom valide</div>
+                <div class="invalid-feedback">Nom invalide</div>
+              </div>
+
+              <div class="col-md-12">
+                <input
+                  class="form-control"
+                  type="email"
+                  name="email"
+                  placeholder="Adresse e-mail"
+                  v-model="user.email"
+                  required
+                />
+                <div class="valid-feedback">Email valide</div>
+                <div class="invalid-feedback">Email invalide</div>
+              </div>
+              <div class="col-md-12">
+                <select v-model="user.roleId">
+                  >
+                  <option selected value="">Choisissez</option>
+                  <option
+                    v-for="role in roledata"
+                    :key="role.id"
+                    :value="role.id"
+                    >{{ role.name }}</option
+                  >
+                </select>
+
+                <div class="valid-feedback">Choix valide</div>
+                <div class="invalid-feedback">Choix invalide</div>
+              </div>
+
+              <div class="col-md-12">
+                <input
+                  class="form-control"
+                  type="password"
+                  name="password"
+                  placeholder="Mot de passe"
+                  v-model="user.password"
+                  required
+                />
+                <div class="valid-feedback">Mot de passe valide</div>
+                <div class="invalid-feedback">Mot de passe invalide</div>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="invalidCheck"
+                  required
+                />
+                <label class="form-check-label"
+                  >Je confirme les informations saisies</label
+                >
+                <div class="invalid-feedback">Merci de confirmer.</div>
+              </div>
+
+              <div class="form-button mt-3">
+                <button class="green_button styled_button" type="submit">
+                  Valider
+                </button>
+              </div>
+            </form>
           </div>
         </div>
-      </form>
-      <div
-        v-if="message"
-        class="alert"
-        :class="successful ? 'alert-success' : 'alert-danger'"
-      >
-        {{ message }}
       </div>
     </div>
   </div>
@@ -72,10 +97,11 @@ export default {
   name: "Register",
   data() {
     return {
-      user: new User("", "", ""),
+      user: new User("", "", "", ""),
       submitted: false,
       successful: false,
-      message: ""
+      message: "",
+      roledata: []
     };
   },
   computed: {
@@ -83,11 +109,32 @@ export default {
       return this.$store.state.auth.status.loggedIn;
     }
   },
+  created() {
+    var axios = require("axios");
+
+    var config = {
+      method: "get",
+      url: "http://localhost:8080/roles/",
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTU3NTg3MjUsImV4cCI6MTY1NjM2MzUyNX0.vHdiEc98ELrbBDbeZeG-851qS_SLSHJW8HDJX7mPgjs"
+      }
+    };
+
+    axios(config)
+      .then(response => {
+        this.roledata = response.data;
+      })
+      .catch(error => {
+        console.log("fdsqf" + error);
+      });
+  },
   mounted() {
     if (this.loggedIn) {
       this.$router.push("/");
     }
   },
+
   methods: {
     handleRegister() {
       this.message = "";
@@ -97,6 +144,17 @@ export default {
         data => {
           this.message = data.message;
           this.successful = true;
+          this.$notify({
+            group: "foo",
+            title: "Inscription réussie",
+            type: "success",
+            text:
+              "Bienvenue " +
+              this.user.email +
+              " !" +
+              "Vous pouvez vous connecter.",
+            duration: 8000
+          });
           this.$router.push("/login");
         },
         error => {

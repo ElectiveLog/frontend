@@ -6,6 +6,7 @@
     </transition>
     <!-- Add anything else here -->
     <Footer />
+    <notifications group="foo" />
   </div>
 </template>
 

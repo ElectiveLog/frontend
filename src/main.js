@@ -4,10 +4,12 @@ import router from "./router";
 import store from "./store";
 // import bootstrap from "bootstrap";
 import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue";
+import Notifications from "vue-notification";
 
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
+Vue.use(Notifications);
 
 new Vue({
   router,

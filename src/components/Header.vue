@@ -5,15 +5,30 @@
         ><img class="logo" src="../../dist/assets/logo.png" alt="CES'EATS LOGO"
       /></router-link>
       <div class="header-right">
-        <a v-if="currentUser" class="header-cart" href @click.prevent="logOut"
-          >Logout</a
+        <button
+          v-if="currentUser"
+          href
+          @click.prevent="logOut"
+          class="grey_button styled_button"
+          type="button"
         >
+          Logout
+        </button>
+
         <router-link v-if="!currentUser" class="header-cart" to="/register"
-          >Register</router-link
+          ><button class="grey_button styled_button" type="button">
+            Register
+          </button></router-link
         >
+        <a> &emsp;</a>
+        <a> &emsp;</a>
+        <a> &emsp;</a>
         <router-link v-if="!currentUser" class="header-cart" to="/login"
-          >Login</router-link
+          ><button class="grey_button styled_button" type="button">
+            Login
+          </button></router-link
         >
+        <a> &emsp;</a>
         <router-link to="/account"
           ><button class="blue_button styled_button" type="button">
             Compte

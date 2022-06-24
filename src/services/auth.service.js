@@ -20,7 +20,7 @@ class AuthService {
         if (response.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
         }
-        return response.data;
+        return response;
       });
   }
   logout() {
@@ -33,7 +33,7 @@ class AuthService {
         name: user.username,
         email: user.email,
         password: user.password,
-        roleId: "cl4pj9g89000601tfgh82kucg"
+        roleId: user.roleId
       },
       {
         headers: {

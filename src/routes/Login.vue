@@ -1,5 +1,66 @@
 <template>
-  <div class="col-md-12">
+  <div class="form-body">
+    <div class="row">
+      <div class="form-holder">
+        <div class="form-content">
+          <div class="form-items">
+            <h3>Connexion</h3>
+            <p>Merci de compléter les différentes informations.</p>
+            <form
+              class="requires-validation"
+              novalidate
+              @submit.prevent="handleLogin"
+            >
+              <div class="col-md-12">
+                <input
+                  class="form-control"
+                  type="email"
+                  name="email"
+                  placeholder="Adresse e-mail"
+                  v-model="user.email"
+                  required
+                />
+                <div class="valid-feedback">Email valide</div>
+                <div class="invalid-feedback">Email invalide</div>
+              </div>
+              <div class="col-md-12">
+                <input
+                  class="form-control"
+                  type="password"
+                  name="password"
+                  placeholder="Mot de passe"
+                  v-model="user.password"
+                  required
+                />
+                <div class="valid-feedback">Mot de passe valide</div>
+                <div class="invalid-feedback">Mot de passe invalide</div>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="invalidCheck"
+                  required
+                />
+                <label class="form-check-label"
+                  >Je confirme les informations saisies</label
+                >
+                <div class="invalid-feedback">Merci de confirmer.</div>
+              </div>
+
+              <div class="form-button mt-3">
+                <button class="green_button styled_button" type="submit">
+                  Valider
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="col-md-12">
     <div class="card card-container">
       <img
         id="profile-img"
@@ -15,13 +76,13 @@
             class="form-control"
             name="email"
           />
-          <!-- <div
+          <div
             v-if="errors.has('username')"
             class="alert alert-danger"
             role="alert"
           >
             Username is required!
-          </div> -->
+          </div>
         </div>
         <div class="form-group">
           <label for="password">Password</label>
@@ -31,13 +92,13 @@
             class="form-control"
             name="password"
           />
-          <!-- <div
+          <div
             v-if="errors.has('password')"
             class="alert alert-danger"
             role="alert"
           >
             Password is required!
-          </div> -->
+          </div>
         </div>
         <div class="form-group">
           <button class="btn btn-primary btn-block" :disabled="loading">
@@ -55,7 +116,7 @@
         </div>
       </form>
     </div>
-  </div>
+  </div> -->
 </template>
 <script>
 import User from "../models/user";
@@ -107,14 +168,25 @@ export default {
         console.log("handleLogin: login");
         this.$store.dispatch("auth/login", this.user).then(
           response => {
-            console.log(response);
-            if (
-              response == "Username or password incorrect" ||
-              response.message == "Request failed with status code 404"
-            ) {
+            console.log("fdsq" + JSON.stringify(response));
+            if (response.status == 203) {
+              this.$notify({
+                group: "foo",
+                title: "Erreur",
+                type: "error",
+                text: response.data,
+                duration: 8000
+              });
               this.loading = false;
               this.message = response;
             } else {
+              this.$notify({
+                group: "foo",
+                title: "Connexion réussie",
+                type: "success",
+                text: "Bienvenue " + this.user.email,
+                duration: 8000
+              });
               this.$router.push("/");
             }
           },

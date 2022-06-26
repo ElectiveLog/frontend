@@ -51,7 +51,7 @@
       <h4 class="card-heading">Historique des commandes</h4>
     </div>
     <div>
-      <b-alert v-if="userCommandes" show
+      <b-alert v-if="userCommandes.length == 0" show
         >Vous n'avez pas encore passé de commande!!</b-alert
       >
       <b-table striped hover :items="userCommandes"></b-table>

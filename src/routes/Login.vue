@@ -79,29 +79,6 @@ export default {
       return this.$store.state.auth.status.loggedIn;
     }
   },
-  created() {
-    var axios = require("axios");
-
-    var config = {
-      method: "get",
-      url: "http://localhost:8080/api/ingredients/",
-      headers: {
-        "X-Server-Select": "mongo"
-      }
-    };
-
-    axios(config)
-      .then(function(response) {
-        console.log(JSON.stringify(response.data));
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-
-    if (this.loggedIn) {
-      this.$router.push("/");
-    }
-  },
   methods: {
     handleLogin() {
       console.log("handleLogin");
@@ -131,6 +108,7 @@ export default {
                 duration: 8000
               });
               this.$router.push("/");
+              location.reload();
             }
           },
           error => {

@@ -47,14 +47,13 @@
         </button>
       </div>
     </form>
-
     <div class="card-header">
       <h4 class="card-heading">Commandes en attente</h4>
-      <b-alert v-if="waitCommandes.length == 0" show
+      <b-alert v-if="awaitCommandes.length == 0" show
         >Aucune commande en attente!!!</b-alert
       >
 
-      <b-table v-else striped hover :items="waitCommandes" :fields="fields">
+      <b-table v-else striped hover :items="awaitCommandes" :fields="fields">
         <template #cell(actions)="row">
           <b-button
             size="sm"
@@ -73,7 +72,17 @@
         >Aucune commande en cours!!!</b-alert
       >
 
-      <b-table v-else hover :items="inProgressCommandes"></b-table>
+      <b-table v-else hover :items="inProgressCommandes" :fields="fields">
+        <template #cell(actions)="row">
+          <b-button
+            size="sm"
+            @click="handleEditStatusLivraison(row.item)"
+            class="green_button styled_button"
+          >
+            Validé
+          </b-button>
+        </template></b-table
+      >
     </div>
 
     <div class="card-header">
@@ -125,11 +134,12 @@ var axios = require("axios");
 const user = JSON.parse(localStorage.getItem("user"));
 
 export default {
-  name: "AccountRestaurateur",
+  name: "AccountLivreur",
   data() {
     return {
       userData: [],
-      waitCommandes: [],
+      awaitCommandes: [],
+      inProgressCommandes: [],
       fields: [
         {
           key: "Commande",
@@ -140,12 +150,12 @@ export default {
           label: "Prix"
         },
         {
-          key: "livreur",
-          label: "Livreur"
+          key: "client",
+          label: "Client"
         },
         {
-          key: "client",
-          label: "client"
+          key: "restaurant",
+          label: "Restaurant"
         },
         {
           key: "status",
@@ -164,14 +174,58 @@ export default {
           label: "Actions"
         }
       ],
-      inProgressCommandes: [],
       historyCommandes: []
     };
   },
   methods: {
     handleEditStatus(commande) {
+      if (this.inProgressCommandes.length != 0) {
+        return this.$notify({
+          group: "foo",
+          title: "Erreur",
+          type: "error",
+          text: "Vous avez déjà une commande en cours!!!",
+          duration: 8000
+        });
+      }
+      const payloadUser = this.decodeToken(user.accessToken);
       var data = JSON.stringify({
-        state: "preparation"
+        state: "livraison",
+        idLivreur: payloadUser.userId
+      });
+
+      var config = {
+        method: "put",
+        url: "http://localhost:8080/api/orders/" + commande.id,
+        headers: {
+          "X-Server-Select": "mongo",
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTU3NTg3MjUsImV4cCI6MTY1NjM2MzUyNX0.vHdiEc98ELrbBDbeZeG-851qS_SLSHJW8HDJX7mPgjs",
+          "Content-Type": "application/json"
+        },
+        data: data
+      };
+
+      axios(config)
+        .then(() => {
+          this.$notify({
+            group: "foo",
+            title: "Commande validée",
+            type: "success",
+            text: "La commande a été validée avec succès",
+            duration: 8000
+          });
+          location.reload();
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    handleEditStatusLivraison(commande) {
+      const payloadUser = this.decodeToken(user.accessToken);
+      var data = JSON.stringify({
+        state: "prepared",
+        idLivreur: payloadUser.userId
       });
 
       var config = {
@@ -256,7 +310,7 @@ export default {
       return jwt_decode(token);
     }
   },
-  async created() {
+  created() {
     const payloadUser = this.decodeToken(user.accessToken);
     console.log(payloadUser);
     var config = {
@@ -267,7 +321,7 @@ export default {
       }
     };
 
-    await axios(config)
+    axios(config)
       .then(response => {
         this.userData = response.data;
       })
@@ -275,125 +329,117 @@ export default {
         console.log(error);
       });
 
-    var configRestaurant = {
+    var configpreparation = {
       method: "get",
-      url:
-        "http://localhost:8080/api/restaurants/restaurateur/cl4sgs78c000301pymyl10x6o",
+      url: "http://localhost:8080/api/orders/status/preparation",
       headers: {
         "X-Server-Select": "mongo"
       }
     };
 
-    await axios(configRestaurant).then(async response => {
-      var i = 1;
-      var y = 1;
-      var z = 1;
-      response.data.restaurants
-        .forEach(async restaurant => {
+    axios(configpreparation)
+      .then(response => {
+        response.data.order.forEach(element => {
+          var priceCommande = 0;
+          element.articles.forEach(article => {
+            priceCommande += article.price;
+          });
+
           var config = {
             method: "get",
-            url:
-              "http://localhost:8080/api/orders/restaurant/" + restaurant._id,
+            url: "http://localhost:8080/users/" + element.idClient,
             headers: {
-              "X-Server-Select": "mongo"
+              Authorization: "Bearer " + user.accessToken
+            }
+          };
+          axios(config).then(response => {
+            this.awaitCommandes.push({
+              id: element._id,
+              Commande: "Commande n°1",
+              prix: priceCommande + "€",
+              client: response.data.name,
+              restaurant: element.idRestaurant.name,
+              status: element.state,
+              date: element.createdAt.split("T")[0],
+              heure: element.createdAt
+                .split("T")
+                .pop()
+                .split(".")[0]
+            });
+          });
+        });
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+
+    var configCommande = {
+      method: "get",
+      url: "http://localhost:8080/api/orders/livreur/" + payloadUser.userId,
+      headers: {
+        "X-Server-Select": "mongo"
+      }
+    };
+
+    axios(configCommande)
+      .then(response => {
+        console.log(response.dataorder);
+        var i = 1;
+        response.data.order.forEach(element => {
+          var priceCommande = 0;
+          element.articles.forEach(article => {
+            priceCommande += article.price;
+          });
+
+          var config = {
+            method: "get",
+            url: "http://localhost:8080/users/" + element.idClient,
+            headers: {
+              Authorization: "Bearer " + user.accessToken
             }
           };
 
-          await axios(config)
+          axios(config)
             .then(response => {
-              var priceCommande = 0;
-              response.data.order.forEach(async order => {
-                var configLivreur = {
-                  method: "get",
-                  url: "http://localhost:8080/users/" + order.idLivreur,
-                  headers: {
-                    Authorization: "Bearer " + user.accessToken
-                  }
-                };
-
-                await axios(configLivreur)
-                  .then(response => {
-                    order.idLivreur = response.data.name;
-                  })
-                  .catch(function(error) {
-                    console.log(error);
-                  });
-
-                var configClient = {
-                  method: "get",
-                  url: "http://localhost:8080/users/" + order.idClient,
-                  headers: {
-                    Authorization: "Bearer " + user.accessToken
-                  }
-                };
-
-                await axios(configClient)
-                  .then(response => {
-                    order.idClient = response.data.name;
-                  })
-                  .catch(function(error) {
-                    console.log(error);
-                  });
-
-                order.articles.forEach(article => {
-                  priceCommande += article.price;
+              if (element.state == "livraison") {
+                this.inProgressCommandes.push({
+                  id: element._id,
+                  Commande: "Commande n°1",
+                  prix: priceCommande + "€",
+                  client: response.data.name,
+                  restaurant: element.idRestaurant.name,
+                  status: element.state,
+                  date: element.createdAt.split("T")[0],
+                  heure: element.createdAt
+                    .split("T")
+                    .pop()
+                    .split(".")[0]
                 });
-                if (order.state == "commande") {
-                  this.waitCommandes.push({
-                    id: order._id,
-                    Commande: "Commande n°" + i,
-                    prix: priceCommande + "€",
-                    livreur: order.idLivreur,
-                    client: order.idClient,
-                    status: order.state,
-                    date: order.createdAt.split("T")[0],
-                    heure: order.createdAt
-                      .split("T")
-                      .pop()
-                      .split(".")[0]
-                  });
-                  i++;
-                } else if (order.state == "preparation") {
-                  this.inProgressCommandes.push({
-                    Commande: "Commande n°" + y,
-                    prix: priceCommande + "€",
-                    livreur: order.idLivreur,
-                    client: order.idClient,
-                    status: order.state,
-                    date: order.createdAt.split("T")[0],
-                    heure: order.createdAt
-                      .split("T")
-                      .pop()
-                      .split(".")[0]
-                  });
-
-                  y++;
-                } else if (order.state == "prepared") {
-                  this.historyCommandes.push({
-                    Commande: "Commande n°" + z,
-                    prix: priceCommande + "€",
-                    livreur: order.idLivreur,
-                    client: order.idClient,
-                    status: order.state,
-                    date: order.createdAt.split("T")[0],
-                    heure: order.createdAt
-                      .split("T")
-                      .pop()
-                      .split(".")[0]
-                  });
-
-                  z++;
-                }
-              });
+                i++;
+              } else if (element.state == "prepared") {
+                this.historyCommandes.push({
+                  Commande: "Commande n°" + i,
+                  prix: priceCommande + "€",
+                  client: response.data.name,
+                  restaurant: element.idRestaurant.name,
+                  status: element.state,
+                  date: element.createdAt.split("T")[0],
+                  heure: element.createdAt
+                    .split("T")
+                    .pop()
+                    .split(".")[0]
+                });
+                i++;
+              }
             })
             .catch(function(error) {
               console.log(error);
             });
-        })
-        .catch(function(error) {
-          console.log(error);
         });
-    });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 };
 </script>

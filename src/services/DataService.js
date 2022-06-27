@@ -1,25 +1,31 @@
 import http from "../http-common";
 class DataService {
-  getAllRestaurant() {
+  // Restaurants
+  getAllRestaurants() {
     return http.get("/restaurants");
   }
-  //   get(id) {
-  //     return http.get(`/tutorials/${id}`);
-  //   }
-  //   create(data) {
-  //     return http.post("/tutorials", data);
-  //   }
-  //   update(id, data) {
-  //     return http.put(`/tutorials/${id}`, data);
-  //   }
-  //   delete(id) {
-  //     return http.delete(`/tutorials/${id}`);
-  //   }
-  //   deleteAll() {
-  //     return http.delete(`/tutorials`);
-  //   }
-  //   findByTitle(title) {
-  //     return http.get(`/tutorials?title=${title}`);
-  //   }
+  createRestaurant(data) {
+    return http.post("/restaurants/create", data);
+  }
+  deleteRestaurant(id) {
+    return http.delete(`/restaurants/${id}`);
+  }
+  updateRestaurant(id) {
+    return http.put(`/restaurants/${id}`);
+  }
+
+  // Articles
+  getAllArticles() {
+    return http.get("/articles");
+  }
+  createArticle(data) {
+    return http.post("/articles/create", data);
+  }
+  deleteArticle(id) {
+    return http.delete(`/articles/${id}`);
+  }
+  updateArticle(id) {
+    return http.put(`/articles/${id}`);
+  }
 }
 export default new DataService();

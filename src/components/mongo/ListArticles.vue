@@ -5,7 +5,7 @@
         <input
           type="text"
           class="form-control"
-          placeholder="Rechercher un restaurant"
+          placeholder="Rechercher un article"
           v-model="title"
         />
         <div class="input-group-append">
@@ -20,53 +20,54 @@
       </div> -->
     </div>
     <div class="col-md-6">
-      <h2>Liste des restaurants</h2>
+      <h2>Liste des articles / menus</h2>
       <ul class="list-group">
         <li
           class="list-group-item"
           :class="{ active: index == currentIndex }"
-          v-for="(restaurant, index) in restaurants"
+          v-for="(article, index) in articles"
           :key="index"
-          @click="setActiveRestaurant(restaurant, index)"
+          @click="setActiveArticle(article, index)"
         >
-          {{ restaurant.name }}
+          {{ article.name }}
         </li>
       </ul>
-      <button class="m-2 red_button styled_button" @click="deleteRestaurant()">
+      <button class="m-2 red_button styled_button" @click="deleteArticle()">
         Supprimer
       </button>
-      <button class="m-2 blue_button styled_button" @click="updateRestaurant()">
+      <button class="m-2 blue_button styled_button" @click="updateArticle()">
         Modifier
       </button>
       <button
         class="m-2 grey_button styled_button"
-        @click="unsetActiveRestaurant()"
+        @click="unsetActiveArticle()"
       >
         Dessélectionner
       </button>
     </div>
     <div class="col-md-6">
-      <div v-if="currentRestaurant">
-        <h4>Restaurant</h4>
+      <div v-if="currentArticle">
+        <h4>Article / menu</h4>
         <div>
-          <label><strong>Nom :</strong></label> {{ currentRestaurant.name }}
+          <label><strong>Nom :</strong></label> {{ currentArticle.name }}
         </div>
         <div>
-          <label><strong>Articles :</strong></label>
-          {{ currentRestaurant.articles }}
+          <label><strong>Type :</strong></label>
+          {{ currentArticle.type }}
+        </div>
+        <div>
+          <label><strong>Prix :</strong></label>
+          {{ currentArticle.price }}
         </div>
         <!-- <div>
           <label><strong>Id :</strong></label>
-          {{ currentRestaurant._id }}
+          {{ currentArticle._id }}
         </div> -->
         <div>
-          <label><strong>Adresse :</strong></label>
-          {{ currentRestaurant.address }}
+          <label><strong>Détail :</strong></label>
+          {{ currentArticle.detail }}
         </div>
-        <a
-          class="badge badge-warning"
-          :href="'/restaurants/' + currentRestaurant.id"
-        >
+        <a class="badge badge-warning" :href="'/articles/' + currentArticle.id">
           Edit
         </a>
       </div>
@@ -76,53 +77,53 @@
 <script>
 import DataService from "../../services/DataService";
 export default {
-  name: "restaurants-list",
+  name: "articles-list",
   data() {
     return {
-      restaurants: [],
-      currentRestaurant: null,
+      articles: [],
+      currentArticle: null,
       currentIndex: -1,
       title: "",
     };
   },
   methods: {
-    retrieveRestaurants() {
-      DataService.getAllRestaurants()
+    retrieveArticles() {
+      DataService.getAllArticles()
         .then((response) => {
-          this.restaurants = response.data.restaurants;
-          console.log(response.data.restaurants);
+          this.articles = response.data.articles;
+          console.log(response.data.articles);
         })
         .catch((e) => {
           console.log(e);
         });
     },
     refreshList() {
-      this.retrieveRestaurants();
-      this.currentRestaurant = null;
+      this.retrieveArticles();
+      this.currentArticle = null;
       this.currentIndex = -1;
     },
-    setActiveRestaurant(restaurant, index) {
-      this.currentRestaurant = restaurant;
+    setActiveArticle(article, index) {
+      this.currentArticle = article;
       this.currentIndex = index;
     },
-    unsetActiveRestaurant(restaurant, index) {
-      this.currentRestaurant = null;
+    unsetActiveArticle(article, index) {
+      this.currentArticle = null;
       this.currentIndex = null;
     },
-    deleteRestaurant() {
-      DataService.deleteRestaurant(this.currentRestaurant._id)
+    deleteArticle() {
+      DataService.deleteArticle(this.currentArticle._id)
         .then((response) => {
-          console.log(response.data.restaurants);
+          console.log(response.data.articles);
           this.refreshList();
         })
         .catch((e) => {
           console.log(e);
         });
     },
-    updateRestaurant() {
-      DataService.updateRestaurant(this.currentRestaurant._id)
+    updateArticle() {
+      DataService.updateArticle(this.currentArticle._id)
         .then((response) => {
-          console.log(response.data.restaurants);
+          console.log(response.data.articles);
           this.refreshList();
         })
         .catch((e) => {
@@ -133,7 +134,7 @@ export default {
     // searchName() {
     //   DataService.find(this.name)
     //     .then((response) => {
-    //       this.restaurants = response.data;
+    //       this.articles = response.data;
     //       console.log(response.data);
     //     })
     //     .catch((e) => {
@@ -142,7 +143,7 @@ export default {
     // },
   },
   mounted() {
-    this.retrieveRestaurants();
+    this.retrieveArticles();
   },
 };
 </script>

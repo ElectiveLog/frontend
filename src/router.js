@@ -6,7 +6,8 @@ import StyleGuide from "@/routes/StyleGuide.vue";
 import Login from "@/routes/Login.vue";
 import Register from "@/routes/Register.vue";
 import Statistics from "@/routes/Statistics.vue";
-import Mongo from "@/routes/Mongo.vue";
+import Restaurants from "@/routes/Restaurants.vue";
+import Articles from "@/routes/Articles.vue";
 import Account from "@/routes/Account.vue";
 
 Vue.use(Router);
@@ -51,9 +52,14 @@ export default new Router({
       component: Account,
     },
     {
-      path: "/mongo",
-      name: "mongo",
-      component: Mongo,
+      path: "/restaurants",
+      name: "restaurants",
+      component: Restaurants,
+    },
+    {
+      path: "/articles",
+      name: "articles",
+      component: Articles,
     },
     {
       path: "/:id",

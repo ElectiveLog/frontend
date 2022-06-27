@@ -19,7 +19,7 @@
         </button>
 
         <router-link v-if="!currentUser" to="/register"
-          ><button class="grey_button styled_button" type="button">
+          ><button class="blue_button styled_button" type="button">
             Inscription
           </button></router-link
         >
@@ -37,13 +37,12 @@
               class="icon"
             ></b-icon-bar-chart-line-fill></button
         ></router-link>
-        <a> &emsp;</a>
+        &emsp;
         <router-link v-if="currentUser" to="/account"
           ><button class="blue_button styled_button" type="button">
             Compte
             <b-icon-person-fill class="icon"></b-icon-person-fill></button
         ></router-link>
-        <a> &emsp;</a>
         <router-link to="/cart"
           ><button class="grey_button styled_button" type="button">
             Panier
@@ -66,14 +65,14 @@ export default {
     },
     currentUser() {
       return this.$store.state.auth.user;
-    }
+    },
   },
   methods: {
     logOut() {
       this.$store.dispatch("auth/logout");
       this.$router.push("/login");
-    }
-  }
+    },
+  },
 };
 </script>
 

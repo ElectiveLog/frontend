@@ -73,20 +73,20 @@ export default {
       restaurants: [],
       currentRestaurant: null,
       currentIndex: -1,
-      title: "",
+      title: ""
     };
   },
   methods: {
     retrieveRestaurants() {
       DataService.getAllRestaurant()
-        .then((response) => {
+        .then(response => {
           this.restaurants = response.data;
           console.log(response.data);
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
         });
-    },
+    }
     // refreshList() {
     //   this.retrieveRestaurants();
     //   this.currentRestaurant = null;
@@ -120,7 +120,7 @@ export default {
   },
   mounted() {
     this.retrieveRestaurants();
-  },
+  }
 };
 </script>
 <style>

@@ -4,7 +4,7 @@
       <router-link to="/"
         ><img
           class="logo"
-          src="../../../dist/assets/logo.png"
+          src="../../../public/assets/logo.png"
           alt="CES'EATS LOGO"
       /></router-link>
       <div class="header-right">

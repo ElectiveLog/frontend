@@ -10,7 +10,7 @@ import ListRestaurants from "@/components/mongo/ListRestaurants";
 export default {
   name: "home",
   components: {
-    ListRestaurants,
-  },
+    ListRestaurants
+  }
 };
 </script>

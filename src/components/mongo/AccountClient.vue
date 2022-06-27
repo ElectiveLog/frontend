@@ -47,14 +47,47 @@
         </button>
       </div>
     </form>
+
+    <div>
+      <label for="image">Upload Image</label>
+      <input type="file" id="image" name="image" value="" ref="file" required />
+      <button class="btn btn-success btn-sm float-right" @click="upload">
+        Upload
+      </button>
+    </div>
+
+    <div class="card-header">
+      <h4 class="card-heading">Commandes en cours</h4>
+      <b-alert v-if="inProgressCommandes.length == 0" show
+        >Aucune commande en cours!!!</b-alert
+      >
+
+      <b-table
+        v-else
+        hover
+        striped
+        borderred
+        responsive
+        primary-key
+        :items="inProgressCommandes"
+      ></b-table>
+    </div>
     <div class="card-header">
       <h4 class="card-heading">Historique des commandes</h4>
-    </div>
-    <div>
-      <b-alert v-if="userCommandes.length == 0" show
-        >Vous n'avez pas encore passé de commande!!</b-alert
-      >
-      <b-table striped hover :items="userCommandes"></b-table>
+
+      <div>
+        <b-alert v-if="historyCommandes.length == 0" show
+          >Vous n'avez pas encore passé de commande!!</b-alert
+        >
+        <b-table
+          striped
+          hover
+          borderred
+          responsive
+          primary-key
+          :items="historyCommandes"
+        ></b-table>
+      </div>
     </div>
 
     <b-button
@@ -99,10 +132,43 @@ export default {
   data() {
     return {
       userData: [],
-      userCommandes: []
+      historyCommandes: [],
+      inProgressCommandes: [],
+      image: []
     };
   },
   methods: {
+    upload() {
+      console.log("uplo" + this.$refs.file.files.item(0));
+
+      var data = JSON.stringify({
+        name: "Burgermodifier",
+        type: "plat",
+        price: 1100,
+        detail: "C'est un burger quoi",
+        picture: this.$refs.file.files.item(0)
+      });
+
+      var config = {
+        method: "post",
+        url: "http://localhost:8080/api/articles/create",
+        headers: {
+          "X-Server-Select": "mongo",
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTU3NTg3MjUsImV4cCI6MTY1NjM2MzUyNX0.vHdiEc98ELrbBDbeZeG-851qS_SLSHJW8HDJX7mPgjs",
+          "Content-Type": "application/json"
+        },
+        data: data
+      };
+
+      axios(config)
+        .then(function(response) {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
     handleEdit() {
       const payloadUser = this.decodeToken(user.accessToken);
       var config = {
@@ -115,15 +181,15 @@ export default {
       };
 
       axios(config)
-        .then(
+        .then(() => {
           this.$notify({
             group: "foo",
             title: "Modification réussie",
             type: "success",
             text: "Vos modifications ont été enregistrées",
             duration: 8000
-          })
-        )
+          });
+        })
         .catch(function(error) {
           console.log(error);
         });
@@ -188,6 +254,7 @@ export default {
     axios(configCommande)
       .then(response => {
         var i = 1;
+        var y = 1;
         response.data.order.forEach(element => {
           var priceCommande = 0;
           element.articles.forEach(article => {
@@ -204,19 +271,35 @@ export default {
 
           axios(config)
             .then(response => {
-              this.userCommandes.push({
-                Commande: "Commande n°" + i,
-                prix: priceCommande + "€",
-                livreur: response.data.name,
-                restaurant: element.idRestaurant.name,
-                status: element.state,
-                date: element.createdAt.split("T")[0],
-                heure: element.createdAt
-                  .split("T")
-                  .pop()
-                  .split(".")[0]
-              });
-              i++;
+              if (element.state == "prepared") {
+                this.historyCommandes.push({
+                  Commande: "Commande n°" + i,
+                  prix: priceCommande + "€",
+                  livreur: response.data.name,
+                  restaurant: element.idRestaurant.name,
+                  status: element.state,
+                  date: element.createdAt.split("T")[0],
+                  heure: element.createdAt
+                    .split("T")
+                    .pop()
+                    .split(".")[0]
+                });
+                i++;
+              } else {
+                this.inProgressCommandes.push({
+                  Commande: "Commande n°" + y,
+                  prix: priceCommande + "€",
+                  livreur: response.data.name,
+                  restaurant: element.idRestaurant.name,
+                  status: element.state,
+                  date: element.createdAt.split("T")[0],
+                  heure: element.createdAt
+                    .split("T")
+                    .pop()
+                    .split(".")[0]
+                });
+                y++;
+              }
             })
             .catch(function(error) {
               console.log(error);

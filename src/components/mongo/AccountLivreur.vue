@@ -53,7 +53,16 @@
         >Aucune commande en attente!!!</b-alert
       >
 
-      <b-table v-else striped hover :items="awaitCommandes" :fields="fields">
+      <b-table
+        v-else
+        striped
+        hover
+        borderred
+        responsive
+        primary-key
+        :items="awaitCommandes"
+        :fields="fields"
+      >
         <template #cell(actions)="row">
           <b-button
             size="sm"
@@ -72,7 +81,16 @@
         >Aucune commande en cours!!!</b-alert
       >
 
-      <b-table v-else hover :items="inProgressCommandes" :fields="fields">
+      <b-table
+        v-else
+        hover
+        striped
+        borderred
+        responsive
+        primary-key
+        :items="inProgressCommandes"
+        :fields="fields"
+      >
         <template #cell(actions)="row">
           <b-button
             size="sm"
@@ -93,7 +111,14 @@
           >Aucun client n'a encore passé de commande!!!</b-alert
         >
 
-        <b-table striped hover :items="historyCommandes"></b-table>
+        <b-table
+          striped
+          hover
+          borderred
+          responsive
+          primary-key
+          :items="historyCommandes"
+        ></b-table>
       </div>
     </div>
     <b-button
@@ -152,6 +177,10 @@ export default {
         {
           key: "client",
           label: "Client"
+        },
+        {
+          key: "adresse",
+          label: "Adresse"
         },
         {
           key: "restaurant",
@@ -358,6 +387,7 @@ export default {
               Commande: "Commande n°1",
               prix: priceCommande + "€",
               client: response.data.name,
+              adresse: response.data.address,
               restaurant: element.idRestaurant.name,
               status: element.state,
               date: element.createdAt.split("T")[0],
@@ -407,6 +437,7 @@ export default {
                   Commande: "Commande n°1",
                   prix: priceCommande + "€",
                   client: response.data.name,
+                  adresse: response.data.address,
                   restaurant: element.idRestaurant.name,
                   status: element.state,
                   date: element.createdAt.split("T")[0],
@@ -421,6 +452,7 @@ export default {
                   Commande: "Commande n°" + i,
                   prix: priceCommande + "€",
                   client: response.data.name,
+                  adresse: response.data.address,
                   restaurant: element.idRestaurant.name,
                   status: element.state,
                   date: element.createdAt.split("T")[0],

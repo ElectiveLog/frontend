@@ -54,7 +54,16 @@
         >Aucune commande en attente!!!</b-alert
       >
 
-      <b-table v-else striped hover :items="waitCommandes" :fields="fields">
+      <b-table
+        v-else
+        striped
+        hover
+        borderred
+        primary-key
+        responsive
+        :items="waitCommandes"
+        :fields="fields"
+      >
         <template #cell(actions)="row">
           <b-button
             size="sm"
@@ -73,7 +82,15 @@
         >Aucune commande en cours!!!</b-alert
       >
 
-      <b-table v-else hover :items="inProgressCommandes"></b-table>
+      <b-table
+        v-else
+        striped
+        hover
+        borderred
+        primary-key
+        responsive
+        :items="inProgressCommandes"
+      ></b-table>
     </div>
 
     <div class="card-header">
@@ -84,7 +101,14 @@
           >Aucun client n'a encore passé de commande!!!</b-alert
         >
 
-        <b-table striped hover :items="historyCommandes"></b-table>
+        <b-table
+          striped
+          hover
+          borderred
+          primary-key
+          responsive
+          :items="historyCommandes"
+        ></b-table>
       </div>
     </div>
     <b-button
@@ -139,6 +163,7 @@ export default {
           key: "prix",
           label: "Prix"
         },
+        { key: "Articles", label: "articles" },
         {
           key: "livreur",
           label: "Livreur"
@@ -334,15 +359,22 @@ export default {
                   .catch(function(error) {
                     console.log(error);
                   });
-
+                var articlesNames = "";
                 order.articles.forEach(article => {
                   priceCommande += article.price;
+                  articlesNames += article.name + ", ";
                 });
+                const articleNames = articlesNames.substring(
+                  0,
+                  articlesNames.length - 2
+                );
+
                 if (order.state == "commande") {
                   this.waitCommandes.push({
                     id: order._id,
                     Commande: "Commande n°" + i,
                     prix: priceCommande + "€",
+                    articles: articleNames,
                     livreur: order.idLivreur,
                     client: order.idClient,
                     status: order.state,
@@ -353,10 +385,14 @@ export default {
                       .split(".")[0]
                   });
                   i++;
-                } else if (order.state == "preparation") {
+                } else if (
+                  order.state == "preparation" ||
+                  order.state == "livraison"
+                ) {
                   this.inProgressCommandes.push({
                     Commande: "Commande n°" + y,
                     prix: priceCommande + "€",
+                    articles: articleNames,
                     livreur: order.idLivreur,
                     client: order.idClient,
                     status: order.state,
@@ -372,6 +408,7 @@ export default {
                   this.historyCommandes.push({
                     Commande: "Commande n°" + z,
                     prix: priceCommande + "€",
+                    articles: articleNames,
                     livreur: order.idLivreur,
                     client: order.idClient,
                     status: order.state,

@@ -12,6 +12,10 @@
         </li>
       </ul>
       <div class="payment">
+        <div class="payment-total">
+          <div class="payment-total-text">Total</div>
+          <div class="payment-total-price">{{ total }}€</div>
+        </div>
         <button class="green_button styled_button center">Paiement</button>
       </div>
     </div>
@@ -21,10 +25,23 @@
 <script>
 export default {
   name: "Cart",
+  data() {
+    return {
+      total: 0
+    };
+  },
   computed: {
     list() {
+      console.log(this.$store.state.cart);
+
       return this.$store.state.cart;
     }
+  },
+  created() {
+    console.log("created");
+    this.$store.state.cart.forEach(item => {
+      this.total += item.price;
+    });
   }
 };
 </script>

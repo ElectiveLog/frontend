@@ -87,14 +87,22 @@ export default {
       this.form.picture = this.image;
       // get all the articles in the restaurant
       axios
-        .get(`http://localhost:3000/api/restaurants/${restaurantId}`)
+        .get(`http://localhost:8080/api/restaurants/${restaurantId}`, {
+          headers: {
+            "X-Server-Select": "mongo"
+          }
+        })
         .then(res => {
           // eslint-disable-next-line no-undef
           allArticles = res.data.articles;
         });
 
       axios
-        .post("http://localhost:3000/api/articles/create", this.form)
+        .post("http://localhost:8080/api/articles/create", this.form, {
+          headers: {
+            "X-Server-Select": "mongo"
+          }
+        })
         .then(res => {
           //Perform Success Action
 
@@ -107,10 +115,18 @@ export default {
           // add the new article to the list
 
           // envoie de la nouvelle liste d'articles dans le restaurant
-          axios.put(`http://localhost:3000/api/restaurants/${restaurantId}`, {
-            // eslint-disable-next-line no-undef
-            articles: newArticlesList
-          });
+          axios.put(
+            `http://localhost:8080/api/restaurants/${restaurantId}`,
+            {
+              // eslint-disable-next-line no-undef
+              articles: newArticlesList
+            },
+            {
+              headers: {
+                "X-Server-Select": "mongo"
+              }
+            }
+          );
         })
         // eslint-disable-next-line no-unused-vars
         .catch(error => {
@@ -119,7 +135,7 @@ export default {
         .finally(() => {
           //Perform action in always
         });
-      location.reload();
+      // location.reload();
     },
     scrollToTop() {
       window.scrollTo(0, 0);

@@ -8,16 +8,6 @@
           alt="CES'EATS LOGO"
       /></router-link>
       <div class="header-right">
-        <button
-          v-if="currentUser"
-          href
-          @click.prevent="logOut"
-          class="grey_button styled_button"
-          type="button"
-        >
-          Déconnexion
-        </button>
-
         <router-link v-if="!currentUser" to="/register"
           ><button class="blue_button styled_button" type="button">
             Inscription
@@ -30,27 +20,27 @@
           </button></router-link
         >
         &emsp;
-        <router-link to="/statistics"
-          ><button class="cleargreen_button styled_button" type="button">
-            Statistiques
-            <b-icon-bar-chart-line-fill
-              class="icon"
-            ></b-icon-bar-chart-line-fill></button
-        ></router-link>
-        &emsp;
-        <router-link v-if="currentUser" to="/account"
-          ><button class="blue_button styled_button" type="button">
-            Compte
-            <b-icon-person-fill class="icon"></b-icon-person-fill></button
-        ></router-link>
-        <router-link to="/cart"
-          ><button class="grey_button styled_button" type="button">
-            Panier
+        <b-dropdown
+          v-if="currentUser"
+          text="Mon compte"
+          toggle-class="customDropdown"
+        >
+          <b-dropdown-item to="/statistics"
+            >Statistiques
+            <b-icon-bar-chart-line-fill class="icon">
+            </b-icon-bar-chart-line-fill>
+          </b-dropdown-item>
+          <b-dropdown-item to="/account">
+            Compte <b-icon-person-fill class="icon"></b-icon-person-fill>
+          </b-dropdown-item>
+          <b-dropdown-item to="/cart"
+            >Panier
             <b-icon-cart-fill class="icon"></b-icon-cart-fill>&ensp;<span>{{
               orders
-            }}</span>
-          </button>
-        </router-link>
+            }}</span></b-dropdown-item
+          >
+          <b-dropdown-item @click.prevent="logOut">Deconnexion</b-dropdown-item>
+        </b-dropdown>
       </div>
     </div>
   </div>
@@ -65,15 +55,15 @@ export default {
     },
     currentUser() {
       return this.$store.state.auth.user;
-    }
+    },
   },
   methods: {
     logOut() {
       this.$store.dispatch("auth/logout");
       this.$store.state.auth.user = null;
       this.$router.push("/login");
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -70,6 +70,10 @@
           <label><strong>Détail :</strong></label>
           {{ currentArticle.detail }}
         </div>
+        <div>
+          <label><strong>Image :</strong></label>
+          <img v-bind:src="currentArticle.picture" />
+        </div>
         <!-- <a class="badge badge-warning" :href="'/articles/' + currentArticle.id">
         <div>
           <label><strong>Image :</strong></label>
@@ -138,7 +142,9 @@
 <script>
 import DataService from "../../services/DataService";
 import axios from "axios";
-const restaurantId = "62b9c1f576ca9b32e16d9bf5";
+import jwt_decode from "jwt-decode";
+const user = JSON.parse(localStorage.getItem("user"));
+
 export default {
   name: "articles-list",
   data() {
@@ -152,29 +158,43 @@ export default {
         name: "",
         type: "",
         price: "",
-        detail: ""
-      }
+        detail: "",
+      },
     };
   },
   methods: {
+    decodeToken(token) {
+      return jwt_decode(token);
+    },
     retrieveArticles() {
-      DataService.getOneRestaurant(restaurantId).then(response => {
-        this.restaurantArticles = response.data.restaurant.articles;
-        console.log(response.data.restaurant.articles);
-        const allRestaurantArticles = this.restaurantArticles;
-        const allArticles = this.articles;
-        allRestaurantArticles.forEach(element => {
-          console.log(element);
-          DataService.getOneArticle(element)
-            .then(response => {
-              allArticles.push(response.data.article);
-              console.log(allArticles);
-            })
-            .catch(e => {
-              console.log(e);
+      this.payloadUser = this.decodeToken(user.accessToken);
+      this.userId = this.payloadUser.userId;
+      DataService.getAllRestaurantsByRestaurateur(this.payloadUser.userId)
+        .then((response) => {
+          this.restaurantId = response.data.restaurants[0]._id;
+          console.log("Utilisateur: " + this.payloadUser.userId);
+          console.log(this.restaurantId);
+          DataService.getOneRestaurant(this.restaurantId).then((response) => {
+            this.restaurantArticles = response.data.restaurant.articles;
+            console.log(response.data.restaurant.articles);
+            const allRestaurantArticles = this.restaurantArticles;
+            const allArticles = this.articles;
+            allRestaurantArticles.forEach((element) => {
+              console.log(element);
+              DataService.getOneArticle(element)
+                .then((response) => {
+                  allArticles.push(response.data.article);
+                  console.log(allArticles);
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
             });
+          });
+        })
+        .catch((error) => {
+          console.log(error);
         });
-      });
     },
 
     // to get all
@@ -204,11 +224,11 @@ export default {
     },
     deleteArticle() {
       DataService.deleteArticle(this.currentArticle._id)
-        .then(response => {
+        .then((response) => {
           console.log(response.data.articles);
           this.refreshList();
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
 
@@ -217,11 +237,13 @@ export default {
       const toDelete = this.currentArticle._id;
 
       // get the new list of articles (the previous one without the articles just deleted)
-      let difference = allRestaurantArticles.filter(x => !toDelete.includes(x));
+      let difference = allRestaurantArticles.filter(
+        (x) => !toDelete.includes(x)
+      );
       console.log("result :");
       console.log(difference);
-      axios.put(`http://localhost:3000/api/restaurants/${restaurantId}`, {
-        articles: difference
+      axios.put(`http://localhost:3000/api/restaurants/${this.restaurantId}`, {
+        articles: difference,
       });
       this.reload();
     },
@@ -229,22 +251,22 @@ export default {
       const articleId = this.currentArticle._id;
       if (this.form.name !== "") {
         axios.put(`http://localhost:3000/api/articles/${articleId}`, {
-          name: this.form.name
+          name: this.form.name,
         });
       }
       if (this.form.type !== "") {
         axios.put(`http://localhost:3000/api/articles/${articleId}`, {
-          type: this.form.type
+          type: this.form.type,
         });
       }
       if (this.form.price !== "") {
         axios.put(`http://localhost:3000/api/articles/${articleId}`, {
-          price: this.form.price
+          price: this.form.price,
         });
       }
       if (this.form.detail !== "") {
         axios.put(`http://localhost:3000/api/articles/${articleId}`, {
-          detail: this.form.detail
+          detail: this.form.detail,
         });
       }
       this.reload();
@@ -254,7 +276,7 @@ export default {
     },
     scrollToTop() {
       window.scrollTo(0, 0);
-    }
+    },
 
     // searchName() {
     //   DataService.find(this.name)
@@ -269,7 +291,7 @@ export default {
   },
   mounted() {
     this.retrieveArticles();
-  }
+  },
 };
 </script>
 <style>

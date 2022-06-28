@@ -62,7 +62,7 @@ export default {
   name: "Account",
   data() {
     return {
-      userData: []
+      userData: [],
     };
   },
   methods: {
@@ -70,11 +70,12 @@ export default {
       const payloadUser = this.decodeToken(user.accessToken);
       var config = {
         method: "put",
-        url: "http://localhost:8080/users/" + payloadUser.userId,
+        // url: "http://localhost:8080/users/" + payloadUser.userId,
+        url: "http://localhost:5000/users/" + payloadUser.userId,
         headers: {
-          Authorization: "Bearer " + user.accessToken
+          Authorization: "Bearer " + user.accessToken,
         },
-        data: this.userData
+        data: this.userData,
       };
 
       axios(config)
@@ -84,10 +85,10 @@ export default {
             title: "Modification réussie",
             type: "success",
             text: "Vos modifications ont été enregistrées",
-            duration: 8000
+            duration: 8000,
           })
         )
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
@@ -95,10 +96,11 @@ export default {
       const payloadUser = this.decodeToken(user.accessToken);
       var config = {
         method: "delete",
-        url: "http://localhost:8080/users/" + payloadUser.userId,
+        // url: "http://localhost:8080/users/" + payloadUser.userId,
+        url: "http://localhost:5000/users/" + payloadUser.userId,
         headers: {
-          Authorization: "Bearer " + user.accessToken
-        }
+          Authorization: "Bearer " + user.accessToken,
+        },
       };
 
       axios(config)
@@ -108,36 +110,37 @@ export default {
             title: "Suppression réussie",
             type: "success",
             text: "Votre compte a été supprimé",
-            duration: 8000
+            duration: 8000,
           });
           this.$store.dispatch("auth/logout");
           this.$router.push("/login");
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
     decodeToken(token) {
       return jwt_decode(token);
-    }
+    },
   },
   created() {
     const payloadUser = this.decodeToken(user.accessToken);
     var config = {
       method: "get",
-      url: "http://localhost:8080/users/" + payloadUser.userId,
+      // url: "http://localhost:8080/users/" + payloadUser.userId,
+      url: "http://localhost:5000/users/" + payloadUser.userId,
       headers: {
-        Authorization: "Bearer " + user.accessToken
-      }
+        Authorization: "Bearer " + user.accessToken,
+      },
     };
 
     axios(config)
-      .then(response => {
+      .then((response) => {
         this.userData = response.data;
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
-  }
+  },
 };
 </script>

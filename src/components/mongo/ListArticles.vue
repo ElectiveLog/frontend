@@ -67,6 +67,10 @@
           <label><strong>Détail :</strong></label>
           {{ currentArticle.detail }}
         </div>
+        <div>
+          <label><strong>Image :</strong></label>
+          <img v-bind:src="currentArticle.picture" />
+        </div>
         <a class="badge badge-warning" :href="'/articles/' + currentArticle.id">
           Edit
         </a>
@@ -106,7 +110,7 @@ export default {
       this.currentArticle = article;
       this.currentIndex = index;
     },
-    unsetActiveArticle(article, index) {
+    unsetActiveArticle() {
       this.currentArticle = null;
       this.currentIndex = null;
     },

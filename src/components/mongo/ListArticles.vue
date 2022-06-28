@@ -138,7 +138,7 @@
 <script>
 import DataService from "../../services/DataService";
 import axios from "axios";
-const restaurantId = "62b9c1f576ca9b32e16d9bf5";
+const restaurantId = "62baeeeac68d60c802700ed2";
 export default {
   name: "articles-list",
   data() {
@@ -274,6 +274,7 @@ export default {
   },
 };
 </script>
+
 <style>
 .list {
   text-align: left;

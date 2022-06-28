@@ -3,33 +3,36 @@
     <h2>Ajouter un restaurant</h2>
     <form v-on:submit.prevent="submitForm">
       <div class="form-group">
-        <label for="name">Nom</label>
+        <label for="name">Nom *</label>
         <input
           type="text"
           class="form-control"
           id="name"
           placeholder="Nom du restaurant"
           v-model="form.name"
+          required="required"
         />
       </div>
       <div class="form-group">
-        <label for="idRestaurateur">Le restaurateur</label>
+        <label for="idRestaurateur">Restaurateur *</label>
         <input
           type="string"
           class="form-control"
           id="idRestaurateur"
           placeholder="Selectionner le restaurateur"
           v-model="form.idRestaurateur"
+          required="required"
         />
       </div>
       <div class="form-group">
-        <label for="address">Adresse</label>
+        <label for="address">Adresse *</label>
         <input
           type="text"
           class="form-control"
           id="address"
           placeholder="Adresse"
           v-model="form.address"
+          required="required"
         />
       </div>
       <div class="form-group">

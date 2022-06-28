@@ -51,10 +51,10 @@
         <div>
           <label><strong>Nom :</strong></label> {{ currentRestaurant.name }}
         </div>
-        <div>
+        <!-- <div>
           <label><strong>Articles :</strong></label>
           {{ currentRestaurant.articles }}
-        </div>
+        </div> -->
         <!-- <div>
           <label><strong>Id :</strong></label>
           {{ currentRestaurant._id }}
@@ -67,16 +67,17 @@
           <label><strong>Image :</strong></label>
           <img v-bind:src="currentRestaurant.picture" />
         </div>
-        <a
+        <!-- <a
           class="badge badge-warning"
           :href="'/restaurants/' + currentRestaurant.id"
         >
           Edit
-        </a>
+        </a> -->
       </div>
     </div>
   </div>
 </template>
+
 <script>
 import DataService from "../../services/DataService";
 export default {
@@ -156,7 +157,5 @@ export default {
   max-width: 750px;
   margin: auto;
   margin-bottom: 50px;
-}
-.styled_button {
 }
 </style>

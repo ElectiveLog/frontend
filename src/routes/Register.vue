@@ -168,7 +168,7 @@ export default {
       // url: "http://localhost:5000/roles/",
       headers: {
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNsaWVudEBjbGllbnQuY2xpZW50IiwibmFtZSI6ImNsaWVudGZkIiwicm9sZSI6IkNsaWVudCIsInVzZXJJZCI6ImNsNHNmc3NmNTAwMDEwMXB5ZXVwbnR5NXIiLCJpYXQiOjE2NTYzNjcyNzcsImV4cCI6MTY1NjQ1MzY3N30.bF7rywxOATgXqGzY11uRu1XP9UkmcMJZxVeoYdTznNc",
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlc3RhdXJhdGV1ckByZXN0YXVyYXRldXIucmVzdGF1cmF0ZXVyIiwibmFtZSI6InJlc3RhdXJhdGV1ciIsInJvbGUiOiJSZXN0YXVyYXRldXIiLCJ1c2VySWQiOiJjbDRzZ3M3OGMwMDAzMDFweW15bDEweDZvIiwiaWF0IjoxNjU2NDAzNDE2LCJleHAiOjE2NTcwMDgyMTZ9.-K-Q1EXnCx7WcKrQm9OHDceqZQwexdohM3aBn08HgQk",
       },
     };
 

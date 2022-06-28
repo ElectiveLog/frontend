@@ -87,17 +87,17 @@ export default {
       articles: [],
       currentArticle: null,
       currentIndex: -1,
-      title: "",
+      title: ""
     };
   },
   methods: {
     retrieveArticles() {
       DataService.getAllArticles()
-        .then((response) => {
+        .then(response => {
           this.articles = response.data.articles;
           console.log(response.data.articles);
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
         });
     },
@@ -116,24 +116,24 @@ export default {
     },
     deleteArticle() {
       DataService.deleteArticle(this.currentArticle._id)
-        .then((response) => {
+        .then(response => {
           console.log(response.data.articles);
           this.refreshList();
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
         });
     },
     updateArticle() {
       DataService.updateArticle(this.currentArticle._id)
-        .then((response) => {
+        .then(response => {
           console.log(response.data.articles);
           this.refreshList();
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
         });
-    },
+    }
 
     // searchName() {
     //   DataService.find(this.name)
@@ -148,7 +148,7 @@ export default {
   },
   mounted() {
     this.retrieveArticles();
-  },
+  }
 };
 </script>
 <style>

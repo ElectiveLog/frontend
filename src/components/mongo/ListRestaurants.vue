@@ -86,17 +86,17 @@ export default {
       restaurants: [],
       currentRestaurant: null,
       currentIndex: -1,
-      title: "",
+      title: ""
     };
   },
   methods: {
     retrieveRestaurants() {
       DataService.getAllRestaurants()
-        .then((response) => {
+        .then(response => {
           this.restaurants = response.data.restaurants;
           console.log(response.data.restaurants);
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
         });
     },
@@ -115,24 +115,24 @@ export default {
     },
     deleteRestaurant() {
       DataService.deleteRestaurant(this.currentRestaurant._id)
-        .then((response) => {
+        .then(response => {
           console.log(response.data.restaurants);
           this.refreshList();
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
         });
     },
     updateRestaurant() {
       DataService.updateRestaurant(this.currentRestaurant._id)
-        .then((response) => {
+        .then(response => {
           console.log(response.data.restaurants);
           this.refreshList();
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
         });
-    },
+    }
 
     // searchName() {
     //   DataService.find(this.name)
@@ -147,7 +147,7 @@ export default {
   },
   mounted() {
     this.retrieveRestaurants();
-  },
+  }
 };
 </script>
 <style>

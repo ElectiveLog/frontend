@@ -17,7 +17,8 @@ export const auth = {
             return Promise.resolve(user);
           } else {
             commit("loginFailure");
-            return Promise.reject(user);
+            console.log("error");
+            return user;
           }
         },
         error => {

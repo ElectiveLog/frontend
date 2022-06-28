@@ -421,9 +421,48 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+
+      var configLog = {
+        method: "post",
+        url: "http://localhost:8080/api/logs/create",
+        headers: {
+          "X-Server-Select": "mongo"
+        },
+        data: {
+          type: "Modification",
+          description:
+            payloadUser.email + "(Restaurateur) a modifié son compte."
+        }
+      };
+      axios(configLog)
+        .then(response => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     handleDelete() {
       const payloadUser = this.decodeToken(user.accessToken);
+      var configLog = {
+        method: "post",
+        url: "http://localhost:8080/api/logs/create",
+        headers: {
+          "X-Server-Select": "mongo"
+        },
+        data: {
+          type: "Suppression",
+          description:
+            payloadUser.email + "(Restaurateur) a supprimé son compte."
+        }
+      };
+      axios(configLog)
+        .then(response => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(error => {
+          console.log(error);
+        });
       var config = {
         method: "delete",
         url: "http://localhost:8080/users/" + payloadUser.userId,
@@ -454,7 +493,6 @@ export default {
   },
   async created() {
     const payloadUser = this.decodeToken(user.accessToken);
-    console.log(payloadUser);
     var config = {
       method: "get",
       url: "http://localhost:8080/users/" + payloadUser.userId,
@@ -551,7 +589,6 @@ export default {
                 );
 
                 if (order.state == "commande") {
-                  console.log(order);
                   this.waitCommandes.push({
                     id: order._id,
                     Commande: "Commande n°" + i,

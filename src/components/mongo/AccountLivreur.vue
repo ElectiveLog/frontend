@@ -70,7 +70,7 @@
             size="sm"
             variant="dark"
             @click="handleEditStatus(row.item)"
-            class="green_button styled_button"
+            class="text-sm-right"
           >
             Validé
           </b-button>
@@ -388,6 +388,29 @@ export default {
         idLivreur: payloadUser.userId
       });
 
+      var configLog = {
+        method: "post",
+        url: "http://localhost:8080/api/logs/create",
+        headers: {
+          "X-Server-Select": "mongo"
+        },
+        data: {
+          type: "StatusCommande",
+          description:
+            payloadUser.email +
+            " a modifié le status de la commande " +
+            commande.id +
+            " à livraison."
+        }
+      };
+      axios(configLog)
+        .then(response => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(error => {
+          console.log(error);
+        });
+
       var config = {
         method: "put",
         url: "http://localhost:8080/api/orders/" + commande.id,
@@ -421,6 +444,29 @@ export default {
         state: "prepared",
         idLivreur: payloadUser.userId
       });
+
+      var configLog = {
+        method: "post",
+        url: "http://localhost:8080/api/logs/create",
+        headers: {
+          "X-Server-Select": "mongo"
+        },
+        data: {
+          type: "StatusCommande",
+          description:
+            payloadUser.email +
+            " a modifié le status de la commande " +
+            commande.id +
+            " à prepared."
+        }
+      };
+      axios(configLog)
+        .then(response => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(error => {
+          console.log(error);
+        });
 
       var config = {
         method: "put",
@@ -473,9 +519,45 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+      var configLog = {
+        method: "post",
+        url: "http://localhost:8080/api/logs/create",
+        headers: {
+          "X-Server-Select": "mongo"
+        },
+        data: {
+          type: "Modification",
+          description: payloadUser.email + "(Livreur) a modifié son compte."
+        }
+      };
+      axios(configLog)
+        .then(response => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     handleDelete() {
       const payloadUser = this.decodeToken(user.accessToken);
+      var configLog = {
+        method: "post",
+        url: "http://localhost:8080/api/logs/create",
+        headers: {
+          "X-Server-Select": "mongo"
+        },
+        data: {
+          type: "Suppression",
+          description: payloadUser.email + "(Livreur) a supprimé son compte."
+        }
+      };
+      axios(configLog)
+        .then(response => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(error => {
+          console.log(error);
+        });
       var config = {
         method: "delete",
         url: "http://localhost:8080/users/" + payloadUser.userId,

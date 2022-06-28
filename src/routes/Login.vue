@@ -45,6 +45,7 @@
 </template>
 <script>
 import User from "../models/user";
+import axios from "axios";
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Login",
@@ -82,6 +83,27 @@ export default {
               this.loading = false;
               this.message = response;
             } else {
+              var configLog = {
+                method: "post",
+                url: "http://localhost:8080/api/logs/create",
+                headers: {
+                  "X-Server-Select": "mongo"
+                },
+                data: {
+                  type: "Connexion",
+                  description:
+                    "Connexion réussie sur le frontoffice de : " +
+                    this.user.email +
+                    ""
+                }
+              };
+              axios(configLog)
+                .then(response => {
+                  console.log(JSON.stringify(response.data));
+                })
+                .catch(error => {
+                  console.log(error);
+                });
               this.$notify({
                 group: "foo",
                 title: "Connexion réussie",

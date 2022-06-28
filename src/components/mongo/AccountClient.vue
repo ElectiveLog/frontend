@@ -324,9 +324,47 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+      console.log("ijifejife");
+      var configLog = {
+        method: "post",
+        url: "http://localhost:8080/api/logs/create",
+        headers: {
+          "X-Server-Select": "mongo"
+        },
+        data: {
+          type: "Modification",
+          description: payloadUser.email + "(Client) a modifié son compte."
+        }
+      };
+      axios(configLog)
+        .then(response => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     handleDelete() {
       const payloadUser = this.decodeToken(user.accessToken);
+
+      var configLog = {
+        method: "post",
+        url: "http://localhost:8080/api/logs/create",
+        headers: {
+          "X-Server-Select": "mongo"
+        },
+        data: {
+          type: "Suppression",
+          description: payloadUser.email + "(Client) a supprimé son compte."
+        }
+      };
+      axios(configLog)
+        .then(response => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(error => {
+          console.log(error);
+        });
       var config = {
         method: "delete",
         url: "http://localhost:8080/users/" + payloadUser.userId,

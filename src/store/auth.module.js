@@ -10,17 +10,18 @@ export const auth = {
     login({ commit }, user) {
       console.log(user);
       return AuthService.login(user).then(
-        user => {
+        (user) => {
           console.log("le" + JSON.stringify(user));
           if (user.data.accessToken) {
             commit("loginSuccess", user);
             return Promise.resolve(user);
           } else {
             commit("loginFailure");
-            return Promise.reject(user);
+            console.log("error");
+            return user;
           }
         },
-        error => {
+        (error) => {
           console.log("erre" + error);
           commit("loginFailure");
           return Promise.reject(error);
@@ -33,16 +34,16 @@ export const auth = {
     },
     register({ commit }, user) {
       return AuthService.register(user).then(
-        response => {
+        (response) => {
           commit("registerSuccess");
           return Promise.resolve(response.data);
         },
-        error => {
+        (error) => {
           commit("registerFailure");
           return Promise.reject(error);
         }
       );
-    }
+    },
   },
   mutations: {
     loginSuccess(state, user) {
@@ -62,6 +63,6 @@ export const auth = {
     },
     registerFailure(state) {
       state.status.loggedIn = false;
-    }
-  }
+    },
+  },
 };

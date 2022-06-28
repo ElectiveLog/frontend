@@ -79,8 +79,8 @@ export default {
         .get(`http://localhost:3000/api/restaurants/${restaurantId}`)
         .then((res) => {
           this.articles = res.data.restaurant.articles;
-          console.log("liste des articles dans le restau :");
-          console.log(this.articles);
+          console.log("liste des articles dans le restau :")
+          console.log(this.articles)
         });
 
       axios
@@ -90,16 +90,17 @@ export default {
 
           // get this article ID
           const articleId = [res.data.article._id];
-          console.log("id du nouvel article :");
-          console.log(articleId);
+          console.log("id du nouvel article :")
+          console.log(articleId)
 
           // get all the articles
-          const allArticles = this.articles;
-          console.log("tous les articles niv 2 :");
-          console.log(allArticles);
+          const allArticles = this.articles
+          console.log("tous les articles niv 2 :")
+          console.log(allArticles)
 
           // add the new article to the list
-          allArticles.push(articleId);
+          allArticles.push(articleId)
+
 
           // envoie de la nouvelle liste d'articles dans le restaurant
           axios.put(`http://localhost:3000/api/restaurants/${restaurantId}`, {
@@ -117,11 +118,4 @@ export default {
       window.scrollTo(0, 0);
     },
   },
-};
-</script>
-
-<style scoped>
-.form-group {
-  margin-bottom: 10px;
 }
-</style>

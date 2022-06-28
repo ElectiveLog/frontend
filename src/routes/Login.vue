@@ -35,20 +35,6 @@
                 <div class="valid-feedback">Mot de passe valide</div>
                 <div class="invalid-feedback">Mot de passe invalide</div>
               </div>
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="invalidCheck"
-                  required
-                />
-                <label class="form-check-label"
-                  >Je confirme les informations saisies</label
-                >
-                <div class="invalid-feedback">Merci de confirmer.</div>
-              </div>
-
               <div class="form-button mt-3">
                 <button class="green_button styled_button" type="submit">
                   Valider
@@ -70,31 +56,32 @@ export default {
     return {
       user: new User("", ""),
       loading: false,
-      message: ""
+      message: "",
     };
   },
   computed: {
     loggedIn() {
       console.log(this.$store.state);
       return this.$store.state.auth.status.loggedIn;
-    }
+    },
   },
   created() {
     var axios = require("axios");
 
     var config = {
       method: "get",
-      url: "http://localhost:8080/api/ingredients/",
+      // url: "http://localhost:8080/api/ingredients/",
+      url: "http://localhost:5000/api/ingredients/",
       headers: {
-        "X-Server-Select": "mongo"
-      }
+        "X-Server-Select": "mongo",
+      },
     };
 
     axios(config)
-      .then(function(response) {
+      .then(function (response) {
         console.log(JSON.stringify(response.data));
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
 
@@ -110,7 +97,7 @@ export default {
       if (this.user.email && this.user.password) {
         console.log("handleLogin: login");
         this.$store.dispatch("auth/login", this.user).then(
-          response => {
+          (response) => {
             console.log("fdsq" + JSON.stringify(response));
             if (response.status == 203) {
               this.$notify({
@@ -118,7 +105,7 @@ export default {
                 title: "Erreur",
                 type: "error",
                 text: response.data,
-                duration: 8000
+                duration: 8000,
               });
               this.loading = false;
               this.message = response;
@@ -128,12 +115,13 @@ export default {
                 title: "Connexion réussie",
                 type: "success",
                 text: "Bienvenue " + this.user.email,
-                duration: 8000
+                duration: 8000,
               });
               this.$router.push("/");
+              location.reload();
             }
           },
-          error => {
+          (error) => {
             this.loading = false;
             this.message =
               (error.response && error.response.data) ||
@@ -142,38 +130,7 @@ export default {
           }
         );
       }
-    }
-  }
+    },
+  },
 };
 </script>
-<style scoped>
-label {
-  display: block;
-  margin-top: 10px;
-}
-.card-container.card {
-  max-width: 350px !important;
-  padding: 40px 40px;
-}
-.card {
-  background-color: #f7f7f7;
-  padding: 20px 25px 30px;
-  margin: 0 auto 25px;
-  margin-top: 50px;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-}
-.profile-img-card {
-  width: 96px;
-  height: 96px;
-  margin: 0 auto 10px;
-  display: block;
-  -moz-border-radius: 50%;
-  -webkit-border-radius: 50%;
-  border-radius: 50%;
-}
-</style>

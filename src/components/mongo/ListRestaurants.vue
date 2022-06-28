@@ -63,6 +63,10 @@
           <label><strong>Adresse :</strong></label>
           {{ currentRestaurant.address }}
         </div>
+        <div>
+          <label><strong>Image :</strong></label>
+          <img v-bind:src="currentRestaurant.picture" />
+        </div>
         <a
           class="badge badge-warning"
           :href="'/restaurants/' + currentRestaurant.id"

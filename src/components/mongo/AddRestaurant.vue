@@ -15,7 +15,7 @@
       <div class="form-group">
         <label for="idRestaurateur">Le restaurateur</label>
         <input
-          type="number"
+          type="string"
           class="form-control"
           id="idRestaurateur"
           placeholder="Selectionner le restaurateur"
@@ -30,6 +30,15 @@
           id="address"
           placeholder="Adresse"
           v-model="form.address"
+        />
+      </div>
+      <div class="form-group">
+        <img style="" :src="image" alt="" />
+        <input
+          @change="handleImage"
+          class="custom-input"
+          type="file"
+          accept="image/*"
         />
       </div>
       <div @click="scrollToTop">
@@ -52,26 +61,45 @@ export default {
         name: "",
         idRestaurateur: "",
         address: "",
+        picture: "",
       },
+      image: "",
     };
   },
   methods: {
     submitForm() {
+      this.form.picture = this.image;
       axios
         .post("http://localhost:3000/api/restaurants/create", this.form)
         .then((res) => {
           //Perform Success Action
+          console.log("donnéee" + res.data);
         })
         .catch((error) => {
+          console.log(error);
           // error.response.status Check status code
+          console.log("err: " + error);
         })
         .finally(() => {
           //Perform action in always
+          console.log("finally");
         });
       location.reload();
     },
     scrollToTop() {
       window.scrollTo(0, 0);
+    },
+    handleImage(e) {
+      const selectedImage = e.target.files[0];
+      this.createBase64Image(selectedImage);
+    },
+    createBase64Image(fileObject) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        this.image = e.target.result;
+      };
+      reader.readAsDataURL(fileObject);
     },
   },
 };

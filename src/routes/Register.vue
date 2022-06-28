@@ -6,26 +6,18 @@
           <div class="form-items">
             <h3>Inscription</h3>
             <p>Merci de compléter les différentes informations.</p>
-            <form
-              class="requires-validation"
-              novalidate
-              @submit.prevent="handleRegister"
-            >
+            <b-form @submit.prevent="handleRegister">
               <div class="col-md-12">
                 <select v-model="user.roleId">
                   >
-                  <option selected value="">Choisissez *</option>
-                  <option
-                    v-for="role in roledata"
-                    :key="role.id"
-                    :value="role.id"
-                  >
-                    {{ role.name }}
+                  <option selected value="">Choisissez votre rôle *</option>
+                  <option v-for="role in roledata" :key="role" :value="role">
+                    {{ role }}
                   </option>
                 </select>
               </div>
               <div class="col-md-12">
-                <input
+                <b-form-input
                   class="form-control"
                   type="text"
                   name="name"
@@ -33,8 +25,6 @@
                   required
                   v-model="user.username"
                 />
-                <div class="valid-feedback">Nom valide</div>
-                <div class="invalid-feedback">Nom invalide</div>
               </div>
 
               <div class="col-md-12">
@@ -49,7 +39,7 @@
                 <div class="valid-feedback">Email valide</div>
                 <div class="invalid-feedback">Email invalide</div>
               </div>
-              <div v-if="user.roleId == 'cl4sfnxan006501pyrhmwnrme'">
+              <div v-if="user.roleId == 'Client'">
                 &emsp;
                 <div class="col-md-12">
                   <input
@@ -57,7 +47,6 @@
                     type="number"
                     name="number"
                     placeholder="Numéro"
-                    required
                     v-model="user.streetNumber"
                   />
                 </div>
@@ -67,7 +56,6 @@
                     type="text"
                     name="adresse"
                     placeholder="Adresse"
-                    required
                     v-model="user.address"
                   />
                 </div>
@@ -77,7 +65,6 @@
                     type="text"
                     name="ville"
                     placeholder="Ville"
-                    required
                     v-model="user.city"
                   />
                 </div>
@@ -87,7 +74,6 @@
                     type="text"
                     name="country"
                     placeholder="Pays"
-                    required
                     v-model="user.country"
                   />
                 </div>
@@ -98,7 +84,6 @@
                     type="phone"
                     name="phone"
                     placeholder="Numéro de téléphone"
-                    required
                     v-model="user.phoneNumber"
                   />
                 </div>
@@ -123,7 +108,6 @@
                   name="parraingae"
                   placeholder="Adresse e-mail du parain"
                   v-model="user.sponsorshipCode"
-                  required
                 />
                 <div class="valid-feedback">Mot de passe valide</div>
                 <div class="invalid-feedback">Mot de passe invalide</div>
@@ -133,7 +117,7 @@
                   Valider
                 </button>
               </div>
-            </form>
+            </b-form>
           </div>
         </div>
       </div>
@@ -147,11 +131,12 @@ export default {
   name: "Register",
   data() {
     return {
-      user: new User("", "", "", "", "", "", "", "", "", ""),
+      user: new User("", "", "", "", "", "", "", "", "", "", ""),
       submitted: false,
       successful: false,
       message: "",
-      roledata: [],
+      roledata: ["Livreur", "Client", "Restaurateur"],
+      allRoledata: [],
     };
   },
   computed: {
@@ -161,20 +146,18 @@ export default {
   },
   created() {
     var axios = require("axios");
-
     var config = {
       method: "get",
-      url: "http://localhost:8080/roles/",
-      // url: "http://localhost:5000/roles/",
+      // url: "http://localhost:8080/roles/",
+      url: "http://localhost:5000/roles/",
       headers: {
         Authorization:
           "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlc3RhdXJhdGV1ckByZXN0YXVyYXRldXIucmVzdGF1cmF0ZXVyIiwibmFtZSI6InJlc3RhdXJhdGV1ciIsInJvbGUiOiJSZXN0YXVyYXRldXIiLCJ1c2VySWQiOiJjbDRzZ3M3OGMwMDAzMDFweW15bDEweDZvIiwiaWF0IjoxNjU2NDAzNDE2LCJleHAiOjE2NTcwMDgyMTZ9.-K-Q1EXnCx7WcKrQm9OHDceqZQwexdohM3aBn08HgQk",
       },
     };
-
     axios(config)
       .then((response) => {
-        this.roledata = response.data;
+        this.allRoledata = response.data;
       })
       .catch((error) => {
         console.log("fdsqf" + error);
@@ -196,10 +179,15 @@ export default {
           group: "foo",
           title: "Role",
           type: "error",
-          text: "Veuillez choisir un role",
+          text: "Veuillez choisir un rôle",
           duration: 8000,
         });
       } else {
+        this.allRoledata.forEach((element) => {
+          if (element.name === this.user.roleId) {
+            this.user.roleId = element.id;
+          }
+        });
         this.$store.dispatch("auth/register", this.user).then(
           (data) => {
             this.message = data.message;
@@ -222,6 +210,7 @@ export default {
               data ==
               "L'adresse email que vous avez entrée n'appartient pas à un utilisateur de votre role"
             ) {
+              this.successful = false;
               this.$notify({
                 group: "foo",
                 title: "Inscription échouée",
@@ -230,6 +219,7 @@ export default {
                 duration: 8000,
               });
             } else if (data == "Error when creating the user") {
+              this.successful = false;
               this.$notify({
                 group: "foo",
                 title: "Inscription échouée",

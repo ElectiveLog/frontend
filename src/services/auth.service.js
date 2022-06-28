@@ -1,6 +1,6 @@
 import axios from "axios";
-const API_URL = "http://localhost:8080/users/";
-// const API_URL = "http://localhost:5000/users/";
+// const API_URL = "http://localhost:8080/users/";
+const API_URL = "http://localhost:5000/users/";
 class AuthService {
   login(user) {
     console.log(user);
@@ -29,7 +29,6 @@ class AuthService {
     localStorage.removeItem("user");
   }
   register(user) {
-    const streetNumber = parseInt(user.streetNumber, 10);
     return axios.post(
       API_URL + "create",
       {
@@ -37,7 +36,7 @@ class AuthService {
         email: user.email,
         password: user.password,
         roleId: user.roleId,
-        streetNumber: streetNumber,
+        streetNumber: user.streetNumber,
         address: user.address,
         city: user.city,
         country: user.country,

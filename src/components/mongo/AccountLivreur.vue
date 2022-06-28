@@ -55,9 +55,11 @@
 
       <b-table
         v-else
-        striped
         hover
+        small
+        outlined
         borderred
+        fixed
         responsive
         primary-key
         :items="awaitCommandes"
@@ -66,6 +68,7 @@
         <template #cell(actions)="row">
           <b-button
             size="sm"
+            variant="dark"
             @click="handleEditStatus(row.item)"
             class="green_button styled_button"
           >
@@ -73,12 +76,28 @@
           </b-button>
         </template>
         <template #cell(show_details)="row">
-          <b-button size="sm" @click="row.toggleDetails" class="mr-2">
-            {{ row.detailsShowing ? "Cacher" : "Afficher" }} détails
+          <b-button
+            size="sm"
+            variant="dark"
+            @click="row.toggleDetails"
+            class="mr-2"
+          >
+            {{ row.detailsShowing ? "Cacher" : "Afficher" }}
           </b-button>
         </template>
         <template #row-details="row">
           <b-card>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Date et heure de la commande: </b>Le {{ row.item.date }} à
+                {{ row.item.heure }}</b-col
+              >
+            </b-row>
+            <b-row v-if="row.item.parainage != null" class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Parainage: </b>{{ row.item.parainage }}</b-col
+              >
+            </b-row>
             <b-row class="mb-2">
               <b-col sm="3" class="text-sm-right"
                 ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
@@ -118,8 +137,10 @@
       <b-table
         v-else
         hover
-        striped
+        small
+        outlined
         borderred
+        fixed
         responsive
         primary-key
         :items="inProgressCommandes"
@@ -128,19 +149,36 @@
         <template #cell(actions)="row">
           <b-button
             size="sm"
+            variant="dark"
             @click="handleEditStatusLivraison(row.item)"
-            class="green_button styled_button"
+            class="text-sm-right"
           >
             Validé
           </b-button>
         </template>
         <template #cell(show_details)="row">
-          <b-button size="sm" @click="row.toggleDetails" class="mr-2">
-            {{ row.detailsShowing ? "Cacher" : "Afficher" }} détails
+          <b-button
+            size="sm"
+            variant="dark"
+            @click="row.toggleDetails"
+            class="mr-2"
+          >
+            {{ row.detailsShowing ? "Cacher" : "Afficher" }}
           </b-button>
         </template>
         <template #row-details="row">
           <b-card>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Date et heure de la commande: </b>Le {{ row.item.date }} à
+                {{ row.item.heure }}</b-col
+              >
+            </b-row>
+            <b-row v-if="row.item.parainage != null" class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Parainage: </b>{{ row.item.parainage }}</b-col
+              >
+            </b-row>
             <b-row class="mb-2">
               <b-col sm="3" class="text-sm-right"
                 ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
@@ -180,21 +218,40 @@
         >
 
         <b-table
-          striped
+          v-else
           hover
+          small
+          outlined
           borderred
+          fixed
           responsive
           primary-key
           :items="historyCommandes"
           :fields="fieldsMore"
         >
           <template #cell(show_details)="row">
-            <b-button size="sm" @click="row.toggleDetails" class="mr-2">
-              {{ row.detailsShowing ? "Cacher" : "Afficher" }} détails
+            <b-button
+              size="sm"
+              variant="dark"
+              @click="row.toggleDetails"
+              class="mr-2"
+            >
+              {{ row.detailsShowing ? "Cacher" : "Afficher" }}
             </b-button>
           </template>
           <template #row-details="row">
             <b-card>
+              <b-row class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Date et heure de la commande: </b>Le {{ row.item.date }} à
+                  {{ row.item.heure }}</b-col
+                >
+              </b-row>
+              <b-row v-if="row.item.parainage != null" class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Parainage: </b>{{ row.item.parainage }}</b-col
+                >
+              </b-row>
               <b-row class="mb-2">
                 <b-col sm="3" class="text-sm-right"
                   ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
@@ -291,14 +348,6 @@ export default {
           label: "Status",
         },
         {
-          key: "date",
-          label: "Date",
-        },
-        {
-          key: "heure",
-          label: "Heure",
-        },
-        {
           key: "actions",
           label: "Actions",
         },
@@ -317,8 +366,6 @@ export default {
         { key: "livreur", label: "Livreur" },
         { key: "client", label: "Client" },
         { key: "status", label: "Status" },
-        { key: "date", label: "Date" },
-        { key: "heure", label: "Heure" },
         { key: "show_details", label: "Details" },
       ],
       historyCommandes: [],
@@ -500,6 +547,9 @@ export default {
             },
           };
           axios(config).then((response) => {
+            if (response.data.sponsorshipCode) {
+              priceCommande = priceCommande * 0.9;
+            }
             this.awaitCommandes.push({
               id: element._id,
               Commande: "Commande n°1",
@@ -512,6 +562,7 @@ export default {
               phoneNumber: response.data.phoneNumber,
               restaurant: element.idRestaurant.name,
               status: element.state,
+              parnainage: response.data.sponsorshipCode,
               date: element.createdAt.split("T")[0],
               heure: element.createdAt.split("T").pop().split(".")[0],
             });
@@ -550,6 +601,9 @@ export default {
 
           axios(config)
             .then((response) => {
+              if (response.data.sponsorshipCode) {
+                priceCommande = priceCommande * 0.9;
+              }
               if (element.state == "livraison") {
                 this.inProgressCommandes.push({
                   id: element._id,
@@ -563,6 +617,7 @@ export default {
                   phoneNumber: response.data.phoneNumber,
                   restaurant: element.idRestaurant.name,
                   status: element.state,
+                  parnainage: response.data.sponsorshipCode,
                   date: element.createdAt.split("T")[0],
                   heure: element.createdAt.split("T").pop().split(".")[0],
                 });
@@ -578,7 +633,8 @@ export default {
                   country: response.data.country,
                   phoneNumber: response.data.phoneNumber,
                   restaurant: element.idRestaurant.name,
-                  status: element.state,
+                  status: "livrée",
+                  parnainage: response.data.sponsorshipCode,
                   date: element.createdAt.split("T")[0],
                   heure: element.createdAt.split("T").pop().split(".")[0],
                 });

@@ -56,17 +56,20 @@
 
       <b-table
         v-else
-        striped
         hover
+        small
+        outlined
         borderred
-        primary-key
+        fixed
         responsive
+        primary-key
         :items="waitCommandes"
         :fields="fields"
       >
         <template #cell(actions)="row">
           <b-button
             size="sm"
+            variant="dark"
             @click="handleEditStatus(row.item)"
             class="green_button styled_button"
           >
@@ -74,12 +77,28 @@
           </b-button>
         </template>
         <template #cell(show_details)="row">
-          <b-button size="sm" @click="row.toggleDetails" class="mr-2">
-            {{ row.detailsShowing ? "Cacher" : "Afficher" }} détails
+          <b-button
+            size="sm"
+            variant="dark"
+            @click="row.toggleDetails"
+            class="mr-2"
+          >
+            {{ row.detailsShowing ? "Cacher" : "Afficher" }}
           </b-button>
         </template>
         <template #row-details="row">
           <b-card>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Date et heure de la commande: </b>Le {{ row.item.date }} à
+                {{ row.item.heure }}</b-col
+              >
+            </b-row>
+            <b-row v-if="row.item.parainage != null" class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Parainage: </b>{{ row.item.parainage }}</b-col
+              >
+            </b-row>
             <b-row class="mb-2">
               <b-col sm="3" class="text-sm-right"
                 ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
@@ -118,22 +137,40 @@
 
       <b-table
         v-else
-        striped
         hover
+        small
+        outlined
         borderred
-        primary-key
+        fixed
         responsive
+        primary-key
         :items="inProgressCommandes"
         :fields="fieldsMore"
       >
         <template #cell(show_details)="row">
-          <b-button size="sm" @click="row.toggleDetails" class="mr-2">
-            {{ row.detailsShowing ? "Cacher" : "Afficher" }} détails
+          <b-button
+            size="sm"
+            variant="dark"
+            @click="row.toggleDetails"
+            class="mr-2 black"
+          >
+            {{ row.detailsShowing ? "Cacher" : "Afficher" }}
           </b-button>
         </template>
 
         <template #row-details="row">
           <b-card>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Date et heure de la commande: </b>Le {{ row.item.date }} à
+                {{ row.item.heure }}</b-col
+              >
+            </b-row>
+            <b-row v-if="row.item.parainage != null" class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Parainage: </b>{{ row.item.parainage }}</b-col
+              >
+            </b-row>
             <b-row class="mb-2">
               <b-col sm="3" class="text-sm-right"
                 ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
@@ -173,22 +210,40 @@
         >
 
         <b-table
-          striped
           hover
+          small
+          outlined
           borderred
-          primary-key
+          fixed
           responsive
+          primary-key
           :items="historyCommandes"
           :fields="fieldsMore"
         >
           <template #cell(show_details)="row">
-            <b-button size="sm" @click="row.toggleDetails" class="mr-2">
-              {{ row.detailsShowing ? "Cacher" : "Afficher" }} détails
+            <b-button
+              size="sm"
+              variant="dark"
+              @click="row.toggleDetails"
+              class="mr-2"
+            >
+              {{ row.detailsShowing ? "Cacher" : "Afficher" }}
             </b-button>
           </template>
 
           <template #row-details="row">
             <b-card>
+              <b-row class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Date et heure de la commande: </b>Le {{ row.item.date }} à
+                  {{ row.item.heure }}</b-col
+                >
+              </b-row>
+              <b-row v-if="row.item.parainage != null" class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Parainage: </b>{{ row.item.parainage }}</b-col
+                >
+              </b-row>
               <b-row class="mb-2">
                 <b-col sm="3" class="text-sm-right"
                   ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
@@ -285,14 +340,6 @@ export default {
           label: "Status",
         },
         {
-          key: "date",
-          label: "Date",
-        },
-        {
-          key: "heure",
-          label: "Heure",
-        },
-        {
           key: "actions",
           label: "Actions",
         },
@@ -311,8 +358,6 @@ export default {
         { key: "livreur", label: "Livreur" },
         { key: "client", label: "Client" },
         { key: "status", label: "Status" },
-        { key: "date", label: "Date" },
-        { key: "heure", label: "Heure" },
         { key: "show_details", label: "Details" },
       ],
       inProgressCommandes: [],
@@ -428,7 +473,9 @@ export default {
 
     var configRestaurant = {
       method: "get",
-      url: "http://localhost:8080/api/restaurants/restaurateur/cl4sgs78c000301pymyl10x6o",
+      url:
+        "http://localhost:8080/api/restaurants/restaurateur/" +
+        payloadUser.userId,
       headers: {
         "X-Server-Select": "mongo",
       },
@@ -494,6 +541,10 @@ export default {
                   priceCommande += article.price;
                   articlesNames += article.name + ", ";
                 });
+
+                if (order.sponsorshipCode) {
+                  priceCommande = priceCommande * 0.9;
+                }
                 const articleNames = articlesNames.substring(
                   0,
                   articlesNames.length - 2
@@ -514,6 +565,7 @@ export default {
                     country: order.country,
                     phoneNumber: order.phoneNumber,
                     status: order.state,
+                    parnainage: order.sponsorshipCode,
                     date: order.createdAt.split("T")[0],
                     heure: order.createdAt.split("T").pop().split(".")[0],
                   });
@@ -534,6 +586,7 @@ export default {
                     country: order.country,
                     phoneNumber: order.phoneNumber,
                     status: order.state,
+                    parnainage: order.sponsorshipCode,
                     date: order.createdAt.split("T")[0],
                     heure: order.createdAt.split("T").pop().split(".")[0],
                   });
@@ -551,7 +604,8 @@ export default {
                     city: order.city,
                     country: order.country,
                     phoneNumber: order.phoneNumber,
-                    status: order.state,
+                    status: "livrée",
+                    parnainage: order.sponsorshipCode,
                     date: order.createdAt.split("T")[0],
                     heure: order.createdAt.split("T").pop().split(".")[0],
                   });

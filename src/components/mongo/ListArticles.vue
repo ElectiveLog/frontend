@@ -70,6 +70,10 @@
           <label><strong>Détail :</strong></label>
           {{ currentArticle.detail }}
         </div>
+        <div>
+          <label><strong>Image :</strong></label>
+          <img v-bind:src="currentArticle.picture" />
+        </div>
         <!-- <a class="badge badge-warning" :href="'/articles/' + currentArticle.id">
         <div>
           <label><strong>Image :</strong></label>
@@ -138,7 +142,10 @@
 <script>
 import DataService from "../../services/DataService";
 import axios from "axios";
-const restaurantId = "62baeeeac68d60c802700ed2";
+// const restaurantId = "62baeeeac68d60c802700ed2";
+import jwt_decode from "jwt-decode";
+const user = JSON.parse(localStorage.getItem("user"));
+
 export default {
   name: "articles-list",
   data() {
@@ -157,24 +164,38 @@ export default {
     };
   },
   methods: {
+    decodeToken(token) {
+      return jwt_decode(token);
+    },
     retrieveArticles() {
-      DataService.getOneRestaurant(restaurantId).then((response) => {
-        this.restaurantArticles = response.data.restaurant.articles;
-        console.log(response.data.restaurant.articles);
-        const allRestaurantArticles = this.restaurantArticles;
-        const allArticles = this.articles;
-        allRestaurantArticles.forEach((element) => {
-          console.log(element);
-          DataService.getOneArticle(element)
-            .then((response) => {
-              allArticles.push(response.data.article);
-              console.log(allArticles);
-            })
-            .catch((e) => {
-              console.log(e);
+      this.payloadUser = this.decodeToken(user.accessToken);
+      this.userId = this.payloadUser.userId;
+      DataService.getAllRestaurantsByRestaurateur(this.payloadUser.userId)
+        .then((response) => {
+          this.restaurantId = response.data.restaurants[0]._id;
+          console.log("Utilisateur: " + this.payloadUser.userId);
+          console.log(this.restaurantId);
+          DataService.getOneRestaurant(this.restaurantId).then((response) => {
+            this.restaurantArticles = response.data.restaurant.articles;
+            console.log(response.data.restaurant.articles);
+            const allRestaurantArticles = this.restaurantArticles;
+            const allArticles = this.articles;
+            allRestaurantArticles.forEach((element) => {
+              console.log(element);
+              DataService.getOneArticle(element)
+                .then((response) => {
+                  allArticles.push(response.data.article);
+                  console.log(allArticles);
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
             });
+          });
+        })
+        .catch((error) => {
+          console.log(error);
         });
-      });
     },
 
     // to get all
@@ -222,7 +243,7 @@ export default {
       );
       console.log("result :");
       console.log(difference);
-      axios.put(`http://localhost:3000/api/restaurants/${restaurantId}`, {
+      axios.put(`http://localhost:3000/api/restaurants/${this.restaurantId}`, {
         articles: difference,
       });
       this.reload();

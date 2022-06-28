@@ -63,6 +63,10 @@
           <label><strong>Adresse :</strong></label>
           {{ currentRestaurant.address }}
         </div>
+        <div>
+          <label><strong>Image :</strong></label>
+          <img v-bind:src="currentRestaurant.picture" />
+        </div>
         <a
           class="badge badge-warning"
           :href="'/restaurants/' + currentRestaurant.id"
@@ -105,7 +109,7 @@ export default {
       this.currentRestaurant = restaurant;
       this.currentIndex = index;
     },
-    unsetActiveRestaurant(restaurant, index) {
+    unsetActiveRestaurant() {
       this.currentRestaurant = null;
       this.currentIndex = null;
     },

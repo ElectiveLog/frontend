@@ -19,6 +19,7 @@
     "bootstrap-vue": "^2.22.0",
     "core-js": "^2.6.5",
     "express": "^4.16.4",
+    "fs": "^0.0.1-security",
     "git": "^0.1.5",
     "jquery": "^3.6.0",
     "jwt-decode": "^3.1.2",

@@ -44,8 +44,9 @@
                     v-for="role in roledata"
                     :key="role.id"
                     :value="role.id"
-                    >{{ role.name }}</option
                   >
+                    {{ role.name }}
+                  </option>
                 </select>
 
                 <div class="valid-feedback">Choix valide</div>
@@ -101,31 +102,32 @@ export default {
       submitted: false,
       successful: false,
       message: "",
-      roledata: []
+      roledata: [],
     };
   },
   computed: {
     loggedIn() {
       return this.$store.state.auth.status.loggedIn;
-    }
+    },
   },
   created() {
     var axios = require("axios");
 
     var config = {
       method: "get",
-      url: "http://localhost:8080/roles/",
+      // url: "http://localhost:8080/roles/",
+      url: "http://localhost:5000/roles/",
       headers: {
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTU3NTg3MjUsImV4cCI6MTY1NjM2MzUyNX0.vHdiEc98ELrbBDbeZeG-851qS_SLSHJW8HDJX7mPgjs"
-      }
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTU3NTg3MjUsImV4cCI6MTY1NjM2MzUyNX0.vHdiEc98ELrbBDbeZeG-851qS_SLSHJW8HDJX7mPgjs",
+      },
     };
 
     axios(config)
-      .then(response => {
+      .then((response) => {
         this.roledata = response.data;
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("fdsqf" + error);
       });
   },
@@ -141,7 +143,7 @@ export default {
       this.submitted = true;
 
       this.$store.dispatch("auth/register", this.user).then(
-        data => {
+        (data) => {
           this.message = data.message;
           this.successful = true;
           this.$notify({
@@ -153,11 +155,11 @@ export default {
               this.user.email +
               " !" +
               "Vous pouvez vous connecter.",
-            duration: 8000
+            duration: 8000,
           });
           this.$router.push("/login");
         },
-        error => {
+        (error) => {
           this.message =
             (error.response && error.response.data) ||
             error.message ||
@@ -165,8 +167,8 @@ export default {
           this.successful = false;
         }
       );
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

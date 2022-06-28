@@ -40,7 +40,8 @@ class AuthService {
         address: user.address,
         city: user.city,
         country: user.country,
-        phoneNumber: user.phoneNumber
+        phoneNumber: user.phoneNumber,
+        sponsorshipCode: user.sponsorshipCode
       },
       {
         headers: {

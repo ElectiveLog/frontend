@@ -8,6 +8,7 @@ export default class User {
   city;
   country;
   phoneNumber;
+  sponsorshipCode;
   constructor(
     username,
     email,
@@ -17,7 +18,8 @@ export default class User {
     address,
     city,
     country,
-    phoneNumber
+    phoneNumber,
+    sponsorshipCode
   ) {
     this.username = username;
     this.email = email;
@@ -28,5 +30,6 @@ export default class User {
     this.city = city;
     this.country = country;
     this.phoneNumber = phoneNumber;
+    this.sponsorshipCode = sponsorshipCode;
   }
 }

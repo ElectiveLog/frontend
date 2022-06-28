@@ -14,7 +14,7 @@
               <div class="col-md-12">
                 <select v-model="user.roleId">
                   >
-                  <option selected value="">Choisissez</option>
+                  <option selected value="">Choisissez *</option>
                   <option
                     v-for="role in roledata"
                     :key="role.id"
@@ -28,7 +28,7 @@
                   class="form-control"
                   type="text"
                   name="name"
-                  placeholder="Nom"
+                  placeholder="Nom *"
                   required
                   v-model="user.username"
                 />
@@ -41,7 +41,7 @@
                   class="form-control"
                   type="email"
                   name="email"
-                  placeholder="Adresse e-mail"
+                  placeholder="Adresse e-mail *"
                   v-model="user.email"
                   required
                 />
@@ -108,8 +108,20 @@
                   class="form-control"
                   type="password"
                   name="password"
-                  placeholder="Mot de passe"
+                  placeholder="Mot de passe *"
                   v-model="user.password"
+                  required
+                />
+                <div class="valid-feedback">Mot de passe valide</div>
+                <div class="invalid-feedback">Mot de passe invalide</div>
+              </div>
+              <div class="col-md-12">
+                <input
+                  class="form-control"
+                  type="email"
+                  name="parraingae"
+                  placeholder="Adresse e-mail du parain"
+                  v-model="user.sponsorshipCode"
                   required
                 />
                 <div class="valid-feedback">Mot de passe valide</div>
@@ -134,7 +146,7 @@ export default {
   name: "Register",
   data() {
     return {
-      user: new User("", "", "", "", "", "", "", "", "", "", "", "", "", ""),
+      user: new User("", "", "", "", "", "", "", "", "", ""),
       submitted: false,
       successful: false,
       message: "",
@@ -202,6 +214,27 @@ export default {
                   "L'adresse mail " +
                   this.user.email +
                   " possède déjà un compte. Veuillez vous connecter.",
+                duration: 8000
+              });
+            } else if (
+              data ==
+              "L'adresse email que vous avez entrée n'appartient pas à un utilisateur de votre role"
+            ) {
+              this.$notify({
+                group: "foo",
+                title: "Inscription échouée",
+                type: "error",
+                text:
+                  "L'adresse email que vous avez entrée n'appartient pas à un utilisateur de votre role",
+                duration: 8000
+              });
+            } else if (data == "Error when creating the user") {
+              this.$notify({
+                group: "foo",
+                title: "Inscription échouée",
+                type: "error",
+                text:
+                  "Un problème inconnu est survenu lors de la création de votre compte. Veuillez réessayer.",
                 duration: 8000
               });
             } else {

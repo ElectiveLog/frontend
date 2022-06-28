@@ -35,9 +35,9 @@
       <button class="m-2 red_button styled_button" @click="deleteRestaurant()">
         Supprimer
       </button>
-      <button class="m-2 blue_button styled_button" @click="updateRestaurant()">
+      <!-- <button class="m-2 blue_button styled_button" @click="updateRestaurant()">
         Modifier
-      </button>
+      </button> -->
       <button
         class="m-2 grey_button styled_button"
         @click="unsetActiveRestaurant()"
@@ -105,7 +105,7 @@ export default {
       this.currentRestaurant = restaurant;
       this.currentIndex = index;
     },
-    unsetActiveRestaurant(restaurant, index) {
+    unsetActiveRestaurant() {
       this.currentRestaurant = null;
       this.currentIndex = null;
     },

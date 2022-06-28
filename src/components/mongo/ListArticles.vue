@@ -20,7 +20,7 @@
       </div> -->
     </div>
     <div class="col-md-6">
-      <h2>Liste des articles / menus</h2>
+      <h2>Liste de vos articles / menus</h2>
       <ul class="list-group">
         <li
           class="list-group-item"
@@ -43,6 +43,9 @@
         @click="unsetActiveArticle()"
       >
         Dessélectionner
+      </button>
+      <button class="m-2 green_button styled_button" @click="reload()">
+        Actualiser
       </button>
     </div>
     <div class="col-md-6">
@@ -67,15 +70,70 @@
           <label><strong>Détail :</strong></label>
           {{ currentArticle.detail }}
         </div>
-        <a class="badge badge-warning" :href="'/articles/' + currentArticle.id">
+        <!-- <a class="badge badge-warning" :href="'/articles/' + currentArticle.id">
           Edit
-        </a>
+        </a> -->
       </div>
     </div>
+    &emsp;
+    <!-- Modifier -->
+    <h2>Modifier un article / menu</h2>
+    <a>L'article sélectionné au dessus sera modifié.</a>
+    <form v-on:submit.prevent="updateArticle">
+      <div class="form-group">
+        <label for="name">Nom</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          placeholder="Nom de l'article"
+          v-model="form.name"
+        />
+      </div>
+      <div class="form-group">
+        <label for="type">Type d'article</label>
+        <input
+          type="text"
+          class="form-control"
+          id="type"
+          placeholder="Selectionner un type"
+          v-model="form.type"
+        />
+      </div>
+      <div class="form-group">
+        <label for="price">Prix</label>
+        <input
+          type="number"
+          class="form-control"
+          id="price"
+          placeholder="Prix"
+          v-model="form.price"
+        />
+      </div>
+      <div class="form-group">
+        <label for="detail">Détail</label>
+        <input
+          type="text"
+          class="form-control"
+          id="detail"
+          placeholder="Détail"
+          v-model="form.detail"
+        />
+      </div>
+      &nbsp;
+      <div @click="scrollToTop">
+        <div class="form-group">
+          <button class="green_button styled_button">Valider</button>
+        </div>
+      </div>
+    </form>
   </div>
 </template>
+
 <script>
 import DataService from "../../services/DataService";
+import axios from "axios";
+const restaurantId = "62b9c1f576ca9b32e16d9bf5";
 export default {
   name: "articles-list",
   data() {
@@ -84,19 +142,48 @@ export default {
       currentArticle: null,
       currentIndex: -1,
       title: "",
+      restaurantArticles: "",
+      form: {
+        name: "",
+        type: "",
+        price: "",
+        detail: "",
+      },
     };
   },
   methods: {
     retrieveArticles() {
-      DataService.getAllArticles()
-        .then((response) => {
-          this.articles = response.data.articles;
-          console.log(response.data.articles);
-        })
-        .catch((e) => {
-          console.log(e);
+      DataService.getOneRestaurant(restaurantId).then((response) => {
+        this.restaurantArticles = response.data.restaurant.articles;
+        console.log(response.data.restaurant.articles);
+        const allRestaurantArticles = this.restaurantArticles;
+        const allArticles = this.articles;
+        allRestaurantArticles.forEach((element) => {
+          console.log(element);
+          DataService.getOneArticle(element)
+            .then((response) => {
+              allArticles.push(response.data.article);
+              console.log(allArticles);
+            })
+            .catch((e) => {
+              console.log(e);
+            });
         });
+      });
     },
+
+    // to get all
+    // retrieveArticles() {
+    //   DataService.getAllArticles()
+    //     .then((response) => {
+    //       this.articles = response.data.articles;
+    //       console.log(response.data.articles);
+    //     })
+    //     .catch((e) => {
+    //       console.log(e);
+    //     });
+    // },
+
     refreshList() {
       this.retrieveArticles();
       this.currentArticle = null;
@@ -106,7 +193,7 @@ export default {
       this.currentArticle = article;
       this.currentIndex = index;
     },
-    unsetActiveArticle(article, index) {
+    unsetActiveArticle() {
       this.currentArticle = null;
       this.currentIndex = null;
     },
@@ -119,16 +206,51 @@ export default {
         .catch((e) => {
           console.log(e);
         });
+
+      // get the list of articles in the restaurant
+      const allRestaurantArticles = this.restaurantArticles;
+      const toDelete = this.currentArticle._id;
+
+      // get the new list of articles (the previous one without the articles just deleted)
+      let difference = allRestaurantArticles.filter(
+        (x) => !toDelete.includes(x)
+      );
+      console.log("result :");
+      console.log(difference);
+      axios.put(`http://localhost:3000/api/restaurants/${restaurantId}`, {
+        articles: difference,
+      });
+      this.reload();
     },
     updateArticle() {
-      DataService.updateArticle(this.currentArticle._id)
-        .then((response) => {
-          console.log(response.data.articles);
-          this.refreshList();
-        })
-        .catch((e) => {
-          console.log(e);
+      const articleId = this.currentArticle._id;
+      if (this.form.name !== "") {
+        axios.put(`http://localhost:3000/api/articles/${articleId}`, {
+          name: this.form.name,
         });
+      }
+      if (this.form.type !== "") {
+        axios.put(`http://localhost:3000/api/articles/${articleId}`, {
+          type: this.form.type,
+        });
+      }
+      if (this.form.price !== "") {
+        axios.put(`http://localhost:3000/api/articles/${articleId}`, {
+          price: this.form.price,
+        });
+      }
+      if (this.form.detail !== "") {
+        axios.put(`http://localhost:3000/api/articles/${articleId}`, {
+          detail: this.form.detail,
+        });
+      }
+      this.reload();
+    },
+    reload() {
+      location.reload();
+    },
+    scrollToTop() {
+      window.scrollTo(0, 0);
     },
 
     // searchName() {
@@ -153,7 +275,5 @@ export default {
   max-width: 750px;
   margin: auto;
   margin-bottom: 50px;
-}
-.styled_button {
 }
 </style>

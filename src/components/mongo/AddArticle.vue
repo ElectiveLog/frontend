@@ -1,6 +1,7 @@
 <template>
   <div class="list row">
     <h2>Ajouter un article / menu</h2>
+    <a>L'article ajouté sera directement ajouté à votre restaurant.</a>
     <form v-on:submit.prevent="submitForm">
       <div class="form-group">
         <label for="name">Nom</label>
@@ -13,7 +14,7 @@
         />
       </div>
       <div class="form-group">
-        <label for="type">Type de restaurant</label>
+        <label for="type">Type d'article</label>
         <input
           type="text"
           class="form-control"
@@ -72,12 +73,14 @@ export default {
   methods: {
     submitForm() {
       // get the restaurant ID
-      const restaurantId = "62b5b7695c44b92b81c6f082";
+      const restaurantId = "62b9c1f576ca9b32e16d9bf5";
       // get all the articles in the restaurant
       axios
         .get(`http://localhost:3000/api/restaurants/${restaurantId}`)
         .then((res) => {
-          allArticles = res.data.articles;
+          this.articles = res.data.restaurant.articles;
+          console.log("liste des articles dans le restau :");
+          console.log(this.articles);
         });
 
       axios
@@ -86,23 +89,29 @@ export default {
           //Perform Success Action
 
           // get this article ID
-          console.log(allArticles);
           const articleId = [res.data.article._id];
+          console.log("id du nouvel article :");
+          console.log(articleId);
+
+          // get all the articles
+          const allArticles = this.articles;
+          console.log("tous les articles niv 2 :");
+          console.log(allArticles);
 
           // add the new article to the list
+          allArticles.push(articleId);
 
           // envoie de la nouvelle liste d'articles dans le restaurant
           axios.put(`http://localhost:3000/api/restaurants/${restaurantId}`, {
-            articles: newArticlesList,
+            articles: allArticles,
           });
         })
-        .catch((error) => {
+        .catch(() => {
           // error.response.status Check status code
         })
         .finally(() => {
           //Perform action in always
         });
-      //   location.reload();
     },
     scrollToTop() {
       window.scrollTo(0, 0);

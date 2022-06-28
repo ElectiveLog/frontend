@@ -16,6 +16,9 @@ class DataService {
   getOneRestaurant(id) {
     return http.get(`/restaurants/${id}`);
   }
+  getAllRestaurantsByRestaurateur(id) {
+    return http.get(`/restaurants/restaurateur/${id}`);
+  }
 
   // Articles
   getAllArticles() {

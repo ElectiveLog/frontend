@@ -55,9 +55,11 @@
 
       <b-table
         v-else
-        striped
         hover
+        small
+        outlined
         borderred
+        fixed
         responsive
         primary-key
         :items="awaitCommandes"
@@ -66,6 +68,7 @@
         <template #cell(actions)="row">
           <b-button
             size="sm"
+            variant="dark"
             @click="handleEditStatus(row.item)"
             class="green_button styled_button"
           >
@@ -73,12 +76,28 @@
           </b-button>
         </template>
         <template #cell(show_details)="row">
-          <b-button size="sm" @click="row.toggleDetails" class="mr-2">
-            {{ row.detailsShowing ? "Cacher" : "Afficher" }} détails
+          <b-button
+            size="sm"
+            variant="dark"
+            @click="row.toggleDetails"
+            class="mr-2"
+          >
+            {{ row.detailsShowing ? "Cacher" : "Afficher" }}
           </b-button>
         </template>
         <template #row-details="row">
           <b-card>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Date et heure de la commande: </b>Le {{ row.item.date }} à
+                {{ row.item.heure }}</b-col
+              >
+            </b-row>
+            <b-row v-if="row.item.parainage != null" class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Parainage: </b>{{ row.item.parainage }}</b-col
+              >
+            </b-row>
             <b-row class="mb-2">
               <b-col sm="3" class="text-sm-right"
                 ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
@@ -118,8 +137,10 @@
       <b-table
         v-else
         hover
-        striped
+        small
+        outlined
         borderred
+        fixed
         responsive
         primary-key
         :items="inProgressCommandes"
@@ -128,19 +149,36 @@
         <template #cell(actions)="row">
           <b-button
             size="sm"
+            variant="dark"
             @click="handleEditStatusLivraison(row.item)"
-            class="green_button styled_button"
+            class="text-sm-right"
           >
             Validé
           </b-button>
         </template>
         <template #cell(show_details)="row">
-          <b-button size="sm" @click="row.toggleDetails" class="mr-2">
-            {{ row.detailsShowing ? "Cacher" : "Afficher" }} détails
+          <b-button
+            size="sm"
+            variant="dark"
+            @click="row.toggleDetails"
+            class="mr-2"
+          >
+            {{ row.detailsShowing ? "Cacher" : "Afficher" }}
           </b-button>
         </template>
         <template #row-details="row">
           <b-card>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Date et heure de la commande: </b>Le {{ row.item.date }} à
+                {{ row.item.heure }}</b-col
+              >
+            </b-row>
+            <b-row v-if="row.item.parainage != null" class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Parainage: </b>{{ row.item.parainage }}</b-col
+              >
+            </b-row>
             <b-row class="mb-2">
               <b-col sm="3" class="text-sm-right"
                 ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
@@ -180,21 +218,40 @@
         >
 
         <b-table
-          striped
+          v-else
           hover
+          small
+          outlined
           borderred
+          fixed
           responsive
           primary-key
           :items="historyCommandes"
           :fields="fieldsMore"
         >
           <template #cell(show_details)="row">
-            <b-button size="sm" @click="row.toggleDetails" class="mr-2">
-              {{ row.detailsShowing ? "Cacher" : "Afficher" }} détails
+            <b-button
+              size="sm"
+              variant="dark"
+              @click="row.toggleDetails"
+              class="mr-2"
+            >
+              {{ row.detailsShowing ? "Cacher" : "Afficher" }}
             </b-button>
           </template>
           <template #row-details="row">
             <b-card>
+              <b-row class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Date et heure de la commande: </b>Le {{ row.item.date }} à
+                  {{ row.item.heure }}</b-col
+                >
+              </b-row>
+              <b-row v-if="row.item.parainage != null" class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Parainage: </b>{{ row.item.parainage }}</b-col
+                >
+              </b-row>
               <b-row class="mb-2">
                 <b-col sm="3" class="text-sm-right"
                   ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
@@ -272,56 +329,46 @@ export default {
       fields: [
         {
           key: "Commande",
-          label: "Commande",
+          label: "Commande"
         },
         {
           key: "prix",
-          label: "Prix",
+          label: "Prix"
         },
         {
           key: "client",
-          label: "Client",
+          label: "Client"
         },
         {
           key: "restaurant",
-          label: "Restaurant",
+          label: "Restaurant"
         },
         {
           key: "status",
-          label: "Status",
-        },
-        {
-          key: "date",
-          label: "Date",
-        },
-        {
-          key: "heure",
-          label: "Heure",
+          label: "Status"
         },
         {
           key: "actions",
-          label: "Actions",
+          label: "Actions"
         },
-        { key: "show_details", label: "Details" },
+        { key: "show_details", label: "Details" }
       ],
       fieldsMore: [
         {
           key: "Commande",
-          label: "Commande",
+          label: "Commande"
         },
         {
           key: "prix",
-          label: "Prix",
+          label: "Prix"
         },
         { key: "articles", label: "Articles" },
         { key: "livreur", label: "Livreur" },
         { key: "client", label: "Client" },
         { key: "status", label: "Status" },
-        { key: "date", label: "Date" },
-        { key: "heure", label: "Heure" },
-        { key: "show_details", label: "Details" },
+        { key: "show_details", label: "Details" }
       ],
-      historyCommandes: [],
+      historyCommandes: []
     };
   },
   methods: {
@@ -332,13 +379,13 @@ export default {
           title: "Erreur",
           type: "error",
           text: "Vous avez déjà une commande en cours!!!",
-          duration: 8000,
+          duration: 8000
         });
       }
       const payloadUser = this.decodeToken(user.accessToken);
       var data = JSON.stringify({
         state: "livraison",
-        idLivreur: payloadUser.userId,
+        idLivreur: payloadUser.userId
       });
 
       var config = {
@@ -348,9 +395,9 @@ export default {
           "X-Server-Select": "mongo",
           Authorization:
             "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTU3NTg3MjUsImV4cCI6MTY1NjM2MzUyNX0.vHdiEc98ELrbBDbeZeG-851qS_SLSHJW8HDJX7mPgjs",
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        data: data,
+        data: data
       };
 
       axios(config)
@@ -360,11 +407,11 @@ export default {
             title: "Commande validée",
             type: "success",
             text: "La commande a été validée avec succès",
-            duration: 8000,
+            duration: 8000
           });
           location.reload();
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error);
         });
     },
@@ -372,7 +419,7 @@ export default {
       const payloadUser = this.decodeToken(user.accessToken);
       var data = JSON.stringify({
         state: "prepared",
-        idLivreur: payloadUser.userId,
+        idLivreur: payloadUser.userId
       });
 
       var config = {
@@ -382,9 +429,9 @@ export default {
           "X-Server-Select": "mongo",
           Authorization:
             "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTU3NTg3MjUsImV4cCI6MTY1NjM2MzUyNX0.vHdiEc98ELrbBDbeZeG-851qS_SLSHJW8HDJX7mPgjs",
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        data: data,
+        data: data
       };
 
       axios(config)
@@ -394,11 +441,11 @@ export default {
             title: "Commande validée",
             type: "success",
             text: "La commande a été validée avec succès",
-            duration: 8000,
+            duration: 8000
           });
           location.reload();
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error);
         });
     },
@@ -408,9 +455,9 @@ export default {
         method: "put",
         url: "http://localhost:8080/users/" + payloadUser.userId,
         headers: {
-          Authorization: "Bearer " + user.accessToken,
+          Authorization: "Bearer " + user.accessToken
         },
-        data: this.userData,
+        data: this.userData
       };
 
       axios(config)
@@ -420,10 +467,10 @@ export default {
             title: "Modification réussie",
             type: "success",
             text: "Vos modifications ont été enregistrées",
-            duration: 8000,
+            duration: 8000
           })
         )
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error);
         });
     },
@@ -433,8 +480,8 @@ export default {
         method: "delete",
         url: "http://localhost:8080/users/" + payloadUser.userId,
         headers: {
-          Authorization: "Bearer " + user.accessToken,
-        },
+          Authorization: "Bearer " + user.accessToken
+        }
       };
 
       axios(config)
@@ -444,18 +491,18 @@ export default {
             title: "Suppression réussie",
             type: "success",
             text: "Votre compte a été supprimé",
-            duration: 8000,
+            duration: 8000
           });
           this.$store.dispatch("auth/logout");
           this.$router.push("/login");
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error);
         });
     },
     decodeToken(token) {
       return jwt_decode(token);
-    },
+    }
   },
   created() {
     const payloadUser = this.decodeToken(user.accessToken);
@@ -464,15 +511,15 @@ export default {
       method: "get",
       url: "http://localhost:8080/users/" + payloadUser.userId,
       headers: {
-        Authorization: "Bearer " + user.accessToken,
-      },
+        Authorization: "Bearer " + user.accessToken
+      }
     };
 
     axios(config)
-      .then((response) => {
+      .then(response => {
         this.userData = response.data;
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
 
@@ -480,15 +527,15 @@ export default {
       method: "get",
       url: "http://localhost:8080/api/orders/status/preparation",
       headers: {
-        "X-Server-Select": "mongo",
-      },
+        "X-Server-Select": "mongo"
+      }
     };
 
     axios(configpreparation)
-      .then((response) => {
-        response.data.order.forEach((element) => {
+      .then(response => {
+        response.data.order.forEach(element => {
           var priceCommande = 0;
-          element.articles.forEach((article) => {
+          element.articles.forEach(article => {
             priceCommande += article.price;
           });
 
@@ -496,10 +543,13 @@ export default {
             method: "get",
             url: "http://localhost:8080/users/" + element.idClient,
             headers: {
-              Authorization: "Bearer " + user.accessToken,
-            },
+              Authorization: "Bearer " + user.accessToken
+            }
           };
-          axios(config).then((response) => {
+          axios(config).then(response => {
+            if (response.data.sponsorshipCode) {
+              priceCommande = priceCommande * 0.9;
+            }
             this.awaitCommandes.push({
               id: element._id,
               Commande: "Commande n°1",
@@ -512,13 +562,17 @@ export default {
               phoneNumber: response.data.phoneNumber,
               restaurant: element.idRestaurant.name,
               status: element.state,
+              parnainage: response.data.sponsorshipCode,
               date: element.createdAt.split("T")[0],
-              heure: element.createdAt.split("T").pop().split(".")[0],
+              heure: element.createdAt
+                .split("T")
+                .pop()
+                .split(".")[0]
             });
           });
         });
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.log(error);
       });
 
@@ -526,17 +580,17 @@ export default {
       method: "get",
       url: "http://localhost:8080/api/orders/livreur/" + payloadUser.userId,
       headers: {
-        "X-Server-Select": "mongo",
-      },
+        "X-Server-Select": "mongo"
+      }
     };
 
     axios(configCommande)
-      .then((response) => {
+      .then(response => {
         console.log(response.dataorder);
         var i = 1;
-        response.data.order.forEach((element) => {
+        response.data.order.forEach(element => {
           var priceCommande = 0;
-          element.articles.forEach((article) => {
+          element.articles.forEach(article => {
             priceCommande += article.price;
           });
 
@@ -544,12 +598,15 @@ export default {
             method: "get",
             url: "http://localhost:8080/users/" + element.idClient,
             headers: {
-              Authorization: "Bearer " + user.accessToken,
-            },
+              Authorization: "Bearer " + user.accessToken
+            }
           };
 
           axios(config)
-            .then((response) => {
+            .then(response => {
+              if (response.data.sponsorshipCode) {
+                priceCommande = priceCommande * 0.9;
+              }
               if (element.state == "livraison") {
                 this.inProgressCommandes.push({
                   id: element._id,
@@ -563,8 +620,12 @@ export default {
                   phoneNumber: response.data.phoneNumber,
                   restaurant: element.idRestaurant.name,
                   status: element.state,
+                  parnainage: response.data.sponsorshipCode,
                   date: element.createdAt.split("T")[0],
-                  heure: element.createdAt.split("T").pop().split(".")[0],
+                  heure: element.createdAt
+                    .split("T")
+                    .pop()
+                    .split(".")[0]
                 });
                 i++;
               } else if (element.state == "prepared") {
@@ -578,21 +639,25 @@ export default {
                   country: response.data.country,
                   phoneNumber: response.data.phoneNumber,
                   restaurant: element.idRestaurant.name,
-                  status: element.state,
+                  status: "livrée",
+                  parnainage: response.data.sponsorshipCode,
                   date: element.createdAt.split("T")[0],
-                  heure: element.createdAt.split("T").pop().split(".")[0],
+                  heure: element.createdAt
+                    .split("T")
+                    .pop()
+                    .split(".")[0]
                 });
                 i++;
               }
             })
-            .catch(function (error) {
+            .catch(function(error) {
               console.log(error);
             });
         });
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
-  },
+  }
 };
 </script>

@@ -102,21 +102,39 @@
       <b-table
         v-else
         hover
-        striped
+        small
+        outlined
         borderred
+        fixed
         responsive
         primary-key
         :items="inProgressCommandes"
         :fields="fields"
       >
         <template #cell(show_details)="row">
-          <b-button size="sm" @click="row.toggleDetails" class="mr-2">
-            {{ row.detailsShowing ? "Cacher" : "Afficher" }} détails
+          <b-button
+            variant="dark"
+            size="sm"
+            @click="row.toggleDetails"
+            class="mr-2"
+          >
+            {{ row.detailsShowing ? "Cacher" : "Afficher" }}
           </b-button>
         </template>
 
         <template #row-details="row">
           <b-card>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Date et heure de la commande: </b>Le {{ row.item.date }} à
+                {{ row.item.heure }}</b-col
+              >
+            </b-row>
+            <b-row v-if="row.item.parainage != null" class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Parainage: </b>{{ row.item.parainage }}</b-col
+              >
+            </b-row>
             <b-row class="mb-2">
               <b-col sm="3" class="text-sm-right"
                 ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
@@ -154,22 +172,41 @@
           >Vous n'avez pas encore passé de commande!!</b-alert
         >
         <b-table
-          striped
+          v-else
           hover
+          small
+          outlined
           borderred
+          fixed
           responsive
           primary-key
           :items="historyCommandes"
           :fields="fields"
         >
           <template #cell(show_details)="row">
-            <b-button size="sm" @click="row.toggleDetails" class="mr-2">
-              {{ row.detailsShowing ? "Cacher" : "Afficher" }} détails
+            <b-button
+              variant="dark"
+              size="sm"
+              @click="row.toggleDetails"
+              class="mr-2"
+            >
+              {{ row.detailsShowing ? "Cacher" : "Afficher" }}
             </b-button>
           </template>
 
           <template #row-details="row">
             <b-card>
+              <b-row class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Date et heure de la commande: </b>Le {{ row.item.date }} à
+                  {{ row.item.heure }}</b-col
+                >
+              </b-row>
+              <b-row v-if="row.item.parainage != null" class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Parainage: </b>{{ row.item.parainage }}</b-col
+                >
+              </b-row>
               <b-row class="mb-2">
                 <b-col sm="3" class="text-sm-right"
                   ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
@@ -249,33 +286,29 @@ export default {
       fields: [
         {
           key: "Commande",
-          label: "Commande",
+          label: "Commande"
         },
         {
           key: "prix",
-          label: "Prix",
+          label: "Prix"
         },
         { key: "livreur", label: "Livreur" },
         { key: "restaurant", label: "Restaurant" },
         { key: "status", label: "Status" },
-        { key: "date", label: "Date" },
-        { key: "heure", label: "Heure" },
-        { key: "show_details", label: "Details" },
-      ],
+        { key: "show_details", label: "Details" }
+      ]
     };
   },
   methods: {
     handleEdit() {
       const payloadUser = this.decodeToken(user.accessToken);
-
-      this.userData.streetNumber = parseInt(this.userData.streetNumber, 10);
       var config = {
         method: "put",
         url: "http://localhost:8080/users/" + payloadUser.userId,
         headers: {
-          Authorization: "Bearer " + user.accessToken,
+          Authorization: "Bearer " + user.accessToken
         },
-        data: this.userData,
+        data: this.userData
       };
 
       axios(config)
@@ -285,10 +318,10 @@ export default {
             title: "Modification réussie",
             type: "success",
             text: "Vos modifications ont été enregistrées",
-            duration: 8000,
+            duration: 8000
           });
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error);
         });
     },
@@ -298,8 +331,8 @@ export default {
         method: "delete",
         url: "http://localhost:8080/users/" + payloadUser.userId,
         headers: {
-          Authorization: "Bearer " + user.accessToken,
-        },
+          Authorization: "Bearer " + user.accessToken
+        }
       };
 
       axios(config)
@@ -309,35 +342,34 @@ export default {
             title: "Suppression réussie",
             type: "success",
             text: "Votre compte a été supprimé",
-            duration: 8000,
+            duration: 8000
           });
           this.$store.dispatch("auth/logout");
           this.$router.push("/login");
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error);
         });
     },
     decodeToken(token) {
       return jwt_decode(token);
-    },
+    }
   },
   created() {
     const payloadUser = this.decodeToken(user.accessToken);
-    console.log(payloadUser);
     var config = {
       method: "get",
       url: "http://localhost:8080/users/" + payloadUser.userId,
       headers: {
-        Authorization: "Bearer " + user.accessToken,
-      },
+        Authorization: "Bearer " + user.accessToken
+      }
     };
 
     axios(config)
-      .then((response) => {
+      .then(response => {
         this.userData = response.data;
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
 
@@ -345,48 +377,54 @@ export default {
       method: "get",
       url: "http://localhost:8080/api/orders/client/" + payloadUser.userId,
       headers: {
-        "X-Server-Select": "mongo",
-      },
+        "X-Server-Select": "mongo"
+      }
     };
 
     axios(configCommande)
-      .then((response) => {
+      .then(response => {
         var i = 1;
         var y = 1;
-        response.data.order.forEach((element) => {
+        response.data.order.forEach(element => {
           var priceCommande = 0;
-          element.articles.forEach((article) => {
+          element.articles.forEach(article => {
             priceCommande += article.price;
           });
+          if (this.userData.sponsorshipCode) {
+            priceCommande = priceCommande * 0.9;
+          }
 
           var config = {
             method: "get",
             url: "http://localhost:8080/users/" + element.idLivreur,
             headers: {
-              Authorization: "Bearer " + user.accessToken,
-            },
+              Authorization: "Bearer " + user.accessToken
+            }
           };
 
           axios(config)
-            .then((response) => {
+            .then(response => {
               if (element.state == "prepared") {
                 this.historyCommandes.push({
                   Commande: "Commande n°" + i,
                   prix: priceCommande + "€",
                   livreur: response.data.name,
                   restaurant: element.idRestaurant.name,
-                  status: element.state,
+                  status: "livrée",
                   date: element.createdAt.split("T")[0],
-                  heure: element.createdAt.split("T").pop().split(".")[0],
+                  heure: element.createdAt
+                    .split("T")
+                    .pop()
+                    .split(".")[0],
                   addresse: this.userData.address,
                   streetNumber: this.userData.streetNumber,
                   city: this.userData.city,
                   phoneNumber: this.userData.phoneNumber,
                   country: this.userData.country,
+                  parnainage: this.userData.sponsorshipCode
                 });
                 i++;
               } else {
-                console.log(this.userData.address);
                 this.inProgressCommandes.push({
                   Commande: "Commande n°" + y,
                   prix: priceCommande + "€",
@@ -394,24 +432,28 @@ export default {
                   restaurant: element.idRestaurant.name,
                   status: element.state,
                   date: element.createdAt.split("T")[0],
-                  heure: element.createdAt.split("T").pop().split(".")[0],
+                  heure: element.createdAt
+                    .split("T")
+                    .pop()
+                    .split(".")[0],
                   addresse: this.userData.address,
                   streetNumber: this.userData.streetNumber,
                   city: this.userData.city,
                   phoneNumber: this.userData.phoneNumber,
                   country: this.userData.country,
+                  parnainage: this.userData.sponsorshipCode
                 });
                 y++;
               }
             })
-            .catch(function (error) {
+            .catch(function(error) {
               console.log(error);
             });
         });
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
-  },
+  }
 };
 </script>

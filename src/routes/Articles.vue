@@ -15,8 +15,8 @@ export default {
   name: "home",
   components: {
     ListArticles,
-    AddArticle,
+    AddArticle
     // UpdateArticle,
-  },
+  }
 };
 </script>

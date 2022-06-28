@@ -9,15 +9,15 @@ class AuthService {
         API_URL + "login",
         {
           email: user.email,
-          password: user.password,
+          password: user.password
         },
         {
           headers: {
             // "X-Server-Select": "auth"
-          },
+          }
         }
       )
-      .then((response) => {
+      .then(response => {
         if (response.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
         }
@@ -29,7 +29,6 @@ class AuthService {
     localStorage.removeItem("user");
   }
   register(user) {
-    const streetNumber = parseInt(user.streetNumber, 10);
     return axios.post(
       API_URL + "create",
       {
@@ -37,17 +36,17 @@ class AuthService {
         email: user.email,
         password: user.password,
         roleId: user.roleId,
-        streetNumber: streetNumber,
+        streetNumber: user.streetNumber,
         address: user.address,
         city: user.city,
         country: user.country,
         phoneNumber: user.phoneNumber,
-        sponsorshipCode: user.sponsorshipCode,
+        sponsorshipCode: user.sponsorshipCode
       },
       {
         headers: {
           // "X-Server-Select": "auth"
-        },
+        }
       }
     );
   }

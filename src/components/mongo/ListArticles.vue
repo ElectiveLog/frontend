@@ -67,6 +67,10 @@
           <label><strong>Détail :</strong></label>
           {{ currentArticle.detail }}
         </div>
+        <div>
+          <label><strong>Image :</strong></label>
+          <img v-bind:src="currentArticle.picture" />
+        </div>
         <a class="badge badge-warning" :href="'/articles/' + currentArticle.id">
           Edit
         </a>

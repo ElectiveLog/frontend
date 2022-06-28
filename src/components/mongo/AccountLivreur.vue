@@ -329,46 +329,46 @@ export default {
       fields: [
         {
           key: "Commande",
-          label: "Commande"
+          label: "Commande",
         },
         {
           key: "prix",
-          label: "Prix"
+          label: "Prix",
         },
         {
           key: "client",
-          label: "Client"
+          label: "Client",
         },
         {
           key: "restaurant",
-          label: "Restaurant"
+          label: "Restaurant",
         },
         {
           key: "status",
-          label: "Status"
+          label: "Status",
         },
         {
           key: "actions",
-          label: "Actions"
+          label: "Actions",
         },
-        { key: "show_details", label: "Details" }
+        { key: "show_details", label: "Details" },
       ],
       fieldsMore: [
         {
           key: "Commande",
-          label: "Commande"
+          label: "Commande",
         },
         {
           key: "prix",
-          label: "Prix"
+          label: "Prix",
         },
         { key: "articles", label: "Articles" },
         { key: "livreur", label: "Livreur" },
         { key: "client", label: "Client" },
         { key: "status", label: "Status" },
-        { key: "show_details", label: "Details" }
+        { key: "show_details", label: "Details" },
       ],
-      historyCommandes: []
+      historyCommandes: [],
     };
   },
   methods: {
@@ -379,13 +379,13 @@ export default {
           title: "Erreur",
           type: "error",
           text: "Vous avez déjà une commande en cours!!!",
-          duration: 8000
+          duration: 8000,
         });
       }
       const payloadUser = this.decodeToken(user.accessToken);
       var data = JSON.stringify({
         state: "livraison",
-        idLivreur: payloadUser.userId
+        idLivreur: payloadUser.userId,
       });
 
       var config = {
@@ -395,9 +395,9 @@ export default {
           "X-Server-Select": "mongo",
           Authorization:
             "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTU3NTg3MjUsImV4cCI6MTY1NjM2MzUyNX0.vHdiEc98ELrbBDbeZeG-851qS_SLSHJW8HDJX7mPgjs",
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        data: data
+        data: data,
       };
 
       axios(config)
@@ -407,11 +407,11 @@ export default {
             title: "Commande validée",
             type: "success",
             text: "La commande a été validée avec succès",
-            duration: 8000
+            duration: 8000,
           });
           location.reload();
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
@@ -419,7 +419,7 @@ export default {
       const payloadUser = this.decodeToken(user.accessToken);
       var data = JSON.stringify({
         state: "prepared",
-        idLivreur: payloadUser.userId
+        idLivreur: payloadUser.userId,
       });
 
       var config = {
@@ -429,9 +429,9 @@ export default {
           "X-Server-Select": "mongo",
           Authorization:
             "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTU3NTg3MjUsImV4cCI6MTY1NjM2MzUyNX0.vHdiEc98ELrbBDbeZeG-851qS_SLSHJW8HDJX7mPgjs",
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        data: data
+        data: data,
       };
 
       axios(config)
@@ -441,11 +441,11 @@ export default {
             title: "Commande validée",
             type: "success",
             text: "La commande a été validée avec succès",
-            duration: 8000
+            duration: 8000,
           });
           location.reload();
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
@@ -455,9 +455,9 @@ export default {
         method: "put",
         url: "http://localhost:8080/users/" + payloadUser.userId,
         headers: {
-          Authorization: "Bearer " + user.accessToken
+          Authorization: "Bearer " + user.accessToken,
         },
-        data: this.userData
+        data: this.userData,
       };
 
       axios(config)
@@ -467,10 +467,10 @@ export default {
             title: "Modification réussie",
             type: "success",
             text: "Vos modifications ont été enregistrées",
-            duration: 8000
+            duration: 8000,
           })
         )
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
@@ -480,8 +480,8 @@ export default {
         method: "delete",
         url: "http://localhost:8080/users/" + payloadUser.userId,
         headers: {
-          Authorization: "Bearer " + user.accessToken
-        }
+          Authorization: "Bearer " + user.accessToken,
+        },
       };
 
       axios(config)
@@ -491,18 +491,18 @@ export default {
             title: "Suppression réussie",
             type: "success",
             text: "Votre compte a été supprimé",
-            duration: 8000
+            duration: 8000,
           });
           this.$store.dispatch("auth/logout");
           this.$router.push("/login");
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
     decodeToken(token) {
       return jwt_decode(token);
-    }
+    },
   },
   created() {
     const payloadUser = this.decodeToken(user.accessToken);
@@ -511,15 +511,15 @@ export default {
       method: "get",
       url: "http://localhost:8080/users/" + payloadUser.userId,
       headers: {
-        Authorization: "Bearer " + user.accessToken
-      }
+        Authorization: "Bearer " + user.accessToken,
+      },
     };
 
     axios(config)
-      .then(response => {
+      .then((response) => {
         this.userData = response.data;
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
 
@@ -527,15 +527,15 @@ export default {
       method: "get",
       url: "http://localhost:8080/api/orders/status/preparation",
       headers: {
-        "X-Server-Select": "mongo"
-      }
+        "X-Server-Select": "mongo",
+      },
     };
 
     axios(configpreparation)
-      .then(response => {
-        response.data.order.forEach(element => {
+      .then((response) => {
+        response.data.order.forEach((element) => {
           var priceCommande = 0;
-          element.articles.forEach(article => {
+          element.articles.forEach((article) => {
             priceCommande += article.price;
           });
 
@@ -543,10 +543,10 @@ export default {
             method: "get",
             url: "http://localhost:8080/users/" + element.idClient,
             headers: {
-              Authorization: "Bearer " + user.accessToken
-            }
+              Authorization: "Bearer " + user.accessToken,
+            },
           };
-          axios(config).then(response => {
+          axios(config).then((response) => {
             if (response.data.sponsorshipCode) {
               priceCommande = priceCommande * 0.9;
             }
@@ -564,15 +564,12 @@ export default {
               status: element.state,
               parnainage: response.data.sponsorshipCode,
               date: element.createdAt.split("T")[0],
-              heure: element.createdAt
-                .split("T")
-                .pop()
-                .split(".")[0]
+              heure: element.createdAt.split("T").pop().split(".")[0],
             });
           });
         });
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
 
@@ -580,17 +577,17 @@ export default {
       method: "get",
       url: "http://localhost:8080/api/orders/livreur/" + payloadUser.userId,
       headers: {
-        "X-Server-Select": "mongo"
-      }
+        "X-Server-Select": "mongo",
+      },
     };
 
     axios(configCommande)
-      .then(response => {
+      .then((response) => {
         console.log(response.dataorder);
         var i = 1;
-        response.data.order.forEach(element => {
+        response.data.order.forEach((element) => {
           var priceCommande = 0;
-          element.articles.forEach(article => {
+          element.articles.forEach((article) => {
             priceCommande += article.price;
           });
 
@@ -598,12 +595,12 @@ export default {
             method: "get",
             url: "http://localhost:8080/users/" + element.idClient,
             headers: {
-              Authorization: "Bearer " + user.accessToken
-            }
+              Authorization: "Bearer " + user.accessToken,
+            },
           };
 
           axios(config)
-            .then(response => {
+            .then((response) => {
               if (response.data.sponsorshipCode) {
                 priceCommande = priceCommande * 0.9;
               }
@@ -622,10 +619,7 @@ export default {
                   status: element.state,
                   parnainage: response.data.sponsorshipCode,
                   date: element.createdAt.split("T")[0],
-                  heure: element.createdAt
-                    .split("T")
-                    .pop()
-                    .split(".")[0]
+                  heure: element.createdAt.split("T").pop().split(".")[0],
                 });
                 i++;
               } else if (element.state == "prepared") {
@@ -642,22 +636,19 @@ export default {
                   status: "livrée",
                   parnainage: response.data.sponsorshipCode,
                   date: element.createdAt.split("T")[0],
-                  heure: element.createdAt
-                    .split("T")
-                    .pop()
-                    .split(".")[0]
+                  heure: element.createdAt.split("T").pop().split(".")[0],
                 });
                 i++;
               }
             })
-            .catch(function(error) {
+            .catch(function (error) {
               console.log(error);
             });
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
-  }
+  },
 };
 </script>

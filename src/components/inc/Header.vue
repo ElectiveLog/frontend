@@ -6,7 +6,8 @@
           class="logo"
           src="../../../public/assets/logo.png"
           alt="CES'EATS LOGO"
-      /></router-link>
+        />
+      </router-link>
       <div class="header-right">
         <router-link v-if="!currentUser" to="/register"
           ><button class="blue_button styled_button" type="button">

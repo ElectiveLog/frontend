@@ -43,6 +43,16 @@
           v-model="form.detail"
         />
       </div>
+      <div class="form-group">
+        <img style="" :src="image" alt="" />
+        <input
+          @change="handleImage"
+          class="custom-input"
+          type="file"
+          accept="image/*"
+        />
+      </div>
+      &nbsp;
       <div @click="scrollToTop">
         <div class="form-group">
           <button class="green_button styled_button">Valider</button>
@@ -55,6 +65,9 @@
 <script>
 import axios from "axios";
 
+// get the restaurant id
+const restaurantId = "62baeeeac68d60c802700ed2";
+
 export default {
   name: "PostFormAxios",
   data() {
@@ -64,6 +77,7 @@ export default {
         type: "",
         price: "",
         detail: "",
+        picture: "",
       },
       articles: {
         articles: "",
@@ -72,15 +86,14 @@ export default {
   },
   methods: {
     submitForm() {
-      // get the restaurant ID
-      const restaurantId = "62b9c1f576ca9b32e16d9bf5";
+      this.form.picture = this.image;
       // get all the articles in the restaurant
       axios
         .get(`http://localhost:3000/api/restaurants/${restaurantId}`)
         .then((res) => {
           this.articles = res.data.restaurant.articles;
-          console.log("liste des articles dans le restau :")
-          console.log(this.articles)
+          console.log("liste des articles dans le restau :");
+          console.log(this.articles);
         });
 
       axios
@@ -90,17 +103,16 @@ export default {
 
           // get this article ID
           const articleId = [res.data.article._id];
-          console.log("id du nouvel article :")
-          console.log(articleId)
+          console.log("id du nouvel article :");
+          console.log(articleId);
 
           // get all the articles
-          const allArticles = this.articles
-          console.log("tous les articles niv 2 :")
-          console.log(allArticles)
+          const allArticles = this.articles;
+          console.log("tous les articles niv 2 :");
+          console.log(allArticles);
 
           // add the new article to the list
-          allArticles.push(articleId)
-
+          allArticles.push(articleId);
 
           // envoie de la nouvelle liste d'articles dans le restaurant
           axios.put(`http://localhost:3000/api/restaurants/${restaurantId}`, {
@@ -117,5 +129,18 @@ export default {
     scrollToTop() {
       window.scrollTo(0, 0);
     },
+    handleImage(e) {
+      const selectedImage = e.target.files[0];
+      this.createBase64Image(selectedImage);
+    },
+    createBase64Image(fileObject) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        this.image = e.target.result;
+      };
+      reader.readAsDataURL(fileObject);
+    },
   },
-}
+};
+</script>

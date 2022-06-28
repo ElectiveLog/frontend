@@ -142,6 +142,7 @@
 <script>
 import DataService from "../../services/DataService";
 import axios from "axios";
+// const restaurantId = "62baeeeac68d60c802700ed2";
 import jwt_decode from "jwt-decode";
 const user = JSON.parse(localStorage.getItem("user"));
 
@@ -294,6 +295,7 @@ export default {
   },
 };
 </script>
+
 <style>
 .list {
   text-align: left;

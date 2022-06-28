@@ -16,22 +16,22 @@ export default {
   name: "Account",
   data() {
     return {
-      payloadUser: {}
+      payloadUser: {},
     };
   },
   components: {
     AccountClient,
     AccountRestaurateur,
-    AccountLivreur
+    AccountLivreur,
   },
   methods: {
     decodeToken(token) {
       return jwt_decode(token);
-    }
+    },
   },
   created() {
     this.payloadUser = this.decodeToken(user.accessToken);
     console.log(this.payloadUser);
-  }
+  },
 };
 </script>

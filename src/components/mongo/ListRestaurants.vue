@@ -51,10 +51,10 @@
         <div>
           <label><strong>Nom :</strong></label> {{ currentRestaurant.name }}
         </div>
-        <div>
+        <!-- <div>
           <label><strong>Articles :</strong></label>
           {{ currentRestaurant.articles }}
-        </div>
+        </div> -->
         <!-- <div>
           <label><strong>Id :</strong></label>
           {{ currentRestaurant._id }}
@@ -67,16 +67,17 @@
           <label><strong>Image :</strong></label>
           <img v-bind:src="currentRestaurant.picture" />
         </div>
-        <a
+        <!-- <a
           class="badge badge-warning"
           :href="'/restaurants/' + currentRestaurant.id"
         >
           Edit
-        </a>
+        </a> -->
       </div>
     </div>
   </div>
 </template>
+
 <script>
 import DataService from "../../services/DataService";
 export default {
@@ -86,17 +87,17 @@ export default {
       restaurants: [],
       currentRestaurant: null,
       currentIndex: -1,
-      title: ""
+      title: "",
     };
   },
   methods: {
     retrieveRestaurants() {
       DataService.getAllRestaurants()
-        .then(response => {
+        .then((response) => {
           this.restaurants = response.data.restaurants;
           console.log(response.data.restaurants);
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
     },
@@ -115,24 +116,24 @@ export default {
     },
     deleteRestaurant() {
       DataService.deleteRestaurant(this.currentRestaurant._id)
-        .then(response => {
+        .then((response) => {
           console.log(response.data.restaurants);
           this.refreshList();
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
     },
     updateRestaurant() {
       DataService.updateRestaurant(this.currentRestaurant._id)
-        .then(response => {
+        .then((response) => {
           console.log(response.data.restaurants);
           this.refreshList();
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
-    }
+    },
 
     // searchName() {
     //   DataService.find(this.name)
@@ -147,7 +148,7 @@ export default {
   },
   mounted() {
     this.retrieveRestaurants();
-  }
+  },
 };
 </script>
 <style>
@@ -156,7 +157,5 @@ export default {
   max-width: 750px;
   margin: auto;
   margin-bottom: 50px;
-}
-.styled_button {
 }
 </style>

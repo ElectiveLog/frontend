@@ -32,6 +32,7 @@ export default {
     const payloadUser = jwt_decode(user.accessToken);
     var configCommande = "";
     var notified = "";
+    var message = "";
     if (payloadUser.role == "Client") {
       configCommande = {
         method: "get",
@@ -41,6 +42,7 @@ export default {
         }
       };
       notified = "clientNotified";
+      message = "Votre commande a été prise en compte";
     } else if (payloadUser.role == "Livreur") {
       configCommande = {
         method: "get",
@@ -50,6 +52,7 @@ export default {
         }
       };
       notified = "livreurNotified";
+      message = "Vous avez une nouvelle commande de disponible";
     }
 
     axios(configCommande)
@@ -60,8 +63,9 @@ export default {
             element[notified] === false &&
             (element.state == "preparation" || element.state == "livreur")
           ) {
+            console.log("coucouc es moio");
             if (Notification.permission === "granted") {
-              new Notification("Votre commande est en cours de préparation");
+              new Notification(message);
               var data = JSON.stringify({
                 [notified]: true
               });
@@ -80,6 +84,7 @@ export default {
 
               axios(config);
             } else if (Notification.permission !== "denied") {
+              console.log("coucouc es moiodenied");
               Notification.requestPermission(function(permission) {
                 if (permission === "granted") {
                   new Notification(

@@ -28,13 +28,19 @@ class AuthService {
     localStorage.removeItem("user");
   }
   register(user) {
+    const streetNumber = parseInt(user.streetNumber, 10);
     return axios.post(
       API_URL + "create",
       {
         name: user.username,
         email: user.email,
         password: user.password,
-        roleId: user.roleId
+        roleId: user.roleId,
+        streetNumber: streetNumber,
+        address: user.address,
+        city: user.city,
+        country: user.country,
+        phoneNumber: user.phoneNumber
       },
       {
         headers: {

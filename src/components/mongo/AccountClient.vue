@@ -28,6 +28,18 @@
               />
             </div>
           </div>
+
+          <div class="col-sm-6 col-md-4">
+            <div class="mb-4">
+              <label class="form-label">Numéro</label>
+              <input
+                class="form-control"
+                type="number"
+                v-model="userData.streetNumber"
+                placeholder="Numéro"
+              />
+            </div>
+          </div>
           <div class="col-md-12">
             <div class="mb-4">
               <label class="form-label">Adresse</label>
@@ -39,6 +51,39 @@
               />
             </div>
           </div>
+          <div class="col-sm-6 col-md-3">
+            <div class="mb-4">
+              <label class="form-label">Ville</label>
+              <input
+                class="form-control"
+                type="text"
+                v-model="userData.city"
+                placeholder="Ville"
+              />
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <div class="mb-4">
+              <label class="form-label">Pays</label>
+              <input
+                class="form-control"
+                type="text"
+                v-model="userData.country"
+                placeholder="Pays"
+              />
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-3">
+            <div class="mb-4">
+              <label class="form-label">Numéro de téléphone</label>
+              <input
+                class="form-control"
+                type="phone"
+                v-model="userData.phoneNumber"
+                placeholder="Numéro de téléphone"
+              />
+            </div>
+          </div>
         </div>
       </div>
       <div class="card-footer text-end">
@@ -47,14 +92,6 @@
         </button>
       </div>
     </form>
-
-    <div>
-      <label for="image">Upload Image</label>
-      <input type="file" id="image" name="image" value="" ref="file" required />
-      <button class="btn btn-success btn-sm float-right" @click="upload">
-        Upload
-      </button>
-    </div>
 
     <div class="card-header">
       <h4 class="card-heading">Commandes en cours</h4>
@@ -70,7 +107,44 @@
         responsive
         primary-key
         :items="inProgressCommandes"
-      ></b-table>
+        :fields="fields"
+      >
+        <template #cell(show_details)="row">
+          <b-button size="sm" @click="row.toggleDetails" class="mr-2">
+            {{ row.detailsShowing ? "Cacher" : "Afficher" }} détails
+          </b-button>
+        </template>
+
+        <template #row-details="row">
+          <b-card>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+              >
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Adresse: </b>{{ row.item.addresse }}</b-col
+              >
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Ville: </b>{{ row.item.city }}</b-col
+              >
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Numéro de téléphone: </b>{{ row.item.phoneNumber }}</b-col
+              >
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Pays: </b>{{ row.item.country }}</b-col
+              >
+            </b-row>
+          </b-card>
+        </template></b-table
+      >
     </div>
     <div class="card-header">
       <h4 class="card-heading">Historique des commandes</h4>
@@ -86,7 +160,44 @@
           responsive
           primary-key
           :items="historyCommandes"
-        ></b-table>
+          :fields="fields"
+        >
+          <template #cell(show_details)="row">
+            <b-button size="sm" @click="row.toggleDetails" class="mr-2">
+              {{ row.detailsShowing ? "Cacher" : "Afficher" }} détails
+            </b-button>
+          </template>
+
+          <template #row-details="row">
+            <b-card>
+              <b-row class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+                >
+              </b-row>
+              <b-row class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Adresse: </b>{{ row.item.addresse }}</b-col
+                >
+              </b-row>
+              <b-row class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Ville: </b>{{ row.item.city }}</b-col
+                >
+              </b-row>
+              <b-row class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Numéro de téléphone: </b>{{ row.item.phoneNumber }}</b-col
+                >
+              </b-row>
+              <b-row class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Pays: </b>{{ row.item.country }}</b-col
+                >
+              </b-row>
+            </b-card>
+          </template></b-table
+        >
       </div>
     </div>
 
@@ -134,43 +245,30 @@ export default {
       userData: [],
       historyCommandes: [],
       inProgressCommandes: [],
-      image: []
+      image: [],
+      fields: [
+        {
+          key: "Commande",
+          label: "Commande"
+        },
+        {
+          key: "prix",
+          label: "Prix"
+        },
+        { key: "livreur", label: "Livreur" },
+        { key: "restaurant", label: "Restaurant" },
+        { key: "status", label: "Status" },
+        { key: "date", label: "Date" },
+        { key: "heure", label: "Heure" },
+        { key: "show_details", label: "Details" }
+      ]
     };
   },
   methods: {
-    upload() {
-      console.log("uplo" + this.$refs.file.files.item(0));
-
-      var data = JSON.stringify({
-        name: "Burgermodifier",
-        type: "plat",
-        price: 1100,
-        detail: "C'est un burger quoi",
-        picture: this.$refs.file.files.item(0)
-      });
-
-      var config = {
-        method: "post",
-        url: "http://localhost:8080/api/articles/create",
-        headers: {
-          "X-Server-Select": "mongo",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTU3NTg3MjUsImV4cCI6MTY1NjM2MzUyNX0.vHdiEc98ELrbBDbeZeG-851qS_SLSHJW8HDJX7mPgjs",
-          "Content-Type": "application/json"
-        },
-        data: data
-      };
-
-      axios(config)
-        .then(function(response) {
-          console.log(JSON.stringify(response.data));
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    },
     handleEdit() {
       const payloadUser = this.decodeToken(user.accessToken);
+
+      this.userData.streetNumber = parseInt(this.userData.streetNumber, 10);
       var config = {
         method: "put",
         url: "http://localhost:8080/users/" + payloadUser.userId,
@@ -282,10 +380,16 @@ export default {
                   heure: element.createdAt
                     .split("T")
                     .pop()
-                    .split(".")[0]
+                    .split(".")[0],
+                  addresse: this.userData.address,
+                  streetNumber: this.userData.streetNumber,
+                  city: this.userData.city,
+                  phoneNumber: this.userData.phoneNumber,
+                  country: this.userData.country
                 });
                 i++;
               } else {
+                console.log(this.userData.address);
                 this.inProgressCommandes.push({
                   Commande: "Commande n°" + y,
                   prix: priceCommande + "€",
@@ -296,7 +400,12 @@ export default {
                   heure: element.createdAt
                     .split("T")
                     .pop()
-                    .split(".")[0]
+                    .split(".")[0],
+                  addresse: this.userData.address,
+                  streetNumber: this.userData.streetNumber,
+                  city: this.userData.city,
+                  phoneNumber: this.userData.phoneNumber,
+                  country: this.userData.country
                 });
                 y++;
               }

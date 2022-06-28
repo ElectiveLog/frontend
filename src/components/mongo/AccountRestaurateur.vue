@@ -72,6 +72,40 @@
           >
             Validé
           </b-button>
+        </template>
+        <template #cell(show_details)="row">
+          <b-button size="sm" @click="row.toggleDetails" class="mr-2">
+            {{ row.detailsShowing ? "Cacher" : "Afficher" }} détails
+          </b-button>
+        </template>
+        <template #row-details="row">
+          <b-card>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+              >
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Adresse: </b>{{ row.item.addresse }}</b-col
+              >
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Ville: </b>{{ row.item.city }}</b-col
+              >
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Numéro de téléphone: </b>{{ row.item.phoneNumber }}</b-col
+              >
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Pays: </b>{{ row.item.country }}</b-col
+              >
+            </b-row>
+          </b-card>
         </template></b-table
       >
     </div>
@@ -90,7 +124,44 @@
         primary-key
         responsive
         :items="inProgressCommandes"
-      ></b-table>
+        :fields="fieldsMore"
+      >
+        <template #cell(show_details)="row">
+          <b-button size="sm" @click="row.toggleDetails" class="mr-2">
+            {{ row.detailsShowing ? "Cacher" : "Afficher" }} détails
+          </b-button>
+        </template>
+
+        <template #row-details="row">
+          <b-card>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+              >
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Adresse: </b>{{ row.item.addresse }}</b-col
+              >
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Ville: </b>{{ row.item.city }}</b-col
+              >
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Numéro de téléphone: </b>{{ row.item.phoneNumber }}</b-col
+              >
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Pays: </b>{{ row.item.country }}</b-col
+              >
+            </b-row>
+          </b-card>
+        </template></b-table
+      >
     </div>
 
     <div class="card-header">
@@ -108,7 +179,44 @@
           primary-key
           responsive
           :items="historyCommandes"
-        ></b-table>
+          :fields="fieldsMore"
+        >
+          <template #cell(show_details)="row">
+            <b-button size="sm" @click="row.toggleDetails" class="mr-2">
+              {{ row.detailsShowing ? "Cacher" : "Afficher" }} détails
+            </b-button>
+          </template>
+
+          <template #row-details="row">
+            <b-card>
+              <b-row class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+                >
+              </b-row>
+              <b-row class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Adresse: </b>{{ row.item.addresse }}</b-col
+                >
+              </b-row>
+              <b-row class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Ville: </b>{{ row.item.city }}</b-col
+                >
+              </b-row>
+              <b-row class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Numéro de téléphone: </b>{{ row.item.phoneNumber }}</b-col
+                >
+              </b-row>
+              <b-row class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Pays: </b>{{ row.item.country }}</b-col
+                >
+              </b-row>
+            </b-card>
+          </template></b-table
+        >
       </div>
     </div>
     <b-button
@@ -187,7 +295,25 @@ export default {
         {
           key: "actions",
           label: "Actions"
-        }
+        },
+        { key: "show_details", label: "Details" }
+      ],
+      fieldsMore: [
+        {
+          key: "Commande",
+          label: "Commande"
+        },
+        {
+          key: "prix",
+          label: "Prix"
+        },
+        { key: "articles", label: "Articles" },
+        { key: "livreur", label: "Livreur" },
+        { key: "client", label: "Client" },
+        { key: "status", label: "Status" },
+        { key: "date", label: "Date" },
+        { key: "heure", label: "Heure" },
+        { key: "show_details", label: "Details" }
       ],
       inProgressCommandes: [],
       historyCommandes: []
@@ -326,8 +452,8 @@ export default {
 
           await axios(config)
             .then(response => {
-              var priceCommande = 0;
               response.data.order.forEach(async order => {
+                var priceCommande = 0;
                 var configLivreur = {
                   method: "get",
                   url: "http://localhost:8080/users/" + order.idLivreur,
@@ -355,6 +481,11 @@ export default {
                 await axios(configClient)
                   .then(response => {
                     order.idClient = response.data.name;
+                    order.streetNumber = response.data.streetNumber;
+                    order.address = response.data.address;
+                    order.city = response.data.city;
+                    order.country = response.data.country;
+                    order.phoneNumber = response.data.phoneNumber;
                   })
                   .catch(function(error) {
                     console.log(error);
@@ -370,6 +501,7 @@ export default {
                 );
 
                 if (order.state == "commande") {
+                  console.log(order);
                   this.waitCommandes.push({
                     id: order._id,
                     Commande: "Commande n°" + i,
@@ -377,6 +509,11 @@ export default {
                     articles: articleNames,
                     livreur: order.idLivreur,
                     client: order.idClient,
+                    streetNumber: order.streetNumber,
+                    address: order.address,
+                    city: order.city,
+                    country: order.country,
+                    phoneNumber: order.phoneNumber,
                     status: order.state,
                     date: order.createdAt.split("T")[0],
                     heure: order.createdAt
@@ -395,6 +532,11 @@ export default {
                     articles: articleNames,
                     livreur: order.idLivreur,
                     client: order.idClient,
+                    streetNumber: order.streetNumber,
+                    address: order.address,
+                    city: order.city,
+                    country: order.country,
+                    phoneNumber: order.phoneNumber,
                     status: order.state,
                     date: order.createdAt.split("T")[0],
                     heure: order.createdAt
@@ -411,6 +553,11 @@ export default {
                     articles: articleNames,
                     livreur: order.idLivreur,
                     client: order.idClient,
+                    streetNumber: order.streetNumber,
+                    address: order.address,
+                    city: order.city,
+                    country: order.country,
+                    phoneNumber: order.phoneNumber,
                     status: order.state,
                     date: order.createdAt.split("T")[0],
                     heure: order.createdAt

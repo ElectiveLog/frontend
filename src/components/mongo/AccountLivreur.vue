@@ -71,6 +71,40 @@
           >
             Validé
           </b-button>
+        </template>
+        <template #cell(show_details)="row">
+          <b-button size="sm" @click="row.toggleDetails" class="mr-2">
+            {{ row.detailsShowing ? "Cacher" : "Afficher" }} détails
+          </b-button>
+        </template>
+        <template #row-details="row">
+          <b-card>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+              >
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Adresse: </b>{{ row.item.addresse }}</b-col
+              >
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Ville: </b>{{ row.item.city }}</b-col
+              >
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Numéro de téléphone: </b>{{ row.item.phoneNumber }}</b-col
+              >
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Pays: </b>{{ row.item.country }}</b-col
+              >
+            </b-row>
+          </b-card>
         </template></b-table
       >
     </div>
@@ -99,6 +133,40 @@
           >
             Validé
           </b-button>
+        </template>
+        <template #cell(show_details)="row">
+          <b-button size="sm" @click="row.toggleDetails" class="mr-2">
+            {{ row.detailsShowing ? "Cacher" : "Afficher" }} détails
+          </b-button>
+        </template>
+        <template #row-details="row">
+          <b-card>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+              >
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Adresse: </b>{{ row.item.addresse }}</b-col
+              >
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Ville: </b>{{ row.item.city }}</b-col
+              >
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Numéro de téléphone: </b>{{ row.item.phoneNumber }}</b-col
+              >
+            </b-row>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Pays: </b>{{ row.item.country }}</b-col
+              >
+            </b-row>
+          </b-card>
         </template></b-table
       >
     </div>
@@ -118,7 +186,43 @@
           responsive
           primary-key
           :items="historyCommandes"
-        ></b-table>
+          :fields="fieldsMore"
+        >
+          <template #cell(show_details)="row">
+            <b-button size="sm" @click="row.toggleDetails" class="mr-2">
+              {{ row.detailsShowing ? "Cacher" : "Afficher" }} détails
+            </b-button>
+          </template>
+          <template #row-details="row">
+            <b-card>
+              <b-row class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+                >
+              </b-row>
+              <b-row class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Adresse: </b>{{ row.item.addresse }}</b-col
+                >
+              </b-row>
+              <b-row class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Ville: </b>{{ row.item.city }}</b-col
+                >
+              </b-row>
+              <b-row class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Numéro de téléphone: </b>{{ row.item.phoneNumber }}</b-col
+                >
+              </b-row>
+              <b-row class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Pays: </b>{{ row.item.country }}</b-col
+                >
+              </b-row>
+            </b-card>
+          </template></b-table
+        >
       </div>
     </div>
     <b-button
@@ -179,10 +283,6 @@ export default {
           label: "Client"
         },
         {
-          key: "adresse",
-          label: "Adresse"
-        },
-        {
           key: "restaurant",
           label: "Restaurant"
         },
@@ -201,7 +301,25 @@ export default {
         {
           key: "actions",
           label: "Actions"
-        }
+        },
+        { key: "show_details", label: "Details" }
+      ],
+      fieldsMore: [
+        {
+          key: "Commande",
+          label: "Commande"
+        },
+        {
+          key: "prix",
+          label: "Prix"
+        },
+        { key: "articles", label: "Articles" },
+        { key: "livreur", label: "Livreur" },
+        { key: "client", label: "Client" },
+        { key: "status", label: "Status" },
+        { key: "date", label: "Date" },
+        { key: "heure", label: "Heure" },
+        { key: "show_details", label: "Details" }
       ],
       historyCommandes: []
     };
@@ -387,7 +505,11 @@ export default {
               Commande: "Commande n°1",
               prix: priceCommande + "€",
               client: response.data.name,
-              adresse: response.data.address,
+              streetNumber: response.data.streetNumber,
+              address: response.data.address,
+              city: response.data.city,
+              country: response.data.country,
+              phoneNumber: response.data.phoneNumber,
               restaurant: element.idRestaurant.name,
               status: element.state,
               date: element.createdAt.split("T")[0],
@@ -437,7 +559,11 @@ export default {
                   Commande: "Commande n°1",
                   prix: priceCommande + "€",
                   client: response.data.name,
-                  adresse: response.data.address,
+                  streetNumber: response.data.streetNumber,
+                  address: response.data.address,
+                  city: response.data.city,
+                  country: response.data.country,
+                  phoneNumber: response.data.phoneNumber,
                   restaurant: element.idRestaurant.name,
                   status: element.state,
                   date: element.createdAt.split("T")[0],
@@ -452,7 +578,11 @@ export default {
                   Commande: "Commande n°" + i,
                   prix: priceCommande + "€",
                   client: response.data.name,
-                  adresse: response.data.address,
+                  streetNumber: response.data.streetNumber,
+                  address: response.data.address,
+                  city: response.data.city,
+                  country: response.data.country,
+                  phoneNumber: response.data.phoneNumber,
                   restaurant: element.idRestaurant.name,
                   status: element.state,
                   date: element.createdAt.split("T")[0],

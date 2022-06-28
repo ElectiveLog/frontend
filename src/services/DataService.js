@@ -13,6 +13,9 @@ class DataService {
   updateRestaurant(id) {
     return http.put(`/restaurants/${id}`);
   }
+  getOneRestaurant(id) {
+    return http.get(`/restaurants/${id}`);
+  }
 
   // Articles
   getAllArticles() {
@@ -26,6 +29,9 @@ class DataService {
   }
   updateArticle(id) {
     return http.put(`/articles/${id}`);
+  }
+  getOneArticle(id) {
+    return http.get(`/articles/${id}`);
   }
 }
 export default new DataService();

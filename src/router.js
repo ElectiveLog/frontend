@@ -20,55 +20,55 @@ const router = new VueRouter({
     {
       path: "/",
       name: "home",
-      component: Home
+      component: Home,
     },
     {
       path: "/cart",
       name: "cart",
-      component: Cart
+      component: Cart,
     },
     {
       path: "/statistics",
       name: "statistics",
-      component: Statistics
+      component: Statistics,
     },
     {
       path: "/styleguide",
       name: "styleguide",
-      component: StyleGuide
+      component: StyleGuide,
     },
     {
       path: "/login",
       name: "login",
-      component: Login
+      component: Login,
     },
     {
       path: "/register",
       name: "register",
-      component: Register
+      component: Register,
     },
     {
       path: "/account",
       name: "account",
-      component: Account
+      component: Account,
     },
     {
       path: "/restaurants",
       name: "restaurants",
-      component: Restaurants
+      component: Restaurants,
     },
     {
       path: "/articles",
       name: "articles",
-      component: Articles
+      component: Articles,
     },
     {
       path: "/:id",
       name: "place",
       component: () =>
-        import(/* webpackChunkName: "place" */ "@/routes/Place.vue")
-    }
-  ]
+        import(/* webpackChunkName: "place" */ "@/routes/Place.vue"),
+    },
+  ],
 });
 
 router.beforeEach((to, from, next) => {

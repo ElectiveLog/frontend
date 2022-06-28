@@ -19,8 +19,9 @@
                     v-for="role in roledata"
                     :key="role.id"
                     :value="role.id"
-                    >{{ role.name }}</option
                   >
+                    {{ role.name }}
+                  </option>
                 </select>
               </div>
               <div class="col-md-12">
@@ -150,13 +151,13 @@ export default {
       submitted: false,
       successful: false,
       message: "",
-      roledata: []
+      roledata: [],
     };
   },
   computed: {
     loggedIn() {
       return this.$store.state.auth.status.loggedIn;
-    }
+    },
   },
   created() {
     var axios = require("axios");
@@ -167,15 +168,15 @@ export default {
       // url: "http://localhost:5000/roles/",
       headers: {
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNsaWVudEBjbGllbnQuY2xpZW50IiwibmFtZSI6ImNsaWVudGZkIiwicm9sZSI6IkNsaWVudCIsInVzZXJJZCI6ImNsNHNmc3NmNTAwMDEwMXB5ZXVwbnR5NXIiLCJpYXQiOjE2NTYzNjcyNzcsImV4cCI6MTY1NjQ1MzY3N30.bF7rywxOATgXqGzY11uRu1XP9UkmcMJZxVeoYdTznNc"
-      }
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNsaWVudEBjbGllbnQuY2xpZW50IiwibmFtZSI6ImNsaWVudGZkIiwicm9sZSI6IkNsaWVudCIsInVzZXJJZCI6ImNsNHNmc3NmNTAwMDEwMXB5ZXVwbnR5NXIiLCJpYXQiOjE2NTYzNjcyNzcsImV4cCI6MTY1NjQ1MzY3N30.bF7rywxOATgXqGzY11uRu1XP9UkmcMJZxVeoYdTznNc",
+      },
     };
 
     axios(config)
-      .then(response => {
+      .then((response) => {
         this.roledata = response.data;
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("fdsqf" + error);
       });
   },
@@ -196,11 +197,11 @@ export default {
           title: "Role",
           type: "error",
           text: "Veuillez choisir un role",
-          duration: 8000
+          duration: 8000,
         });
       } else {
         this.$store.dispatch("auth/register", this.user).then(
-          data => {
+          (data) => {
             this.message = data.message;
             this.successful = true;
 
@@ -215,7 +216,7 @@ export default {
                   "L'adresse mail " +
                   this.user.email +
                   " possède déjà un compte. Veuillez vous connecter.",
-                duration: 8000
+                duration: 8000,
               });
             } else if (
               data ==
@@ -225,18 +226,16 @@ export default {
                 group: "foo",
                 title: "Inscription échouée",
                 type: "error",
-                text:
-                  "L'adresse email que vous avez entrée n'appartient pas à un utilisateur de votre role",
-                duration: 8000
+                text: "L'adresse email que vous avez entrée n'appartient pas à un utilisateur de votre role",
+                duration: 8000,
               });
             } else if (data == "Error when creating the user") {
               this.$notify({
                 group: "foo",
                 title: "Inscription échouée",
                 type: "error",
-                text:
-                  "Un problème inconnu est survenu lors de la création de votre compte. Veuillez réessayer.",
-                duration: 8000
+                text: "Un problème inconnu est survenu lors de la création de votre compte. Veuillez réessayer.",
+                duration: 8000,
               });
             } else {
               this.$notify({
@@ -248,12 +247,12 @@ export default {
                   this.user.email +
                   " !" +
                   "Vous pouvez vous connecter.",
-                duration: 8000
+                duration: 8000,
               });
               this.$router.push("/login");
             }
           },
-          error => {
+          (error) => {
             this.message =
               (error.response && error.response.data) ||
               error.message ||
@@ -262,8 +261,8 @@ export default {
           }
         );
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped></style>

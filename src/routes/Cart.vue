@@ -27,7 +27,7 @@ export default {
   name: "Cart",
   data() {
     return {
-      total: 0
+      total: 0,
     };
   },
   computed: {
@@ -35,14 +35,14 @@ export default {
       console.log(this.$store.state.cart);
 
       return this.$store.state.cart;
-    }
+    },
   },
   created() {
     console.log("created");
-    this.$store.state.cart.forEach(item => {
+    this.$store.state.cart.forEach((item) => {
       this.total += item.price;
     });
-  }
+  },
 };
 </script>
 

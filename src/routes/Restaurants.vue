@@ -13,7 +13,7 @@ export default {
   name: "home",
   components: {
     ListRestaurants,
-    AddRestaurant
-  }
+    AddRestaurant,
+  },
 };
 </script>

@@ -56,14 +56,14 @@ export default {
     return {
       user: new User("", ""),
       loading: false,
-      message: ""
+      message: "",
     };
   },
   computed: {
     loggedIn() {
       console.log(this.$store.state);
       return this.$store.state.auth.status.loggedIn;
-    }
+    },
   },
   created() {
     var axios = require("axios");
@@ -73,15 +73,15 @@ export default {
       // url: "http://localhost:8080/api/ingredients/",
       url: "http://localhost:5000/api/ingredients/",
       headers: {
-        "X-Server-Select": "mongo"
-      }
+        "X-Server-Select": "mongo",
+      },
     };
 
     axios(config)
-      .then(function(response) {
+      .then(function (response) {
         console.log(JSON.stringify(response.data));
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
 
@@ -97,7 +97,7 @@ export default {
       if (this.user.email && this.user.password) {
         console.log("handleLogin: login");
         this.$store.dispatch("auth/login", this.user).then(
-          response => {
+          (response) => {
             console.log("fdsq" + JSON.stringify(response));
             if (response.status == 203) {
               this.$notify({
@@ -105,7 +105,7 @@ export default {
                 title: "Erreur",
                 type: "error",
                 text: response.data,
-                duration: 8000
+                duration: 8000,
               });
               this.loading = false;
               this.message = response;
@@ -115,13 +115,13 @@ export default {
                 title: "Connexion réussie",
                 type: "success",
                 text: "Bienvenue " + this.user.email,
-                duration: 8000
+                duration: 8000,
               });
               this.$router.push("/");
               location.reload();
             }
           },
-          error => {
+          (error) => {
             this.loading = false;
             this.message =
               (error.response && error.response.data) ||
@@ -130,7 +130,7 @@ export default {
           }
         );
       }
-    }
-  }
+    },
+  },
 };
 </script>

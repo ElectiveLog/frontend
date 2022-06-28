@@ -22,7 +22,7 @@ export default {
   name: "App",
   components: {
     Header,
-    Footer
+    Footer,
   },
   created() {
     document.title = "CES'EATS";
@@ -38,8 +38,8 @@ export default {
         method: "get",
         url: "http://localhost:8080/api/orders/client/" + payloadUser.userId,
         headers: {
-          "X-Server-Select": "mongo"
-        }
+          "X-Server-Select": "mongo",
+        },
       };
       notified = "clientNotified";
       message = "Votre commande a été prise en compte";
@@ -48,17 +48,17 @@ export default {
         method: "get",
         url: "http://localhost:8080/api/orders/livreur/" + payloadUser.userId,
         headers: {
-          "X-Server-Select": "mongo"
-        }
+          "X-Server-Select": "mongo",
+        },
       };
       notified = "livreurNotified";
       message = "Vous avez une nouvelle commande de disponible";
     }
 
     axios(configCommande)
-      .then(response => {
+      .then((response) => {
         console.log(response.data);
-        response.data.order.forEach(element => {
+        response.data.order.forEach((element) => {
           if (
             element[notified] === false &&
             (element.state == "preparation" || element.state == "livreur")
@@ -67,7 +67,7 @@ export default {
             if (Notification.permission === "granted") {
               new Notification(message);
               var data = JSON.stringify({
-                [notified]: true
+                [notified]: true,
               });
 
               var config = {
@@ -77,15 +77,15 @@ export default {
                   "X-Server-Select": "mongo",
                   Authorization:
                     "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTU3NTg3MjUsImV4cCI6MTY1NjM2MzUyNX0.vHdiEc98ELrbBDbeZeG-851qS_SLSHJW8HDJX7mPgjs",
-                  "Content-Type": "application/json"
+                  "Content-Type": "application/json",
                 },
-                data: data
+                data: data,
               };
 
               axios(config);
             } else if (Notification.permission !== "denied") {
               console.log("coucouc es moiodenied");
-              Notification.requestPermission(function(permission) {
+              Notification.requestPermission(function (permission) {
                 if (permission === "granted") {
                   new Notification(
                     "Votre commande est en cours de préparation"
@@ -96,13 +96,13 @@ export default {
           }
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
   methods: {
-    ...mapMutations(["setPlaces"])
-  }
+    ...mapMutations(["setPlaces"]),
+  },
 };
 </script>
 

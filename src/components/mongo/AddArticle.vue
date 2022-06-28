@@ -127,6 +127,7 @@ export default {
               }
             }
           );
+          location.reload();
         })
         // eslint-disable-next-line no-unused-vars
         .catch(error => {
@@ -135,7 +136,6 @@ export default {
         .finally(() => {
           //Perform action in always
         });
-      // location.reload();
     },
     scrollToTop() {
       window.scrollTo(0, 0);

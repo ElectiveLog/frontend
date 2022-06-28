@@ -74,6 +74,7 @@ export default {
         .then(res => {
           //Perform Success Action
           console.log("donnéee" + res.data);
+          location.reload();
         })
         .catch(error => {
           console.log(error);
@@ -84,7 +85,6 @@ export default {
           //Perform action in always
           console.log("finally");
         });
-      location.reload();
     },
     scrollToTop() {
       window.scrollTo(0, 0);

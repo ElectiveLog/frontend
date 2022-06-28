@@ -102,21 +102,39 @@
       <b-table
         v-else
         hover
-        striped
+        small
+        outlined
         borderred
+        fixed
         responsive
         primary-key
         :items="inProgressCommandes"
         :fields="fields"
       >
         <template #cell(show_details)="row">
-          <b-button size="sm" @click="row.toggleDetails" class="mr-2">
-            {{ row.detailsShowing ? "Cacher" : "Afficher" }} détails
+          <b-button
+            variant="dark"
+            size="sm"
+            @click="row.toggleDetails"
+            class="mr-2"
+          >
+            {{ row.detailsShowing ? "Cacher" : "Afficher" }}
           </b-button>
         </template>
 
         <template #row-details="row">
           <b-card>
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Date et heure de la commande: </b>Le {{ row.item.date }} à
+                {{ row.item.heure }}</b-col
+              >
+            </b-row>
+            <b-row v-if="row.item.parainage != null" class="mb-2">
+              <b-col sm="3" class="text-sm-right"
+                ><b>Parainage: </b>{{ row.item.parainage }}</b-col
+              >
+            </b-row>
             <b-row class="mb-2">
               <b-col sm="3" class="text-sm-right"
                 ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
@@ -154,22 +172,41 @@
           >Vous n'avez pas encore passé de commande!!</b-alert
         >
         <b-table
-          striped
+          v-else
           hover
+          small
+          outlined
           borderred
+          fixed
           responsive
           primary-key
           :items="historyCommandes"
           :fields="fields"
         >
           <template #cell(show_details)="row">
-            <b-button size="sm" @click="row.toggleDetails" class="mr-2">
-              {{ row.detailsShowing ? "Cacher" : "Afficher" }} détails
+            <b-button
+              variant="dark"
+              size="sm"
+              @click="row.toggleDetails"
+              class="mr-2"
+            >
+              {{ row.detailsShowing ? "Cacher" : "Afficher" }}
             </b-button>
           </template>
 
           <template #row-details="row">
             <b-card>
+              <b-row class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Date et heure de la commande: </b>Le {{ row.item.date }} à
+                  {{ row.item.heure }}</b-col
+                >
+              </b-row>
+              <b-row v-if="row.item.parainage != null" class="mb-2">
+                <b-col sm="3" class="text-sm-right"
+                  ><b>Parainage: </b>{{ row.item.parainage }}</b-col
+                >
+              </b-row>
               <b-row class="mb-2">
                 <b-col sm="3" class="text-sm-right"
                   ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
@@ -258,8 +295,6 @@ export default {
         { key: "livreur", label: "Livreur" },
         { key: "restaurant", label: "Restaurant" },
         { key: "status", label: "Status" },
-        { key: "date", label: "Date" },
-        { key: "heure", label: "Heure" },
         { key: "show_details", label: "Details" }
       ]
     };
@@ -267,8 +302,6 @@ export default {
   methods: {
     handleEdit() {
       const payloadUser = this.decodeToken(user.accessToken);
-
-      this.userData.streetNumber = parseInt(this.userData.streetNumber, 10);
       var config = {
         method: "put",
         url: "http://localhost:8080/users/" + payloadUser.userId,
@@ -324,7 +357,6 @@ export default {
   },
   created() {
     const payloadUser = this.decodeToken(user.accessToken);
-    console.log(payloadUser);
     var config = {
       method: "get",
       url: "http://localhost:8080/users/" + payloadUser.userId,
@@ -358,6 +390,9 @@ export default {
           element.articles.forEach(article => {
             priceCommande += article.price;
           });
+          if (this.userData.sponsorshipCode) {
+            priceCommande = priceCommande * 0.9;
+          }
 
           var config = {
             method: "get",
@@ -375,7 +410,7 @@ export default {
                   prix: priceCommande + "€",
                   livreur: response.data.name,
                   restaurant: element.idRestaurant.name,
-                  status: element.state,
+                  status: "livrée",
                   date: element.createdAt.split("T")[0],
                   heure: element.createdAt
                     .split("T")
@@ -385,11 +420,11 @@ export default {
                   streetNumber: this.userData.streetNumber,
                   city: this.userData.city,
                   phoneNumber: this.userData.phoneNumber,
-                  country: this.userData.country
+                  country: this.userData.country,
+                  parnainage: this.userData.sponsorshipCode
                 });
                 i++;
               } else {
-                console.log(this.userData.address);
                 this.inProgressCommandes.push({
                   Commande: "Commande n°" + y,
                   prix: priceCommande + "€",
@@ -405,7 +440,8 @@ export default {
                   streetNumber: this.userData.streetNumber,
                   city: this.userData.city,
                   phoneNumber: this.userData.phoneNumber,
-                  country: this.userData.country
+                  country: this.userData.country,
+                  parnainage: this.userData.sponsorshipCode
                 });
                 y++;
               }

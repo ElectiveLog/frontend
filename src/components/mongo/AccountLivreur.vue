@@ -61,7 +61,7 @@
             @click="handleEditStatus(row.item)"
             class="text-sm-right"
           >
-            Validé
+            Valider
           </b-button>
         </template>
         <template #cell(show_details)="row">
@@ -89,7 +89,7 @@
             </b-row>
             <b-row class="mb-2">
               <b-col sm="3" class="text-sm-right"
-                ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+                ><b>Numéro de rue: </b>{{ row.item.streetNumber }}</b-col
               >
             </b-row>
             <b-row class="mb-2">
@@ -118,7 +118,7 @@
     </div>
 
     <div class="card-header">
-      <h4 class="card-heading">Commandes en cours</h4>
+      <h4 class="card-heading">Commande·s en cours</h4>
       <b-alert v-if="inProgressCommandes.length == 0" show
         >Aucune commande en cours !</b-alert
       >
@@ -142,7 +142,7 @@
             @click="handleEditStatusLivraison(row.item)"
             class="text-sm-right"
           >
-            Validé
+            Valider
           </b-button>
         </template>
         <template #cell(show_details)="row">
@@ -170,7 +170,7 @@
             </b-row>
             <b-row class="mb-2">
               <b-col sm="3" class="text-sm-right"
-                ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+                ><b>Numéro de rue: </b>{{ row.item.streetNumber }}</b-col
               >
             </b-row>
             <b-row class="mb-2">
@@ -243,7 +243,7 @@
               </b-row>
               <b-row class="mb-2">
                 <b-col sm="3" class="text-sm-right"
-                  ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+                  ><b>Numéro de rue: </b>{{ row.item.streetNumber }}</b-col
                 >
               </b-row>
               <b-row class="mb-2">
@@ -338,7 +338,7 @@ export default {
         },
         {
           key: "actions",
-          label: "Actions"
+          label: "Action"
         },
         { key: "show_details", label: "Details" }
       ],
@@ -351,7 +351,7 @@ export default {
           key: "prix",
           label: "Prix"
         },
-        { key: "articles", label: "Articles" },
+        { key: "articles", label: "Article·s" },
         { key: "livreur", label: "Livreur" },
         { key: "client", label: "Client" },
         { key: "status", label: "Status" },
@@ -711,7 +711,7 @@ export default {
                   country: response.data.country,
                   phoneNumber: response.data.phoneNumber,
                   restaurant: element.idRestaurant.name,
-                  status: "livrée",
+                  status: "Livrée",
                   parnainage: response.data.sponsorshipCode,
                   date: element.createdAt.split("T")[0],
                   heure: element.createdAt

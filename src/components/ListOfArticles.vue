@@ -1,6 +1,13 @@
 <template>
   <div class="row">
     <div>
+      <router-link to="/">
+        <b-icon-arrow-left
+          class="icon"
+          font-scale="1.5"
+          shift-v="1"
+        ></b-icon-arrow-left
+      ></router-link>
       <h5 class="space_bottom">
         Articles dans le panier : {{ Object.keys(this.cart).length }}
       </h5>

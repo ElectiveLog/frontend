@@ -36,7 +36,7 @@
                 class="form-control"
                 type="number"
                 v-model="userData.streetNumber"
-                placeholder="Numéro"
+                placeholder="Numéro de rue"
               />
             </div>
           </div>
@@ -46,7 +46,7 @@
               <input
                 class="form-control"
                 type="text"
-                placeholder="Home Address"
+                placeholder="Adresse"
                 v-model="userData.address"
               />
             </div>
@@ -94,7 +94,7 @@
     </form>
 
     <div class="card-header">
-      <h4 class="card-heading">Commandes en cours</h4>
+      <h4 class="card-heading">Commande·s en cours</h4>
       <b-alert v-if="inProgressCommandes.length == 0" show
         >Aucune commande en cours !</b-alert
       >
@@ -137,7 +137,7 @@
             </b-row>
             <b-row class="mb-2">
               <b-col sm="3" class="text-sm-right"
-                ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+                ><b>Numéro de rue: </b>{{ row.item.streetNumber }}</b-col
               >
             </b-row>
             <b-row class="mb-2">
@@ -209,7 +209,7 @@
               </b-row>
               <b-row class="mb-2">
                 <b-col sm="3" class="text-sm-right"
-                  ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+                  ><b>Numéro de rue: </b>{{ row.item.streetNumber }}</b-col
                 >
               </b-row>
               <b-row class="mb-2">
@@ -425,7 +425,6 @@ export default {
         var y = 1;
         response.data.order.forEach(element => {
           var priceCommande = 0;
-          console.log(element);
           element.articles.forEach(article => {
             priceCommande += article.price;
           });
@@ -449,7 +448,7 @@ export default {
                   prix: priceCommande + "€",
                   livreur: response.data.name,
                   restaurant: element.idRestaurant.name,
-                  status: "livrée",
+                  status: "Livrée",
                   date: element.createdAt.split("T")[0],
                   heure: element.createdAt
                     .split("T")

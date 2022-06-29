@@ -21,7 +21,7 @@ export default {
   name: "home",
   components: {
     // PlaceList,
-    ListOfPlaces
+    ListOfPlaces,
   },
   computed: {
     search: {
@@ -30,8 +30,8 @@ export default {
       },
       set(value) {
         this.$store.commit("setSearch", value);
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>

@@ -11,6 +11,7 @@ import Articles from "@/routes/Articles.vue";
 import Account from "@/routes/Account.vue";
 import jwt_decode from "jwt-decode";
 import ListOfArticles from "@/routes/ListOfArticles.vue";
+import MyRestaurant from "@/routes/MyRestaurant.vue";
 // import jwt_decode from "jwt-decode";
 
 Vue.use(VueRouter);
@@ -22,67 +23,72 @@ const router = new VueRouter({
     {
       path: "/",
       name: "home",
-      component: Home
+      component: Home,
     },
     {
       path: "/cart",
       name: "cart",
-      component: Cart
+      component: Cart,
     },
     {
       path: "/statistics",
       name: "statistics",
-      component: Statistics
+      component: Statistics,
     },
     {
       path: "/styleguide",
       name: "styleguide",
-      component: StyleGuide
+      component: StyleGuide,
     },
     {
       path: "/login",
       name: "login",
-      component: Login
+      component: Login,
     },
     {
       path: "/register",
       name: "register",
-      component: Register
+      component: Register,
     },
     {
       path: "/account",
       name: "account",
-      component: Account
+      component: Account,
+    },
+    {
+      path: "/myrestaurant",
+      name: "myrestaurant",
+      component: MyRestaurant,
     },
     {
       path: "/restaurants",
       name: "restaurants",
-      component: Restaurants
+      component: Restaurants,
     },
     {
       path: "/articles",
       name: "articles",
-      component: Articles
+      component: Articles,
     },
     {
       path: "/listofarticles/:id",
       name: "listofarticles",
       component: ListOfArticles,
-      props: true
+      props: true,
     },
     {
       path: "/:id",
       name: "place",
       component: () =>
-        import(/* webpackChunkName: "place" */ "@/routes/Place.vue")
+        import(/* webpackChunkName: "place" */ "@/routes/Place.vue"),
     },
     {
       path: "/:pathMatch(.*)*",
       beforeEnter: (to, from, next) => {
         next("/");
-      }
-    }
-  ]
+      },
+    },
+  ],
 });
 
 router.beforeEach((to, from, next) => {

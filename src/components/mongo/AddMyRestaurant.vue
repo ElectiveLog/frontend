@@ -1,5 +1,5 @@
 <template>
-  <div class="list row">
+  <div v-if="this.haveARestaurant == false" class="list row">
     <h2>Ajouter un restaurant</h2>
     <form v-on:submit.prevent="submitForm">
       <div class="form-group">
@@ -54,10 +54,11 @@
 </template>
 
 <script>
+import DataService from "../../services/DataService";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 const user = JSON.parse(localStorage.getItem("user"));
-
+let haveARestaurant;
 export default {
   name: "PostFormAxios",
   data() {
@@ -68,11 +69,37 @@ export default {
         address: "",
         picture: "",
       },
+      haveARestaurant: false,
     };
   },
   methods: {
     decodeToken(token) {
       return jwt_decode(token);
+    },
+    retrieveRestaurant() {
+      this.payloadUser = this.decodeToken(user.accessToken);
+      this.userId = this.payloadUser.userId;
+      DataService.getAllRestaurantsByRestaurateur(this.payloadUser.userId)
+        .then((response) => {
+          this.restaurantId = response.data.restaurants[0]._id;
+          console.log("Utilisateur: " + this.userId);
+          console.log("le restau: " + this.restaurantId);
+          DataService.getOneRestaurant(this.restaurantId)
+            .then((response) => {
+              this.restaurant = response.data.restaurant;
+              console.log(this.restaurant);
+              if (this.restaurant) {
+                this.haveARestaurant = true;
+                console.log(this.haveARestaurant);
+              }
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
     submitForm() {
       this.form.picture = this.image;
@@ -115,6 +142,13 @@ export default {
       };
       reader.readAsDataURL(fileObject);
     },
+    isItFalse() {
+      console.log(haveARestaurant);
+    },
+  },
+  mounted() {
+    this.retrieveRestaurant();
+    this.isItFalse();
   },
 };
 </script>

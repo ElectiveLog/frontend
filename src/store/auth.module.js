@@ -8,17 +8,14 @@ export const auth = {
   state: initialState,
   actions: {
     login({ commit }, user) {
-      console.log(user);
       return AuthService.login(user).then(
         user => {
-          console.log("le" + JSON.stringify(user));
           if (user.data.accessToken) {
             commit("loginSuccess", user);
             return Promise.resolve(user);
           } else {
             commit("loginFailure");
-            console.log("error");
-            return user;
+            return Promise.reject(user);
           }
         },
         error => {

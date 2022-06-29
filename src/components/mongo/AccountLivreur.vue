@@ -120,7 +120,7 @@
     <div class="card-header">
       <h4 class="card-heading">Commandes en cours</h4>
       <b-alert v-if="inProgressCommandes.length == 0" show
-        >Aucune commande en cours!!!</b-alert
+        >Aucune commande en cours !</b-alert
       >
 
       <b-table
@@ -203,7 +203,7 @@
 
       <div>
         <b-alert v-if="historyCommandes.length == 0" show
-          >Aucun client n'a encore passé de commande!!!</b-alert
+          >Aucun client n'a passé de commande !</b-alert
         >
 
         <b-table

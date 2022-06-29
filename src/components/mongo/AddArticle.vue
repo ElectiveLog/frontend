@@ -1,49 +1,56 @@
 <template>
   <div class="list row">
     <h2>Ajouter un article / menu</h2>
-    <a>L'article ajouté sera directement ajouté à votre restaurant.</a>
+    <a
+      >Après validation, l'article sera directement ajouté à votre
+      restaurant.</a
+    >
     <form v-on:submit.prevent="submitForm">
       <div class="form-group">
-        <label for="name">Nom</label>
+        <label for="name">Nom *</label>
         <input
           type="text"
           class="form-control"
           id="name"
           placeholder="Nom de l'article"
           v-model="form.name"
+          required="required"
         />
       </div>
       <div class="form-group">
-        <label for="type">Type d'article</label>
+        <label for="type">Type d'article *</label>
         <input
           type="text"
           class="form-control"
           id="type"
           placeholder="Selectionner un type"
           v-model="form.type"
+          required="required"
         />
       </div>
       <div class="form-group">
-        <label for="price">Prix</label>
+        <label for="price">Prix *</label>
         <input
           type="number"
           class="form-control"
           id="price"
           placeholder="Prix"
           v-model="form.price"
+          required="required"
         />
       </div>
       <div class="form-group">
-        <label for="detail">Détail</label>
+        <label for="detail">Détail *</label>
         <input
           type="text"
           class="form-control"
           id="detail"
           placeholder="Détail"
           v-model="form.detail"
+          required="required"
         />
       </div>
-      <div class="form-group">
+      <div class="form-group space_up">
         <input
           @change="handleImage"
           class="custom-input"
@@ -188,3 +195,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.space_up {
+  margin-top: 10px;
+}
+</style>

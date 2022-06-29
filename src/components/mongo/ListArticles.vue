@@ -21,6 +21,7 @@
     </div>
     <div class="col-md-6">
       <h2>Liste de vos articles / menus</h2>
+      <a class="space_bottom">{{ validation }}</a>
       <ul class="list-group">
         <li
           class="list-group-item"
@@ -87,7 +88,10 @@
     &emsp;
     <!-- Modifier -->
     <h2>Modifier un article / menu</h2>
-    <a>L'article sélectionné au dessus sera modifié.</a>
+    <a
+      >L'article sélectionné au dessus sera modifié avec les champs que vous
+      aurez renseignés. Les champs vides ne seront pas pris en compte</a
+    >
     <form v-on:submit.prevent="updateArticle">
       <div class="form-group">
         <label for="name">Nom</label>
@@ -129,7 +133,7 @@
           v-model="form.detail"
         />
       </div>
-      <div class="form-group">
+      <div class="form-group space_up">
         <input
           @change="handleImage"
           class="custom-input"
@@ -152,7 +156,6 @@ import DataService from "../../services/DataService";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 const user = JSON.parse(localStorage.getItem("user"));
-
 export default {
   name: "articles-list",
   data() {
@@ -169,6 +172,7 @@ export default {
         detail: "",
         picture: ""
       },
+      validation: "",
       image: ""
     };
   },
@@ -259,7 +263,29 @@ export default {
       DataService.deleteArticle(this.currentArticle._id)
         .then(response => {
           console.log(response.data.articles);
-          this.refreshList();
+          // get the list of articles in the restaurant
+          const allRestaurantArticles = this.restaurantArticles;
+          const toDelete = this.currentArticle._id;
+          console.log(allRestaurantArticles);
+          console.log(toDelete);
+          // get the new list of articles (the previous one without the articles just deleted)
+          let difference = allRestaurantArticles.filter(
+            x => !toDelete.includes(x)
+          );
+          console.log("result :");
+          console.log(difference);
+          console.log(this.restaurantId);
+          axios.put(
+            `http://10.117.129.194:8080/api/restaurants/${this.restaurantId}`,
+            {
+              articles: difference
+            },
+            {
+              headers: {
+                "X-Server-Select": "mongo"
+              }
+            }
+          );
         })
         .catch(e => {
           console.log(e);
@@ -285,6 +311,8 @@ export default {
         }
       );
       this.reload();
+      // this.refreshList();
+      this.validation = "Suppression réussie, actualisez la liste.";
     },
     updateArticle() {
       this.form.picture = this.image;
@@ -365,7 +393,6 @@ export default {
     },
     createBase64Image(fileObject) {
       const reader = new FileReader();
-
       reader.onload = e => {
         this.image = e.target.result;
       };
@@ -398,5 +425,13 @@ export default {
   max-width: 750px;
   margin: auto;
   margin-bottom: 50px;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+.space_up {
+  margin-top: 10px;
 }
 </style>

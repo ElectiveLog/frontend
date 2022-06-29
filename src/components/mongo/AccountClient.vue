@@ -96,7 +96,7 @@
     <div class="card-header">
       <h4 class="card-heading">Commandes en cours</h4>
       <b-alert v-if="inProgressCommandes.length == 0" show
-        >Aucune commande en cours!!!</b-alert
+        >Aucune commande en cours !</b-alert
       >
 
       <b-table

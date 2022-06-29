@@ -179,11 +179,12 @@ export default {
     retrieveArticles() {
       this.payloadUser = this.decodeToken(user.accessToken);
       this.userId = this.payloadUser.userId;
+      console.log("Utilisateur: " + this.userId);
       DataService.getAllRestaurantsByRestaurateur(this.payloadUser.userId)
         .then((response) => {
           this.restaurantId = response.data.restaurants[0]._id;
           console.log("Utilisateur: " + this.userId);
-          console.log(this.restaurantId);
+          console.log("le restau: " + this.restaurantId);
           DataService.getOneRestaurant(this.restaurantId).then((response) => {
             this.restaurantArticles = response.data.restaurant.articles;
             console.log(response.data.restaurant.articles);

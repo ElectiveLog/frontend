@@ -372,7 +372,7 @@ export default {
 
       var config = {
         method: "put",
-        url: "http://localhost:8080/api/orders/" + commande.id,
+        url: "http://10.117.129.194:8080/api/orders/" + commande.id,
         headers: {
           "X-Server-Select": "mongo",
           Authorization:
@@ -401,7 +401,7 @@ export default {
       const payloadUser = this.decodeToken(user.accessToken);
       var config = {
         method: "put",
-        url: "http://localhost:8080/users/" + payloadUser.userId,
+        url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
         headers: {
           Authorization: "Bearer " + user.accessToken,
         },
@@ -426,7 +426,7 @@ export default {
       const payloadUser = this.decodeToken(user.accessToken);
       var config = {
         method: "delete",
-        url: "http://localhost:8080/users/" + payloadUser.userId,
+        url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
         headers: {
           Authorization: "Bearer " + user.accessToken,
         },
@@ -457,7 +457,7 @@ export default {
     console.log(payloadUser);
     var config = {
       method: "get",
-      url: "http://localhost:8080/users/" + payloadUser.userId,
+      url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
       headers: {
         Authorization: "Bearer " + user.accessToken,
       },
@@ -474,7 +474,7 @@ export default {
     var configRestaurant = {
       method: "get",
       url:
-        "http://localhost:8080/api/restaurants/restaurateur/" +
+        "http://10.117.129.194:8080/api/restaurants/restaurateur/" +
         payloadUser.userId,
       headers: {
         "X-Server-Select": "mongo",
@@ -490,7 +490,8 @@ export default {
           var config = {
             method: "get",
             url:
-              "http://localhost:8080/api/orders/restaurant/" + restaurant._id,
+              "http://10.117.129.194:8080/api/orders/restaurant/" +
+              restaurant._id,
             headers: {
               "X-Server-Select": "mongo",
             },
@@ -502,7 +503,7 @@ export default {
                 var priceCommande = 0;
                 var configLivreur = {
                   method: "get",
-                  url: "http://localhost:8080/users/" + order.idLivreur,
+                  url: "http://10.117.129.194:8080/users/" + order.idLivreur,
                   headers: {
                     Authorization: "Bearer " + user.accessToken,
                   },
@@ -518,7 +519,7 @@ export default {
 
                 var configClient = {
                   method: "get",
-                  url: "http://localhost:8080/users/" + order.idClient,
+                  url: "http://10.117.129.194:8080/users/" + order.idClient,
                   headers: {
                     Authorization: "Bearer " + user.accessToken,
                   },

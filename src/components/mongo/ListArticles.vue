@@ -130,7 +130,6 @@
         />
       </div>
       <div class="form-group">
-        <img style="" :src="image" alt="" />
         <input
           @change="handleImage"
           class="custom-input"
@@ -170,6 +169,7 @@ export default {
         detail: "",
         picture: "",
       },
+      image: "",
     };
   },
   methods: {
@@ -182,7 +182,7 @@ export default {
       DataService.getAllRestaurantsByRestaurateur(this.payloadUser.userId)
         .then((response) => {
           this.restaurantId = response.data.restaurants[0]._id;
-          console.log("Utilisateur: " + this.payloadUser.userId);
+          console.log("Utilisateur: " + this.userId);
           console.log(this.restaurantId);
           DataService.getOneRestaurant(this.restaurantId).then((response) => {
             this.restaurantArticles = response.data.restaurant.articles;
@@ -274,38 +274,86 @@ export default {
       );
       console.log("result :");
       console.log(difference);
-      axios.put(`http://localhost:3000/api/restaurants/${this.restaurantId}`, {
-        articles: difference,
-      });
+      axios.put(
+        `http://10.117.129.194:3000/api/restaurants/${this.restaurantId}`,
+        {
+          articles: difference,
+        },
+        {
+          headers: {
+            "X-Server-Select": "mongo",
+          },
+        }
+      );
       this.reload();
     },
     updateArticle() {
       this.form.picture = this.image;
       const articleId = this.currentArticle._id;
       if (this.form.name !== "") {
-        axios.put(`http://localhost:3000/api/articles/${articleId}`, {
-          name: this.form.name,
-        });
+        axios.put(
+          `http://10.117.129.194:8080/api/articles/${articleId}`,
+          {
+            name: this.form.name,
+          },
+          {
+            headers: {
+              "X-Server-Select": "mongo",
+            },
+          }
+        );
       }
       if (this.form.type !== "") {
-        axios.put(`http://localhost:3000/api/articles/${articleId}`, {
-          type: this.form.type,
-        });
+        axios.put(
+          `http://10.117.129.194:8080/api/articles/${articleId}`,
+          {
+            type: this.form.type,
+          },
+          {
+            headers: {
+              "X-Server-Select": "mongo",
+            },
+          }
+        );
       }
       if (this.form.price !== "") {
-        axios.put(`http://localhost:3000/api/articles/${articleId}`, {
-          price: this.form.price,
-        });
+        axios.put(
+          `http://10.117.129.194:8080/api/articles/${articleId}`,
+          {
+            price: this.form.price,
+          },
+          {
+            headers: {
+              "X-Server-Select": "mongo",
+            },
+          }
+        );
       }
       if (this.form.detail !== "") {
-        axios.put(`http://localhost:3000/api/articles/${articleId}`, {
-          detail: this.form.detail,
-        });
+        axios.put(
+          `http://10.117.129.194:8080/api/articles/${articleId}`,
+          {
+            detail: this.form.detail,
+          },
+          {
+            headers: {
+              "X-Server-Select": "mongo",
+            },
+          }
+        );
       }
       if (this.form.picture !== "") {
-        axios.put(`http://localhost:3000/api/articles/${articleId}`, {
-          picture: this.form.picture,
-        });
+        axios.put(
+          `http://localhost:3000/api/articles/${articleId}`,
+          {
+            picture: this.form.picture,
+          },
+          {
+            headers: {
+              "X-Server-Select": "mongo",
+            },
+          }
+        );
       }
       this.reload();
     },

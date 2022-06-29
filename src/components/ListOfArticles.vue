@@ -47,6 +47,8 @@
 <script>
 import DataService from "../services/DataService";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
+const user = JSON.parse(localStorage.getItem("user"));
 
 let restaurantId = "";
 let articles = "";
@@ -75,8 +77,13 @@ export default {
     };
   },
   methods: {
+    decodeToken(token) {
+      return jwt_decode(token);
+    },
     // to get all
     retrieveArticles() {
+      this.payloadUser = this.decodeToken(user.accessToken);
+      this.idClient = this.payloadUser.userId;
       //   console.log(restaurantId);
       listOfArticles = [];
       DataService.getOneRestaurant(restaurantId)
@@ -108,10 +115,9 @@ export default {
     createOrder() {
       console.log(restaurantId);
       console.log(this.cart);
-      const idClient = "62bc06825573eae121135afa";
 
       axios.post("http://localhost:3000/api/orders/create", {
-        idClient: idClient,
+        idClient: this.idClient,
         idRestaurant: restaurantId,
         articles: this.cart,
         state: "commande",

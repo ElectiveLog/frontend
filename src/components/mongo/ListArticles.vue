@@ -21,6 +21,7 @@
     </div>
     <div class="col-md-6">
       <h2>Liste de vos articles / menus</h2>
+      <a class="space_bottom">{{ validation }}</a>
       <ul class="list-group">
         <li
           class="list-group-item"
@@ -87,7 +88,10 @@
     &emsp;
     <!-- Modifier -->
     <h2>Modifier un article / menu</h2>
-    <a>L'article sélectionné au dessus sera modifié.</a>
+    <a
+      >L'article sélectionné au dessus sera modifié avec les champs que vous
+      aurez renseignés. Les champs vides ne seront pas pris en compte</a
+    >
     <form v-on:submit.prevent="updateArticle">
       <div class="form-group">
         <label for="name">Nom</label>
@@ -129,7 +133,7 @@
           v-model="form.detail"
         />
       </div>
-      <div class="form-group">
+      <div class="form-group space_up">
         <input
           @change="handleImage"
           class="custom-input"
@@ -152,7 +156,6 @@ import DataService from "../../services/DataService";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 const user = JSON.parse(localStorage.getItem("user"));
-
 export default {
   name: "articles-list",
   data() {
@@ -167,9 +170,10 @@ export default {
         type: "",
         price: "",
         detail: "",
-        picture: "",
+        picture: ""
       },
-      image: "",
+      validation: "",
+      image: ""
     };
   },
   methods: {
@@ -181,29 +185,29 @@ export default {
       this.userId = this.payloadUser.userId;
       console.log("Utilisateur: " + this.userId);
       DataService.getAllRestaurantsByRestaurateur(this.payloadUser.userId)
-        .then((response) => {
+        .then(response => {
           this.restaurantId = response.data.restaurants[0]._id;
           console.log("Utilisateur: " + this.userId);
           console.log("le restau: " + this.restaurantId);
-          DataService.getOneRestaurant(this.restaurantId).then((response) => {
+          DataService.getOneRestaurant(this.restaurantId).then(response => {
             this.restaurantArticles = response.data.restaurant.articles;
             console.log(response.data.restaurant.articles);
             const allRestaurantArticles = this.restaurantArticles;
             const allArticles = this.articles;
-            allRestaurantArticles.forEach((element) => {
+            allRestaurantArticles.forEach(element => {
               console.log(element);
               DataService.getOneArticle(element)
-                .then((response) => {
+                .then(response => {
                   allArticles.push(response.data.article);
                   console.log(allArticles);
                 })
-                .catch((e) => {
+                .catch(e => {
                   console.log(e);
                 });
             });
           });
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     },
@@ -257,11 +261,33 @@ export default {
     },
     deleteArticle() {
       DataService.deleteArticle(this.currentArticle._id)
-        .then((response) => {
+        .then(response => {
           console.log(response.data.articles);
-          this.refreshList();
+          // get the list of articles in the restaurant
+          const allRestaurantArticles = this.restaurantArticles;
+          const toDelete = this.currentArticle._id;
+          console.log(allRestaurantArticles);
+          console.log(toDelete);
+          // get the new list of articles (the previous one without the articles just deleted)
+          let difference = allRestaurantArticles.filter(
+            x => !toDelete.includes(x)
+          );
+          console.log("result :");
+          console.log(difference);
+          console.log(this.restaurantId);
+          axios.put(
+            `http://10.117.129.194:8080/api/restaurants/${this.restaurantId}`,
+            {
+              articles: difference
+            },
+            {
+              headers: {
+                "X-Server-Select": "mongo"
+              }
+            }
+          );
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
         });
 
@@ -270,23 +296,23 @@ export default {
       const toDelete = this.currentArticle._id;
 
       // get the new list of articles (the previous one without the articles just deleted)
-      let difference = allRestaurantArticles.filter(
-        (x) => !toDelete.includes(x)
-      );
+      let difference = allRestaurantArticles.filter(x => !toDelete.includes(x));
       console.log("result :");
       console.log(difference);
       axios.put(
         `http://10.117.129.194:8080/api/restaurants/${this.restaurantId}`,
         {
-          articles: difference,
+          articles: difference
         },
         {
           headers: {
-            "X-Server-Select": "mongo",
-          },
+            "X-Server-Select": "mongo"
+          }
         }
       );
       this.reload();
+      // this.refreshList();
+      this.validation = "Suppression réussie, actualisez la liste.";
     },
     updateArticle() {
       this.form.picture = this.image;
@@ -295,12 +321,12 @@ export default {
         axios.put(
           `http://10.117.129.194:8080/api/articles/${articleId}`,
           {
-            name: this.form.name,
+            name: this.form.name
           },
           {
             headers: {
-              "X-Server-Select": "mongo",
-            },
+              "X-Server-Select": "mongo"
+            }
           }
         );
       }
@@ -308,12 +334,12 @@ export default {
         axios.put(
           `http://10.117.129.194:8080/api/articles/${articleId}`,
           {
-            type: this.form.type,
+            type: this.form.type
           },
           {
             headers: {
-              "X-Server-Select": "mongo",
-            },
+              "X-Server-Select": "mongo"
+            }
           }
         );
       }
@@ -321,12 +347,12 @@ export default {
         axios.put(
           `http://10.117.129.194:8080/api/articles/${articleId}`,
           {
-            price: this.form.price,
+            price: this.form.price
           },
           {
             headers: {
-              "X-Server-Select": "mongo",
-            },
+              "X-Server-Select": "mongo"
+            }
           }
         );
       }
@@ -334,12 +360,12 @@ export default {
         axios.put(
           `http://10.117.129.194:8080/api/articles/${articleId}`,
           {
-            detail: this.form.detail,
+            detail: this.form.detail
           },
           {
             headers: {
-              "X-Server-Select": "mongo",
-            },
+              "X-Server-Select": "mongo"
+            }
           }
         );
       }
@@ -347,12 +373,12 @@ export default {
         axios.put(
           `http://10.117.129.194:8080/api/articles/${articleId}`,
           {
-            picture: this.form.picture,
+            picture: this.form.picture
           },
           {
             headers: {
-              "X-Server-Select": "mongo",
-            },
+              "X-Server-Select": "mongo"
+            }
           }
         );
       }
@@ -367,15 +393,14 @@ export default {
     },
     createBase64Image(fileObject) {
       const reader = new FileReader();
-
-      reader.onload = (e) => {
+      reader.onload = e => {
         this.image = e.target.result;
       };
       reader.readAsDataURL(fileObject);
     },
     scrollToTop() {
       window.scrollTo(0, 0);
-    },
+    }
 
     // searchName() {
     //   DataService.find(this.name)
@@ -390,7 +415,7 @@ export default {
   },
   mounted() {
     this.retrieveArticles();
-  },
+  }
 };
 </script>
 
@@ -400,5 +425,13 @@ export default {
   max-width: 750px;
   margin: auto;
   margin-bottom: 50px;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+.space_up {
+  margin-top: 10px;
 }
 </style>

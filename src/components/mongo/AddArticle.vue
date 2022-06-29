@@ -1,49 +1,56 @@
 <template>
   <div class="list row">
     <h2>Ajouter un article / menu</h2>
-    <a>L'article ajouté sera directement ajouté à votre restaurant.</a>
+    <a
+      >Après validation, l'article sera directement ajouté à votre
+      restaurant.</a
+    >
     <form v-on:submit.prevent="submitForm">
       <div class="form-group">
-        <label for="name">Nom</label>
+        <label for="name">Nom *</label>
         <input
           type="text"
           class="form-control"
           id="name"
           placeholder="Nom de l'article"
           v-model="form.name"
+          required="required"
         />
       </div>
       <div class="form-group">
-        <label for="type">Type d'article</label>
+        <label for="type">Type d'article *</label>
         <input
           type="text"
           class="form-control"
           id="type"
           placeholder="Selectionner un type"
           v-model="form.type"
+          required="required"
         />
       </div>
       <div class="form-group">
-        <label for="price">Prix</label>
+        <label for="price">Prix *</label>
         <input
           type="number"
           class="form-control"
           id="price"
           placeholder="Prix"
           v-model="form.price"
+          required="required"
         />
       </div>
       <div class="form-group">
-        <label for="detail">Détail</label>
+        <label for="detail">Détail *</label>
         <input
           type="text"
           class="form-control"
           id="detail"
           placeholder="Détail"
           v-model="form.detail"
+          required="required"
         />
       </div>
-      <div class="form-group">
+      <div class="form-group space_up">
         <input
           @change="handleImage"
           class="custom-input"
@@ -78,11 +85,11 @@ export default {
         type: "",
         price: "",
         detail: "",
-        picture: "",
+        picture: ""
       },
       articles: {
-        articles: "",
-      },
+        articles: ""
+      }
     };
   },
   methods: {
@@ -96,14 +103,16 @@ export default {
       //get the restaurant id
       await axios
         .get(
-          `http://10.117.129.194:8080/api/restaurants/restaurateur/${this.userId}`,
+          `http://10.117.129.194:8080/api/restaurants/restaurateur/${
+            this.userId
+          }`,
           {
             headers: {
-              "X-Server-Select": "mongo",
-            },
+              "X-Server-Select": "mongo"
+            }
           }
         )
-        .then((res) => {
+        .then(res => {
           this.restaurantId = res.data.restaurants[0]._id;
           console.log("Utilisateur: " + this.userId);
           console.log("le restau: " + this.restaurantId);
@@ -115,11 +124,11 @@ export default {
           `http://10.117.129.194:8080/api/restaurants/${this.restaurantId}`,
           {
             headers: {
-              "X-Server-Select": "mongo",
-            },
+              "X-Server-Select": "mongo"
+            }
           }
         )
-        .then((res) => {
+        .then(res => {
           console.log("je rentre ici");
           this.articles = res.data.restaurant.articles;
           console.log("liste des articles dans le restau :");
@@ -129,10 +138,10 @@ export default {
       axios
         .post("http://10.117.129.194:8080/api/articles/create", this.form, {
           headers: {
-            "X-Server-Select": "mongo",
-          },
+            "X-Server-Select": "mongo"
+          }
         })
-        .then((res) => {
+        .then(res => {
           //Perform Success Action
 
           // get this article ID
@@ -152,12 +161,12 @@ export default {
           axios.put(
             `http://10.117.129.194:8080/api/restaurants/${this.restaurantId}`,
             {
-              articles: allArticles,
+              articles: allArticles
             },
             {
               headers: {
-                "X-Server-Select": "mongo",
-              },
+                "X-Server-Select": "mongo"
+              }
             }
           );
         })
@@ -178,11 +187,17 @@ export default {
     createBase64Image(fileObject) {
       const reader = new FileReader();
 
-      reader.onload = (e) => {
+      reader.onload = e => {
         this.image = e.target.result;
       };
       reader.readAsDataURL(fileObject);
-    },
-  },
+    }
+  }
 };
 </script>
+
+<style scoped>
+.space_up {
+  margin-top: 10px;
+}
+</style>

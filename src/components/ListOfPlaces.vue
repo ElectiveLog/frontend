@@ -68,12 +68,6 @@ export default {
 };
 </script>
 
-<style scoped>
-.effect {
-  cursor: pointer;
-}
-</style>
-
 <style>
 .list {
   text-align: left;
@@ -97,6 +91,7 @@ img {
 }
 
 .effect {
+  cursor: pointer;
   transform: translateY(0);
   transition: transform 0.3s ease-out 0s;
   margin-bottom: 10px;

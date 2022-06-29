@@ -151,7 +151,6 @@
 <script>
 import DataService from "../../services/DataService";
 import axios from "axios";
-// const restaurantId = "62bc06825573eae221135afa";
 import jwt_decode from "jwt-decode";
 const user = JSON.parse(localStorage.getItem("user"));
 
@@ -222,6 +221,7 @@ export default {
 
     // Test with Burger King
     // retrieveArticles() {
+    //   const restaurantId = "62bc06825573eae221135afa";
     //   DataService.getOneRestaurant(restaurantId).then((response) => {
     //     this.restaurantArticles = response.data.restaurant.articles;
     //     console.log(response.data.restaurant.articles);

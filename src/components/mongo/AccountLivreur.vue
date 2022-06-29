@@ -59,9 +59,9 @@
             size="sm"
             variant="dark"
             @click="handleEditStatus(row.item)"
-            class="green_button styled_button"
+            class="text-sm-right"
           >
-            Validé
+            Valider
           </b-button>
         </template>
         <template #cell(show_details)="row">
@@ -89,7 +89,7 @@
             </b-row>
             <b-row class="mb-2">
               <b-col sm="3" class="text-sm-right"
-                ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+                ><b>Numéro de rue: </b>{{ row.item.streetNumber }}</b-col
               >
             </b-row>
             <b-row class="mb-2">
@@ -118,7 +118,7 @@
     </div>
 
     <div class="card-header">
-      <h4 class="card-heading">Commandes en cours</h4>
+      <h4 class="card-heading">Commande·s en cours</h4>
       <b-alert v-if="inProgressCommandes.length == 0" show
         >Aucune commande en cours !</b-alert
       >
@@ -142,7 +142,7 @@
             @click="handleEditStatusLivraison(row.item)"
             class="text-sm-right"
           >
-            Validé
+            Valider
           </b-button>
         </template>
         <template #cell(show_details)="row">
@@ -170,7 +170,7 @@
             </b-row>
             <b-row class="mb-2">
               <b-col sm="3" class="text-sm-right"
-                ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+                ><b>Numéro de rue: </b>{{ row.item.streetNumber }}</b-col
               >
             </b-row>
             <b-row class="mb-2">
@@ -243,7 +243,7 @@
               </b-row>
               <b-row class="mb-2">
                 <b-col sm="3" class="text-sm-right"
-                  ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+                  ><b>Numéro de rue: </b>{{ row.item.streetNumber }}</b-col
                 >
               </b-row>
               <b-row class="mb-2">
@@ -338,7 +338,7 @@ export default {
         },
         {
           key: "actions",
-          label: "Actions",
+          label: "Action",
         },
         { key: "show_details", label: "Details" },
       ],
@@ -351,7 +351,7 @@ export default {
           key: "prix",
           label: "Prix",
         },
-        { key: "articles", label: "Articles" },
+        { key: "articles", label: "Article·s" },
         { key: "livreur", label: "Livreur" },
         { key: "client", label: "Client" },
         { key: "status", label: "Status" },
@@ -376,6 +376,29 @@ export default {
         state: "livraison",
         idLivreur: payloadUser.userId,
       });
+
+      var configLog = {
+        method: "post",
+        url: "http://localhost:8080/api/logs/create",
+        headers: {
+          "X-Server-Select": "mongo",
+        },
+        data: {
+          type: "StatusCommande",
+          description:
+            payloadUser.email +
+            " a modifié le status de la commande " +
+            commande.id +
+            " à livraison.",
+        },
+      };
+      axios(configLog)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
       var config = {
         method: "put",
@@ -410,6 +433,29 @@ export default {
         state: "prepared",
         idLivreur: payloadUser.userId,
       });
+
+      var configLog = {
+        method: "post",
+        url: "http://localhost:8080/api/logs/create",
+        headers: {
+          "X-Server-Select": "mongo",
+        },
+        data: {
+          type: "StatusCommande",
+          description:
+            payloadUser.email +
+            " a modifié le status de la commande " +
+            commande.id +
+            " à prepared.",
+        },
+      };
+      axios(configLog)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
       var config = {
         method: "put",
@@ -462,9 +508,45 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
+      var configLog = {
+        method: "post",
+        url: "http://localhost:8080/api/logs/create",
+        headers: {
+          "X-Server-Select": "mongo",
+        },
+        data: {
+          type: "Modification",
+          description: payloadUser.email + "(Livreur) a modifié son compte.",
+        },
+      };
+      axios(configLog)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     handleDelete() {
       const payloadUser = this.decodeToken(user.accessToken);
+      var configLog = {
+        method: "post",
+        url: "http://localhost:8080/api/logs/create",
+        headers: {
+          "X-Server-Select": "mongo",
+        },
+        data: {
+          type: "Suppression",
+          description: payloadUser.email + "(Livreur) a supprimé son compte.",
+        },
+      };
+      axios(configLog)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
       var config = {
         method: "delete",
         url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
@@ -623,7 +705,7 @@ export default {
                   country: response.data.country,
                   phoneNumber: response.data.phoneNumber,
                   restaurant: element.idRestaurant.name,
-                  status: "livrée",
+                  status: "Livrée",
                   parnainage: response.data.sponsorshipCode,
                   date: element.createdAt.split("T")[0],
                   heure: element.createdAt.split("T").pop().split(".")[0],

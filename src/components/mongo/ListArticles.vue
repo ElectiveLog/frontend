@@ -290,6 +290,29 @@ export default {
         .catch((e) => {
           console.log(e);
         });
+
+      // get the list of articles in the restaurant
+      const allRestaurantArticles = this.restaurantArticles;
+      const toDelete = this.currentArticle._id;
+
+      // get the new list of articles (the previous one without the articles just deleted)
+      let difference = allRestaurantArticles.filter(
+        (x) => !toDelete.includes(x)
+      );
+      console.log("result :");
+      console.log(difference);
+      axios.put(
+        `http://10.117.129.194:8080/api/restaurants/${this.restaurantId}`,
+        {
+          articles: difference,
+        },
+        {
+          headers: {
+            "X-Server-Select": "mongo",
+          },
+        }
+      );
+      this.reload();
       // this.refreshList();
       this.validation = "Suppression réussie, actualisez la liste.";
     },

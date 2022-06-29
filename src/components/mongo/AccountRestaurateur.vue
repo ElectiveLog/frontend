@@ -12,7 +12,7 @@
               <input
                 class="form-control"
                 type="text"
-                placeholder="Username"
+                placeholder="Nom"
                 v-model="userData.name"
               />
             </div>
@@ -34,7 +34,7 @@
               <input
                 class="form-control"
                 type="text"
-                placeholder="Home Address"
+                placeholder="Adresse"
                 v-model="userData.address"
               />
             </div>
@@ -49,7 +49,7 @@
     </form>
 
     <div class="card-header">
-      <h4 class="card-heading">Commandes en attente</h4>
+      <h4 class="card-heading">Commande·s en attente</h4>
       <b-alert v-if="waitCommandes.length == 0" show
         >Aucune commande en attente!!!</b-alert
       >
@@ -73,7 +73,7 @@
             @click="handleEditStatus(row.item)"
             class="green_button styled_button"
           >
-            Validé
+            Valider
           </b-button>
         </template>
         <template #cell(show_details)="row">
@@ -101,7 +101,7 @@
             </b-row>
             <b-row class="mb-2">
               <b-col sm="3" class="text-sm-right"
-                ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+                ><b>Numéro de rue: </b>{{ row.item.streetNumber }}</b-col
               >
             </b-row>
             <b-row class="mb-2">
@@ -130,7 +130,7 @@
     </div>
 
     <div class="card-header">
-      <h4 class="card-heading">Commandes en cours</h4>
+      <h4 class="card-heading">Commande·s en cours</h4>
       <b-alert v-if="inProgressCommandes.length == 0" show
         >Aucune commande en cours !</b-alert
       >
@@ -173,7 +173,7 @@
             </b-row>
             <b-row class="mb-2">
               <b-col sm="3" class="text-sm-right"
-                ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+                ><b>Numéro de rue: </b>{{ row.item.streetNumber }}</b-col
               >
             </b-row>
             <b-row class="mb-2">
@@ -210,6 +210,7 @@
         >
 
         <b-table
+          v-else
           hover
           small
           outlined
@@ -246,7 +247,7 @@
               </b-row>
               <b-row class="mb-2">
                 <b-col sm="3" class="text-sm-right"
-                  ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+                  ><b>Numéro de rue: </b>{{ row.item.streetNumber }}</b-col
                 >
               </b-row>
               <b-row class="mb-2">
@@ -341,7 +342,7 @@ export default {
         },
         {
           key: "actions",
-          label: "Actions",
+          label: "Action",
         },
         { key: "show_details", label: "Details" },
       ],
@@ -421,9 +422,48 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
+
+      var configLog = {
+        method: "post",
+        url: "http://localhost:8080/api/logs/create",
+        headers: {
+          "X-Server-Select": "mongo",
+        },
+        data: {
+          type: "Modification",
+          description:
+            payloadUser.email + "(Restaurateur) a modifié son compte.",
+        },
+      };
+      axios(configLog)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     handleDelete() {
       const payloadUser = this.decodeToken(user.accessToken);
+      var configLog = {
+        method: "post",
+        url: "http://localhost:8080/api/logs/create",
+        headers: {
+          "X-Server-Select": "mongo",
+        },
+        data: {
+          type: "Suppression",
+          description:
+            payloadUser.email + "(Restaurateur) a supprimé son compte.",
+        },
+      };
+      axios(configLog)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
       var config = {
         method: "delete",
         url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
@@ -454,7 +494,6 @@ export default {
   },
   async created() {
     const payloadUser = this.decodeToken(user.accessToken);
-    console.log(payloadUser);
     var config = {
       method: "get",
       url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
@@ -552,7 +591,6 @@ export default {
                 );
 
                 if (order.state == "commande") {
-                  console.log(order);
                   this.waitCommandes.push({
                     id: order._id,
                     Commande: "Commande n°" + i,
@@ -605,7 +643,7 @@ export default {
                     city: order.city,
                     country: order.country,
                     phoneNumber: order.phoneNumber,
-                    status: "livrée",
+                    status: "Livrée",
                     parnainage: order.sponsorshipCode,
                     date: order.createdAt.split("T")[0],
                     heure: order.createdAt.split("T").pop().split(".")[0],

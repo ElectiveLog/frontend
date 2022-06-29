@@ -1,6 +1,13 @@
 <template>
   <div class="row">
     <div>
+      <router-link to="/">
+        <b-icon-arrow-left
+          class="icon"
+          font-scale="1.5"
+          shift-v="1"
+        ></b-icon-arrow-left
+      ></router-link>
       <h5 class="space_bottom">
         Articles dans le panier : {{ Object.keys(this.cart).length }}
       </h5>
@@ -73,7 +80,7 @@ export default {
       articlesCart: [],
       state: "commande",
       validation: "",
-      totalPrice: "0"
+      totalPrice: "0",
     };
   },
   methods: {
@@ -87,23 +94,23 @@ export default {
       //   console.log(restaurantId);
       listOfArticles = [];
       DataService.getOneRestaurant(restaurantId)
-        .then(response => {
+        .then((response) => {
           articles = response.data.restaurant.articles;
           //   console.log(articles);
-          articles.forEach(element => {
+          articles.forEach((element) => {
             console.log(element);
             DataService.getOneArticle(element)
-              .then(response => {
+              .then((response) => {
                 listOfArticles.push(response.data.article);
                 console.log(listOfArticles);
               })
-              .catch(e => {
+              .catch((e) => {
                 console.log(e);
               });
             this.articles = listOfArticles;
           });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     },
@@ -121,12 +128,12 @@ export default {
           idClient: this.idClient,
           idRestaurant: restaurantId,
           articles: this.cart,
-          state: "commande"
+          state: "commande",
         },
         {
           headers: {
-            "X-Server-Select": "mongo"
-          }
+            "X-Server-Select": "mongo",
+          },
         }
       );
       this.emptyCart();
@@ -155,12 +162,12 @@ export default {
     getRestaurantId() {
       restaurantId = this.$route.params.id;
       //   console.log(restaurantId);
-    }
+    },
   },
   mounted() {
     this.getRestaurantId();
     this.retrieveArticles();
-  }
+  },
 };
 </script>
 

@@ -129,6 +129,15 @@
           v-model="form.detail"
         />
       </div>
+      <div class="form-group">
+        <img style="" :src="image" alt="" />
+        <input
+          @change="handleImage"
+          class="custom-input"
+          type="file"
+          accept="image/*"
+        />
+      </div>
       &nbsp;
       <div @click="scrollToTop">
         <div class="form-group">
@@ -159,7 +168,8 @@ export default {
         type: "",
         price: "",
         detail: "",
-      },
+        picture: ""
+      }
     };
   },
   methods: {
@@ -170,29 +180,29 @@ export default {
       this.payloadUser = this.decodeToken(user.accessToken);
       this.userId = this.payloadUser.userId;
       DataService.getAllRestaurantsByRestaurateur(this.payloadUser.userId)
-        .then((response) => {
+        .then(response => {
           this.restaurantId = response.data.restaurants[0]._id;
           console.log("Utilisateur: " + this.payloadUser.userId);
           console.log(this.restaurantId);
-          DataService.getOneRestaurant(this.restaurantId).then((response) => {
+          DataService.getOneRestaurant(this.restaurantId).then(response => {
             this.restaurantArticles = response.data.restaurant.articles;
             console.log(response.data.restaurant.articles);
             const allRestaurantArticles = this.restaurantArticles;
             const allArticles = this.articles;
-            allRestaurantArticles.forEach((element) => {
+            allRestaurantArticles.forEach(element => {
               console.log(element);
               DataService.getOneArticle(element)
-                .then((response) => {
+                .then(response => {
                   allArticles.push(response.data.article);
                   console.log(allArticles);
                 })
-                .catch((e) => {
+                .catch(e => {
                   console.log(e);
                 });
             });
           });
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     },
@@ -207,6 +217,28 @@ export default {
     //     .catch((e) => {
     //       console.log(e);
     //     });
+    // },
+
+    // Test with Burger King
+    // retrieveArticles() {
+    //   const restaurantId = "62bc06825573eae221135afa";
+    //   DataService.getOneRestaurant(restaurantId).then((response) => {
+    //     this.restaurantArticles = response.data.restaurant.articles;
+    //     console.log(response.data.restaurant.articles);
+    //     const allRestaurantArticles = this.restaurantArticles;
+    //     const allArticles = this.articles;
+    //     allRestaurantArticles.forEach((element) => {
+    //       console.log(element);
+    //       DataService.getOneArticle(element)
+    //         .then((response) => {
+    //           allArticles.push(response.data.article);
+    //           console.log(allArticles);
+    //         })
+    //         .catch((e) => {
+    //           console.log(e);
+    //         });
+    //     });
+    //   });
     // },
 
     refreshList() {
@@ -224,11 +256,11 @@ export default {
     },
     deleteArticle() {
       DataService.deleteArticle(this.currentArticle._id)
-        .then((response) => {
+        .then(response => {
           console.log(response.data.articles);
           this.refreshList();
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
         });
 
@@ -237,36 +269,40 @@ export default {
       const toDelete = this.currentArticle._id;
 
       // get the new list of articles (the previous one without the articles just deleted)
-      let difference = allRestaurantArticles.filter(
-        (x) => !toDelete.includes(x)
-      );
+      let difference = allRestaurantArticles.filter(x => !toDelete.includes(x));
       console.log("result :");
       console.log(difference);
       axios.put(`http://localhost:3000/api/restaurants/${this.restaurantId}`, {
-        articles: difference,
+        articles: difference
       });
       this.reload();
     },
     updateArticle() {
+      this.form.picture = this.image;
       const articleId = this.currentArticle._id;
       if (this.form.name !== "") {
         axios.put(`http://localhost:3000/api/articles/${articleId}`, {
-          name: this.form.name,
+          name: this.form.name
         });
       }
       if (this.form.type !== "") {
         axios.put(`http://localhost:3000/api/articles/${articleId}`, {
-          type: this.form.type,
+          type: this.form.type
         });
       }
       if (this.form.price !== "") {
         axios.put(`http://localhost:3000/api/articles/${articleId}`, {
-          price: this.form.price,
+          price: this.form.price
         });
       }
       if (this.form.detail !== "") {
         axios.put(`http://localhost:3000/api/articles/${articleId}`, {
-          detail: this.form.detail,
+          detail: this.form.detail
+        });
+      }
+      if (this.form.picture !== "") {
+        axios.put(`http://localhost:3000/api/articles/${articleId}`, {
+          picture: this.form.picture
         });
       }
       this.reload();
@@ -274,9 +310,21 @@ export default {
     reload() {
       location.reload();
     },
+    handleImage(e) {
+      const selectedImage = e.target.files[0];
+      this.createBase64Image(selectedImage);
+    },
+    createBase64Image(fileObject) {
+      const reader = new FileReader();
+
+      reader.onload = e => {
+        this.image = e.target.result;
+      };
+      reader.readAsDataURL(fileObject);
+    },
     scrollToTop() {
       window.scrollTo(0, 0);
-    },
+    }
 
     // searchName() {
     //   DataService.find(this.name)
@@ -291,9 +339,10 @@ export default {
   },
   mounted() {
     this.retrieveArticles();
-  },
+  }
 };
 </script>
+
 <style>
 .list {
   text-align: left;

@@ -10,6 +10,8 @@ import Restaurants from "@/routes/Restaurants.vue";
 import Articles from "@/routes/Articles.vue";
 import Account from "@/routes/Account.vue";
 import jwt_decode from "jwt-decode";
+import ListOfArticles from "@/routes/ListOfArticles.vue";
+// import jwt_decode from "jwt-decode";
 
 Vue.use(VueRouter);
 
@@ -61,6 +63,12 @@ const router = new VueRouter({
       path: "/articles",
       name: "articles",
       component: Articles
+    },
+    {
+      path: "/listofarticles/:id",
+      name: "listofarticles",
+      component: ListOfArticles,
+      props: true
     },
     {
       path: "/:id",

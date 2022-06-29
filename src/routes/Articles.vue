@@ -12,7 +12,7 @@ import AddArticle from "@/components/mongo/AddArticle";
 // import UpdateArticle from "@/components/mongo/UpdateArticle";
 
 export default {
-  name: "home",
+  name: "articles",
   components: {
     ListArticles,
     AddArticle

@@ -425,6 +425,7 @@ export default {
         var y = 1;
         response.data.order.forEach(element => {
           var priceCommande = 0;
+          console.log(element);
           element.articles.forEach(article => {
             priceCommande += article.price;
           });
@@ -467,7 +468,7 @@ export default {
                   Commande: "Commande n°" + y,
                   prix: priceCommande + "€",
                   livreur: response.data.name,
-                  // restaurant: element.idRestaurant.name,
+                  restaurant: element.idRestaurant.name,
                   status: element.state,
                   date: element.createdAt.split("T")[0],
                   heure: element.createdAt

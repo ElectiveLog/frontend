@@ -12,7 +12,7 @@
               <input
                 class="form-control"
                 type="text"
-                placeholder="Username"
+                placeholder="Nom"
                 v-model="userData.name"
               />
             </div>
@@ -34,7 +34,7 @@
               <input
                 class="form-control"
                 type="text"
-                placeholder="Home Address"
+                placeholder="Adresse"
                 v-model="userData.address"
               />
             </div>
@@ -49,7 +49,7 @@
     </form>
 
     <div class="card-header">
-      <h4 class="card-heading">Commandes en attente</h4>
+      <h4 class="card-heading">Commande·s en attente</h4>
       <b-alert v-if="waitCommandes.length == 0" show
         >Aucune commande en attente!!!</b-alert
       >
@@ -73,7 +73,7 @@
             @click="handleEditStatus(row.item)"
             class="green_button styled_button"
           >
-            Validé
+            Valider
           </b-button>
         </template>
         <template #cell(show_details)="row">
@@ -101,7 +101,7 @@
             </b-row>
             <b-row class="mb-2">
               <b-col sm="3" class="text-sm-right"
-                ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+                ><b>Numéro de rue: </b>{{ row.item.streetNumber }}</b-col
               >
             </b-row>
             <b-row class="mb-2">
@@ -130,7 +130,7 @@
     </div>
 
     <div class="card-header">
-      <h4 class="card-heading">Commandes en cours</h4>
+      <h4 class="card-heading">Commande·s en cours</h4>
       <b-alert v-if="inProgressCommandes.length == 0" show
         >Aucune commande en cours !</b-alert
       >
@@ -173,7 +173,7 @@
             </b-row>
             <b-row class="mb-2">
               <b-col sm="3" class="text-sm-right"
-                ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+                ><b>Numéro de rue: </b>{{ row.item.streetNumber }}</b-col
               >
             </b-row>
             <b-row class="mb-2">
@@ -247,7 +247,7 @@
               </b-row>
               <b-row class="mb-2">
                 <b-col sm="3" class="text-sm-right"
-                  ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+                  ><b>Numéro de rue: </b>{{ row.item.streetNumber }}</b-col
                 >
               </b-row>
               <b-row class="mb-2">
@@ -321,54 +321,54 @@ export default {
       fields: [
         {
           key: "Commande",
-          label: "Commande"
+          label: "Commande",
         },
         {
           key: "prix",
-          label: "Prix"
+          label: "Prix",
         },
         { key: "Articles", label: "articles" },
         {
           key: "livreur",
-          label: "Livreur"
+          label: "Livreur",
         },
         {
           key: "client",
-          label: "client"
+          label: "client",
         },
         {
           key: "status",
-          label: "Status"
+          label: "Status",
         },
         {
           key: "actions",
-          label: "Actions"
+          label: "Action",
         },
-        { key: "show_details", label: "Details" }
+        { key: "show_details", label: "Details" },
       ],
       fieldsMore: [
         {
           key: "Commande",
-          label: "Commande"
+          label: "Commande",
         },
         {
           key: "prix",
-          label: "Prix"
+          label: "Prix",
         },
         { key: "articles", label: "Articles" },
         { key: "livreur", label: "Livreur" },
         { key: "client", label: "Client" },
         { key: "status", label: "Status" },
-        { key: "show_details", label: "Details" }
+        { key: "show_details", label: "Details" },
       ],
       inProgressCommandes: [],
-      historyCommandes: []
+      historyCommandes: [],
     };
   },
   methods: {
     handleEditStatus(commande) {
       var data = JSON.stringify({
-        state: "preparation"
+        state: "preparation",
       });
 
       var config = {
@@ -378,9 +378,9 @@ export default {
           "X-Server-Select": "mongo",
           Authorization:
             "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTU3NTg3MjUsImV4cCI6MTY1NjM2MzUyNX0.vHdiEc98ELrbBDbeZeG-851qS_SLSHJW8HDJX7mPgjs",
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        data: data
+        data: data,
       };
 
       axios(config)
@@ -390,11 +390,11 @@ export default {
             title: "Commande validée",
             type: "success",
             text: "La commande a été validée avec succès",
-            duration: 8000
+            duration: 8000,
           });
           location.reload();
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
@@ -404,9 +404,9 @@ export default {
         method: "put",
         url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
         headers: {
-          Authorization: "Bearer " + user.accessToken
+          Authorization: "Bearer " + user.accessToken,
         },
-        data: this.userData
+        data: this.userData,
       };
 
       axios(config)
@@ -416,10 +416,10 @@ export default {
             title: "Modification réussie",
             type: "success",
             text: "Vos modifications ont été enregistrées",
-            duration: 8000
+            duration: 8000,
           })
         )
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
 
@@ -427,19 +427,19 @@ export default {
         method: "post",
         url: "http://localhost:8080/api/logs/create",
         headers: {
-          "X-Server-Select": "mongo"
+          "X-Server-Select": "mongo",
         },
         data: {
           type: "Modification",
           description:
-            payloadUser.email + "(Restaurateur) a modifié son compte."
-        }
+            payloadUser.email + "(Restaurateur) a modifié son compte.",
+        },
       };
       axios(configLog)
-        .then(response => {
+        .then((response) => {
           console.log(JSON.stringify(response.data));
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     },
@@ -449,27 +449,27 @@ export default {
         method: "post",
         url: "http://localhost:8080/api/logs/create",
         headers: {
-          "X-Server-Select": "mongo"
+          "X-Server-Select": "mongo",
         },
         data: {
           type: "Suppression",
           description:
-            payloadUser.email + "(Restaurateur) a supprimé son compte."
-        }
+            payloadUser.email + "(Restaurateur) a supprimé son compte.",
+        },
       };
       axios(configLog)
-        .then(response => {
+        .then((response) => {
           console.log(JSON.stringify(response.data));
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
       var config = {
         method: "delete",
         url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
         headers: {
-          Authorization: "Bearer " + user.accessToken
-        }
+          Authorization: "Bearer " + user.accessToken,
+        },
       };
 
       axios(config)
@@ -479,18 +479,18 @@ export default {
             title: "Suppression réussie",
             type: "success",
             text: "Votre compte a été supprimé",
-            duration: 8000
+            duration: 8000,
           });
           this.$store.dispatch("auth/logout");
           this.$router.push("/login");
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
     decodeToken(token) {
       return jwt_decode(token);
-    }
+    },
   },
   async created() {
     const payloadUser = this.decodeToken(user.accessToken);
@@ -498,15 +498,15 @@ export default {
       method: "get",
       url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
       headers: {
-        Authorization: "Bearer " + user.accessToken
-      }
+        Authorization: "Bearer " + user.accessToken,
+      },
     };
 
     await axios(config)
-      .then(response => {
+      .then((response) => {
         this.userData = response.data;
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
 
@@ -516,43 +516,43 @@ export default {
         "http://10.117.129.194:8080/api/restaurants/restaurateur/" +
         payloadUser.userId,
       headers: {
-        "X-Server-Select": "mongo"
-      }
+        "X-Server-Select": "mongo",
+      },
     };
 
-    await axios(configRestaurant).then(async response => {
+    await axios(configRestaurant).then(async (response) => {
       var i = 1;
       var y = 1;
       var z = 1;
       response.data.restaurants
-        .forEach(async restaurant => {
+        .forEach(async (restaurant) => {
           var config = {
             method: "get",
             url:
               "http://10.117.129.194:8080/api/orders/restaurant/" +
               restaurant._id,
             headers: {
-              "X-Server-Select": "mongo"
-            }
+              "X-Server-Select": "mongo",
+            },
           };
 
           await axios(config)
-            .then(response => {
-              response.data.order.forEach(async order => {
+            .then((response) => {
+              response.data.order.forEach(async (order) => {
                 var priceCommande = 0;
                 var configLivreur = {
                   method: "get",
                   url: "http://10.117.129.194:8080/users/" + order.idLivreur,
                   headers: {
-                    Authorization: "Bearer " + user.accessToken
-                  }
+                    Authorization: "Bearer " + user.accessToken,
+                  },
                 };
 
                 await axios(configLivreur)
-                  .then(response => {
+                  .then((response) => {
                     order.idLivreur = response.data.name;
                   })
-                  .catch(function(error) {
+                  .catch(function (error) {
                     console.log(error);
                   });
 
@@ -560,12 +560,12 @@ export default {
                   method: "get",
                   url: "http://10.117.129.194:8080/users/" + order.idClient,
                   headers: {
-                    Authorization: "Bearer " + user.accessToken
-                  }
+                    Authorization: "Bearer " + user.accessToken,
+                  },
                 };
 
                 await axios(configClient)
-                  .then(response => {
+                  .then((response) => {
                     order.idClient = response.data.name;
                     order.streetNumber = response.data.streetNumber;
                     order.address = response.data.address;
@@ -573,11 +573,11 @@ export default {
                     order.country = response.data.country;
                     order.phoneNumber = response.data.phoneNumber;
                   })
-                  .catch(function(error) {
+                  .catch(function (error) {
                     console.log(error);
                   });
                 var articlesNames = "";
-                order.articles.forEach(article => {
+                order.articles.forEach((article) => {
                   priceCommande += article.price;
                   articlesNames += article.name + ", ";
                 });
@@ -606,10 +606,7 @@ export default {
                     status: order.state,
                     parnainage: order.sponsorshipCode,
                     date: order.createdAt.split("T")[0],
-                    heure: order.createdAt
-                      .split("T")
-                      .pop()
-                      .split(".")[0]
+                    heure: order.createdAt.split("T").pop().split(".")[0],
                   });
                   i++;
                 } else if (
@@ -630,10 +627,7 @@ export default {
                     status: order.state,
                     parnainage: order.sponsorshipCode,
                     date: order.createdAt.split("T")[0],
-                    heure: order.createdAt
-                      .split("T")
-                      .pop()
-                      .split(".")[0]
+                    heure: order.createdAt.split("T").pop().split(".")[0],
                   });
 
                   y++;
@@ -649,27 +643,24 @@ export default {
                     city: order.city,
                     country: order.country,
                     phoneNumber: order.phoneNumber,
-                    status: "livrée",
+                    status: "Livrée",
                     parnainage: order.sponsorshipCode,
                     date: order.createdAt.split("T")[0],
-                    heure: order.createdAt
-                      .split("T")
-                      .pop()
-                      .split(".")[0]
+                    heure: order.createdAt.split("T").pop().split(".")[0],
                   });
 
                   z++;
                 }
               });
             })
-            .catch(function(error) {
+            .catch(function (error) {
               console.log(error);
             });
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     });
-  }
+  },
 };
 </script>

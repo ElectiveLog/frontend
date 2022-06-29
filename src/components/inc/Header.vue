@@ -54,12 +54,6 @@
           <b-dropdown-item to="/account">
             Compte <b-icon-person-fill class="icon"></b-icon-person-fill>
           </b-dropdown-item>
-          <b-dropdown-item to="/cart"
-            >Panier
-            <b-icon-cart-fill class="icon"></b-icon-cart-fill>&ensp;<span>{{
-              orders
-            }}</span></b-dropdown-item
-          >
           <b-dropdown-item @click.prevent="logOut">Deconnexion</b-dropdown-item>
         </b-dropdown>
       </div>
@@ -81,15 +75,15 @@ export default {
     },
     currentUser() {
       return this.$store.state.auth.user;
-    }
+    },
   },
   methods: {
     logOut() {
       this.$store.dispatch("auth/logout");
       this.$store.state.auth.user = null;
       this.$router.push("/login");
-    }
-  }
+    },
+  },
 };
 </script>
 

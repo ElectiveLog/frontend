@@ -12,7 +12,7 @@
               <input
                 class="form-control"
                 type="text"
-                placeholder="Username"
+                placeholder="Nom"
                 v-model="userData.name"
               />
             </div>
@@ -304,7 +304,7 @@ export default {
       const payloadUser = this.decodeToken(user.accessToken);
       var config = {
         method: "put",
-        url: "http://localhost:8080/users/" + payloadUser.userId,
+        url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
         headers: {
           Authorization: "Bearer " + user.accessToken
         },
@@ -367,7 +367,7 @@ export default {
         });
       var config = {
         method: "delete",
-        url: "http://localhost:8080/users/" + payloadUser.userId,
+        url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
         headers: {
           Authorization: "Bearer " + user.accessToken
         }
@@ -397,7 +397,7 @@ export default {
     const payloadUser = this.decodeToken(user.accessToken);
     var config = {
       method: "get",
-      url: "http://localhost:8080/users/" + payloadUser.userId,
+      url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
       headers: {
         Authorization: "Bearer " + user.accessToken
       }
@@ -413,7 +413,7 @@ export default {
     console.log(payloadUser.userId);
     var configCommande = {
       method: "get",
-      url: "http://localhost:8080/api/orders/client/" + payloadUser.userId,
+      url: "http://10.117.129.194:8080/api/orders/client/" + payloadUser.userId,
       headers: {
         "X-Server-Select": "mongo"
       }
@@ -434,7 +434,7 @@ export default {
 
           var config = {
             method: "get",
-            url: "http://localhost:8080/users/" + element.idLivreur,
+            url: "http://10.117.129.194:8080/users/" + element.idLivreur,
             headers: {
               Authorization: "Bearer " + user.accessToken
             }

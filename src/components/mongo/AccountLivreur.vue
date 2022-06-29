@@ -12,7 +12,7 @@
               <input
                 class="form-control"
                 type="text"
-                placeholder="Username"
+                placeholder="Nom"
                 v-model="userData.name"
               />
             </div>
@@ -28,17 +28,6 @@
               />
             </div>
           </div>
-          <div class="col-md-12">
-            <div class="mb-4">
-              <label class="form-label">Adresse</label>
-              <input
-                class="form-control"
-                type="text"
-                placeholder="Home Address"
-                v-model="userData.address"
-              />
-            </div>
-          </div>
         </div>
       </div>
       <div class="card-footer text-end">
@@ -48,7 +37,7 @@
       </div>
     </form>
     <div class="card-header">
-      <h4 class="card-heading">Commandes en attente</h4>
+      <h4 class="card-heading">Commande·s en attente</h4>
       <b-alert v-if="awaitCommandes.length == 0" show
         >Aucune commande en attente!!!</b-alert
       >
@@ -413,7 +402,7 @@ export default {
 
       var config = {
         method: "put",
-        url: "http://localhost:8080/api/orders/" + commande.id,
+        url: "http://10.117.129.194:8080/api/orders/" + commande.id,
         headers: {
           "X-Server-Select": "mongo",
           Authorization:
@@ -470,7 +459,7 @@ export default {
 
       var config = {
         method: "put",
-        url: "http://localhost:8080/api/orders/" + commande.id,
+        url: "http://10.117.129.194:8080/api/orders/" + commande.id,
         headers: {
           "X-Server-Select": "mongo",
           Authorization:
@@ -499,7 +488,7 @@ export default {
       const payloadUser = this.decodeToken(user.accessToken);
       var config = {
         method: "put",
-        url: "http://localhost:8080/users/" + payloadUser.userId,
+        url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
         headers: {
           Authorization: "Bearer " + user.accessToken
         },
@@ -560,7 +549,7 @@ export default {
         });
       var config = {
         method: "delete",
-        url: "http://localhost:8080/users/" + payloadUser.userId,
+        url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
         headers: {
           Authorization: "Bearer " + user.accessToken
         }
@@ -591,7 +580,7 @@ export default {
     console.log(payloadUser);
     var config = {
       method: "get",
-      url: "http://localhost:8080/users/" + payloadUser.userId,
+      url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
       headers: {
         Authorization: "Bearer " + user.accessToken
       }
@@ -607,7 +596,7 @@ export default {
 
     var configpreparation = {
       method: "get",
-      url: "http://localhost:8080/api/orders/status/preparation",
+      url: "http://10.117.129.194:8080/api/orders/status/preparation",
       headers: {
         "X-Server-Select": "mongo"
       }
@@ -623,7 +612,7 @@ export default {
 
           var config = {
             method: "get",
-            url: "http://localhost:8080/users/" + element.idClient,
+            url: "http://10.117.129.194:8080/users/" + element.idClient,
             headers: {
               Authorization: "Bearer " + user.accessToken
             }
@@ -660,7 +649,8 @@ export default {
 
     var configCommande = {
       method: "get",
-      url: "http://localhost:8080/api/orders/livreur/" + payloadUser.userId,
+      url:
+        "http://10.117.129.194:8080/api/orders/livreur/" + payloadUser.userId,
       headers: {
         "X-Server-Select": "mongo"
       }
@@ -678,7 +668,7 @@ export default {
 
           var config = {
             method: "get",
-            url: "http://localhost:8080/users/" + element.idClient,
+            url: "http://10.117.129.194:8080/users/" + element.idClient,
             headers: {
               Authorization: "Bearer " + user.accessToken
             }

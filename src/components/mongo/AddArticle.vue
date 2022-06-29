@@ -44,7 +44,6 @@
         />
       </div>
       <div class="form-group">
-        <img style="" :src="image" alt="" />
         <input
           @change="handleImage"
           class="custom-input"
@@ -66,7 +65,9 @@
 import axios from "axios";
 
 // get the restaurant id
-const restaurantId = "62bc211e7cbcca78020f4411";
+// const restaurantId = "62bc211e7cbcca78020f4411";
+import jwt_decode from "jwt-decode";
+const user = JSON.parse(localStorage.getItem("user"));
 
 export default {
   name: "PostFormAxios",
@@ -85,23 +86,50 @@ export default {
     };
   },
   methods: {
-    submitForm() {
+    decodeToken(token) {
+      return jwt_decode(token);
+    },
+    async submitForm() {
+      this.payloadUser = this.decodeToken(user.accessToken);
+      this.userId = this.payloadUser.userId;
       this.form.picture = this.image;
-      // get all the articles in the restaurant
-      axios
-        .get(`http://localhost:8080/api/restaurants/${restaurantId}`, {
-          headers: {
-            "X-Server-Select": "mongo"
+      //get the restaurant id
+      await axios
+        .get(
+          `http://10.117.129.194:8080/api/restaurants/restaurateur/${
+            this.userId
+          }`,
+          {
+            headers: {
+              "X-Server-Select": "mongo"
+            }
           }
-        })
+        )
         .then(res => {
+          this.restaurantId = res.data.restaurants[0]._id;
+          console.log("Utilisateur: " + this.userId);
+          console.log("le restau: " + this.restaurantId);
+        });
+
+      // get all the articles in the restaurant
+      await axios
+        .get(
+          `http://10.117.129.194:8080/api/restaurants/${this.restaurantId}`,
+          {
+            headers: {
+              "X-Server-Select": "mongo"
+            }
+          }
+        )
+        .then(res => {
+          console.log("je rentre ici");
           this.articles = res.data.restaurant.articles;
           console.log("liste des articles dans le restau :");
           console.log(this.articles);
         });
 
       axios
-        .post("http://localhost:8080/api/articles/create", this.form, {
+        .post("http://10.117.129.194:8080/api/articles/create", this.form, {
           headers: {
             "X-Server-Select": "mongo"
           }
@@ -124,7 +152,7 @@ export default {
 
           // envoie de la nouvelle liste d'articles dans le restaurant
           axios.put(
-            `http://localhost:8080/api/restaurants/${restaurantId}`,
+            `http://10.117.129.194:8080/api/restaurants/${this.restaurantId}`,
             {
               articles: allArticles
             },

@@ -110,14 +110,16 @@ export default {
       console.log(this.cart);
       const idClient = "62bc06825573eae121135afa";
 
-      axios.post("http://localhost:3000/api/orders/create", {
-        idClient: idClient,
-        idRestaurant: restaurantId,
-        articles: this.cart,
-        state: "commande",
-      });
-      this.emptyCart();
-      this.validation = "Votre commande a bien été validée";
+      if (Object.keys(this.cart).length !== 0) {
+        axios.post("http://localhost:3000/api/orders/create", {
+          idClient: idClient,
+          idRestaurant: restaurantId,
+          articles: this.cart,
+          state: "commande",
+        });
+        this.emptyCart();
+        this.validation = "Votre commande a bien été validée";
+      }
     },
     refreshList() {
       this.retrieveArticles();

@@ -11,6 +11,7 @@ import Articles from "@/routes/Articles.vue";
 import Account from "@/routes/Account.vue";
 import jwt_decode from "jwt-decode";
 import ListOfArticles from "@/routes/ListOfArticles.vue";
+import MyRestaurant from "@/routes/MyRestaurant.vue";
 // import jwt_decode from "jwt-decode";
 
 Vue.use(VueRouter);
@@ -53,6 +54,11 @@ const router = new VueRouter({
       path: "/account",
       name: "account",
       component: Account
+    },
+    {
+      path: "/myrestaurant",
+      name: "myrestaurant",
+      component: MyRestaurant
     },
     {
       path: "/restaurants",

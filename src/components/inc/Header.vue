@@ -54,6 +54,13 @@
           <b-dropdown-item to="/account">
             Compte <b-icon-person-fill class="icon"></b-icon-person-fill>
           </b-dropdown-item>
+          <!-- <b-dropdown-item to="/Restaurants">
+            Tous les restaurants
+          </b-dropdown-item> -->
+          <b-dropdown-item to="/Articles"> Gérer mes articles </b-dropdown-item>
+          <b-dropdown-item to="/MyRestaurant">
+            Gérer mon restaurant
+          </b-dropdown-item>
           <b-dropdown-item @click.prevent="logOut">Deconnexion</b-dropdown-item>
         </b-dropdown>
       </div>

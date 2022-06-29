@@ -276,7 +276,7 @@ export default {
       console.log("result :");
       console.log(difference);
       axios.put(
-        `http://10.117.129.194:3000/api/restaurants/${this.restaurantId}`,
+        `http://10.117.129.194:8080/api/restaurants/${this.restaurantId}`,
         {
           articles: difference,
         },
@@ -345,7 +345,7 @@ export default {
       }
       if (this.form.picture !== "") {
         axios.put(
-          `http://localhost:3000/api/articles/${articleId}`,
+          `http://10.117.129.194:8080/api/articles/${articleId}`,
           {
             picture: this.form.picture,
           },

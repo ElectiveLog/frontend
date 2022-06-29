@@ -572,6 +572,7 @@ export default {
                     order.city = response.data.city;
                     order.country = response.data.country;
                     order.phoneNumber = response.data.phoneNumber;
+                    order.sponsorshipCode = response.data.sponsorshipCode;
                   })
                   .catch(function(error) {
                     console.log(error);

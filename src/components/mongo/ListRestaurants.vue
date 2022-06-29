@@ -80,6 +80,7 @@
 
 <script>
 import DataService from "../../services/DataService";
+import axios from "axios";
 export default {
   name: "restaurants-list",
   data() {
@@ -115,6 +116,25 @@ export default {
       this.currentIndex = null;
     },
     deleteRestaurant() {
+      var configLog = {
+        method: "post",
+        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+        headers: {
+          "X-Server-Select": "mongo"
+        },
+        data: {
+          type: "Suppression",
+          description:
+            "Suppression d'un restaurant" + this.currentRestaurant.name
+        }
+      };
+      axios(configLog)
+        .then(response => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(error => {
+          console.log(error);
+        });
       DataService.deleteRestaurant(this.currentRestaurant._id)
         .then(response => {
           console.log(response.data.restaurants);
@@ -125,6 +145,25 @@ export default {
         });
     },
     updateRestaurant() {
+      var configLog = {
+        method: "post",
+        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+        headers: {
+          "X-Server-Select": "mongo"
+        },
+        data: {
+          type: "Modification",
+          description:
+            "Modification d'un restaurant" + this.currentRestaurant.name
+        }
+      };
+      axios(configLog)
+        .then(response => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(error => {
+          console.log(error);
+        });
       DataService.updateRestaurant(this.currentRestaurant._id)
         .then(response => {
           console.log(response.data.restaurants);

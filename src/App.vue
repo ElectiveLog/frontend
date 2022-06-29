@@ -38,7 +38,10 @@ export default {
 
     const configCommandeClient = {
       method: "get",
-      url: "http://10.117.129.194:8080/api/orders/client/" + payloadUser.userId,
+      url:
+        window.location.origin.split(":80")[0] +
+        ":8080/api/orders/client/" +
+        payloadUser.userId,
       headers: {
         "X-Server-Select": "mongo"
       }
@@ -46,7 +49,7 @@ export default {
 
     const configCommandeLivreur = {
       method: "get",
-      url: "http://10.117.129.194:8080/api/orders/",
+      url: window.location.origin.split(":80")[0] + ":8080/api/orders/",
       headers: {
         "X-Server-Select": "mongo"
       }
@@ -71,7 +74,10 @@ export default {
 
                 var config = {
                   method: "put",
-                  url: "http://10.117.129.194:8080/api/orders/" + element._id,
+                  url:
+                    window.location.origin.split(":80")[0] +
+                    ":8080/api/orders/" +
+                    element._id,
                   headers: {
                     "X-Server-Select": "mongo",
                     Authorization:
@@ -115,7 +121,10 @@ export default {
 
                 var config = {
                   method: "put",
-                  url: "http://10.117.129.194:8080/api/orders/" + element._id,
+                  url:
+                    window.location.origin.split(":80")[0] +
+                    ":8080/api/orders/" +
+                    element._id,
                   headers: {
                     "X-Server-Select": "mongo",
                     Authorization:
@@ -145,7 +154,8 @@ export default {
       var configRestaurant = {
         method: "get",
         url:
-          "http://10.117.129.194:8080/api/restaurants/restaurateur/" +
+          window.location.origin.split(":80")[0] +
+          ":8080/api/restaurants/restaurateur/" +
           payloadUser.userId,
         headers: {
           "X-Server-Select": "mongo"
@@ -161,7 +171,8 @@ export default {
       const configCommandeRestaurateur = {
         method: "get",
         url:
-          "http://10.117.129.194:8080/api/orders/restaurant/" +
+          window.location.origin.split(":80")[0] +
+          ":8080/api/orders/restaurant/" +
           this.restaurantId,
         headers: {
           "X-Server-Select": "mongo"
@@ -184,7 +195,10 @@ export default {
 
                 var config = {
                   method: "put",
-                  url: "http://10.117.129.194:8080/api/orders/" + element._id,
+                  url:
+                    window.location.origin.split(":80")[0] +
+                    ":8080/api/orders/" +
+                    element._id,
                   headers: {
                     "X-Server-Select": "mongo",
                     Authorization:

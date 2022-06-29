@@ -272,6 +272,26 @@ export default {
           let difference = allRestaurantArticles.filter(
             x => !toDelete.includes(x)
           );
+
+          var configLog = {
+            method: "post",
+            url:
+              window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+            headers: {
+              "X-Server-Select": "mongo"
+            },
+            data: {
+              type: "Suppression",
+              description: "Article supprimé : " + this.currentArticle.name
+            }
+          };
+          axios(configLog)
+            .then(response => {
+              console.log(JSON.stringify(response.data));
+            })
+            .catch(error => {
+              console.log(error);
+            });
           console.log("result :");
           console.log(difference);
           console.log(this.restaurantId);
@@ -317,6 +337,25 @@ export default {
     updateArticle() {
       this.form.picture = this.image;
       const articleId = this.currentArticle._id;
+
+      var configLog = {
+        method: "post",
+        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+        headers: {
+          "X-Server-Select": "mongo"
+        },
+        data: {
+          type: "Modification",
+          description: "Article modifié : " + this.currentArticle.name
+        }
+      };
+      axios(configLog)
+        .then(response => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(error => {
+          console.log(error);
+        });
       if (this.form.name !== "") {
         axios.put(
           `http://10.117.129.194:8080/api/articles/${articleId}`,

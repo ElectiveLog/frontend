@@ -78,12 +78,40 @@ export default {
       this.form.picture = this.image;
       this.payloadUser = this.decodeToken(user.accessToken);
       this.form.idRestaurateur = this.payloadUser.userId;
-      axios
-        .post("http://10.117.129.194:8080/api/restaurants/create", this.form, {
-          headers: {
-            "X-Server-Select": "mongo"
-          }
+      var configLog = {
+        method: "post",
+        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+        headers: {
+          "X-Server-Select": "mongo"
+        },
+        data: {
+          type: "Création",
+          description:
+            "Création du restaurant : " +
+            this.form.name +
+            " par " +
+            this.payloadUser.name +
+            "."
+        }
+      };
+      axios(configLog)
+        .then(response => {
+          console.log(JSON.stringify(response.data));
         })
+        .catch(error => {
+          console.log(error);
+        });
+      axios
+        .post(
+          window.location.origin.split(":80")[0] +
+            ":8080/api/restaurants/create",
+          this.form,
+          {
+            headers: {
+              "X-Server-Select": "mongo"
+            }
+          }
+        )
         .then(res => {
           //Perform Success Action
           console.log("donnéee" + res.data);

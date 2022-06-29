@@ -36,5 +36,10 @@ class DataService {
   getOneArticle(id) {
     return http.get(`/articles/${id}`);
   }
+
+  // Order
+  createOrder(data) {
+    return http.post("/orders/create", data);
+  }
 }
 export default new DataService();

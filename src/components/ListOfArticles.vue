@@ -1,41 +1,62 @@
 <template>
   <div class="row">
+    <div>
+      <h5 class="space_bottom">
+        Articles dans le panier : {{ Object.keys(this.cart).length }}
+      </h5>
+      <h5 class="space_bottom">Montant : {{ this.totalPrice }} €</h5>
+      <button
+        @click="createOrder()"
+        class="blue_button styled_button space_bottom"
+      >
+        Valider
+      </button>
+      &nbsp;
+      <button
+        @click="emptyCart()"
+        class="red_button styled_button space_bottom"
+      >
+        Vider le panier
+      </button>
+      <h5 class="space_bottom">{{ validation }}</h5>
+    </div>
     <div
       id="mouseover"
       class="col-md-4 effect"
       v-for="(articles, index) in articles"
       :key="index"
+      @click="addArticleToCart(articles, index)"
     >
       <ul class="list-group">
         <li class="list-group-item">
           <div class="center">
             <img v-bind:src="articles.picture" />
           </div>
-          <h4>{{ articles.name }}</h4>
-          <a>{{ articles.price }}</a>
+          <h5>{{ articles.name }}</h5>
+          <a>{{ articles.price }} €</a>
           <a>{{ articles.detail }}</a>
         </li>
       </ul>
+      <div class="center">
+        <button class="green_button styled_button center">Ajouter</button>
+      </div>
     </div>
-    <button @click="test()">test</button>
   </div>
 </template>
 
 <script>
-// import DataService from "../services/DataService";
-// export default {
-//   name: "articles-list",
-//   methods: {
-//     test() {
-//       console.log(this.$route.params.id);
-//     },
-//   },
-//   props: {
-//     listofarticles: Object,
-//   },
-// };
-
 import DataService from "../services/DataService";
+import axios from "axios";
+import jwt_decode from "jwt-decode";
+const user = JSON.parse(localStorage.getItem("user"));
+
+let restaurantId = "";
+let articles = "";
+let listOfArticles = [];
+let cart = [];
+// let totalPrice = "";
+// let validation = "";
+
 export default {
   name: "articles-list",
   data() {
@@ -44,33 +65,86 @@ export default {
       currentArticle: null,
       currentIndex: -1,
       title: "",
+      restaurantId: "",
+      listOfArticles: [],
+      cart: [],
+      idClient: "",
+      idRestaurant: "",
+      articlesCart: [],
+      state: "commande",
+      validation: "",
+      totalPrice: "0",
     };
   },
   methods: {
+    decodeToken(token) {
+      return jwt_decode(token);
+    },
     // to get all
     retrieveArticles() {
-      DataService.getAllArticles()
+      this.payloadUser = this.decodeToken(user.accessToken);
+      this.idClient = this.payloadUser.userId;
+      //   console.log(restaurantId);
+      listOfArticles = [];
+      DataService.getOneRestaurant(restaurantId)
         .then((response) => {
-          this.articles = response.data.articles;
-          console.log(response.data.articles);
+          articles = response.data.restaurant.articles;
+          //   console.log(articles);
+          articles.forEach((element) => {
+            console.log(element);
+            DataService.getOneArticle(element)
+              .then((response) => {
+                listOfArticles.push(response.data.article);
+                console.log(listOfArticles);
+              })
+              .catch((e) => {
+                console.log(e);
+              });
+            this.articles = listOfArticles;
+          });
         })
-        .catch((e) => {
-          console.log(e);
+        .catch((error) => {
+          console.log(error);
         });
     },
-
+    emptyCart() {
+      this.cart = [];
+      this.totalPrice = 0;
+      console.log(cart);
+    },
+    createOrder() {
+      console.log(restaurantId);
+      console.log(this.cart);
+      axios.post(
+        "http://10.117.129.194:8080/api/orders/create",
+        {
+          idClient: this.idClient,
+          idRestaurant: restaurantId,
+          articles: this.cart,
+          state: "commande",
+        },
+        {
+          headers: {
+            "X-Server-Select": "mongo",
+          },
+        }
+      );
+      this.emptyCart();
+      this.validation = "Votre commande a bien été validée";
+    },
     refreshList() {
       this.retrieveArticles();
       this.currentArticle = null;
       this.currentIndex = -1;
     },
-    setActiveArticle(article, index) {
+    addArticleToCart(article, index) {
       this.currentArticle = article;
       this.currentIndex = index;
-    },
-    unsetActiveArticle() {
-      this.currentArticle = null;
-      this.currentIndex = null;
+      console.log(this.currentArticle._id);
+      this.cart.push(this.currentArticle._id);
+      console.log(this.cart);
+      this.totalPrice = Math.floor(this.totalPrice) + this.currentArticle.price;
+      console.log(this.totalPrice);
     },
     reload() {
       location.reload();
@@ -78,12 +152,20 @@ export default {
     scrollToTop() {
       window.scrollTo(0, 0);
     },
-    test() {
-      console.log(this.$route.params.id);
+    getRestaurantId() {
+      restaurantId = this.$route.params.id;
+      //   console.log(restaurantId);
     },
   },
   mounted() {
+    this.getRestaurantId();
     this.retrieveArticles();
   },
 };
 </script>
+
+<style scoped>
+.space_bottom {
+  margin-bottom: 20px;
+}
+</style>

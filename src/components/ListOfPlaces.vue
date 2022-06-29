@@ -55,8 +55,8 @@ export default {
     setActiveRestaurant(restaurant, index) {
       this.currentRestaurant = restaurant;
       this.currentIndex = index;
-      restaurantId = this.currentRestaurant._id;
-      console.log(restaurantId);
+      this.restaurantId = this.currentRestaurant._id;
+      // console.log(restaurantId);
     },
     reload() {
       location.reload();

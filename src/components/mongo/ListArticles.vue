@@ -129,6 +129,14 @@
           v-model="form.detail"
         />
       </div>
+      <div class="form-group">
+        <input
+          @change="handleImage"
+          class="custom-input"
+          type="file"
+          accept="image/*"
+        />
+      </div>
       &nbsp;
       <div @click="scrollToTop">
         <div class="form-group">
@@ -142,7 +150,6 @@
 <script>
 import DataService from "../../services/DataService";
 import axios from "axios";
-// const restaurantId = "62baeeeac68d60c802700ed2";
 import jwt_decode from "jwt-decode";
 const user = JSON.parse(localStorage.getItem("user"));
 
@@ -160,7 +167,9 @@ export default {
         type: "",
         price: "",
         detail: "",
+        picture: "",
       },
+      image: "",
     };
   },
   methods: {
@@ -170,11 +179,12 @@ export default {
     retrieveArticles() {
       this.payloadUser = this.decodeToken(user.accessToken);
       this.userId = this.payloadUser.userId;
+      console.log("Utilisateur: " + this.userId);
       DataService.getAllRestaurantsByRestaurateur(this.payloadUser.userId)
         .then((response) => {
           this.restaurantId = response.data.restaurants[0]._id;
-          console.log("Utilisateur: " + this.payloadUser.userId);
-          console.log(this.restaurantId);
+          console.log("Utilisateur: " + this.userId);
+          console.log("le restau: " + this.restaurantId);
           DataService.getOneRestaurant(this.restaurantId).then((response) => {
             this.restaurantArticles = response.data.restaurant.articles;
             console.log(response.data.restaurant.articles);
@@ -210,6 +220,28 @@ export default {
     //     });
     // },
 
+    // Test with Burger King
+    // retrieveArticles() {
+    //   const restaurantId = "62bc06825573eae221135afa";
+    //   DataService.getOneRestaurant(restaurantId).then((response) => {
+    //     this.restaurantArticles = response.data.restaurant.articles;
+    //     console.log(response.data.restaurant.articles);
+    //     const allRestaurantArticles = this.restaurantArticles;
+    //     const allArticles = this.articles;
+    //     allRestaurantArticles.forEach((element) => {
+    //       console.log(element);
+    //       DataService.getOneArticle(element)
+    //         .then((response) => {
+    //           allArticles.push(response.data.article);
+    //           console.log(allArticles);
+    //         })
+    //         .catch((e) => {
+    //           console.log(e);
+    //         });
+    //     });
+    //   });
+    // },
+
     refreshList() {
       this.retrieveArticles();
       this.currentArticle = null;
@@ -243,37 +275,103 @@ export default {
       );
       console.log("result :");
       console.log(difference);
-      axios.put(`http://localhost:3000/api/restaurants/${this.restaurantId}`, {
-        articles: difference,
-      });
+      axios.put(
+        `http://10.117.129.194:8080/api/restaurants/${this.restaurantId}`,
+        {
+          articles: difference,
+        },
+        {
+          headers: {
+            "X-Server-Select": "mongo",
+          },
+        }
+      );
       this.reload();
     },
     updateArticle() {
+      this.form.picture = this.image;
       const articleId = this.currentArticle._id;
       if (this.form.name !== "") {
-        axios.put(`http://localhost:3000/api/articles/${articleId}`, {
-          name: this.form.name,
-        });
+        axios.put(
+          `http://10.117.129.194:8080/api/articles/${articleId}`,
+          {
+            name: this.form.name,
+          },
+          {
+            headers: {
+              "X-Server-Select": "mongo",
+            },
+          }
+        );
       }
       if (this.form.type !== "") {
-        axios.put(`http://localhost:3000/api/articles/${articleId}`, {
-          type: this.form.type,
-        });
+        axios.put(
+          `http://10.117.129.194:8080/api/articles/${articleId}`,
+          {
+            type: this.form.type,
+          },
+          {
+            headers: {
+              "X-Server-Select": "mongo",
+            },
+          }
+        );
       }
       if (this.form.price !== "") {
-        axios.put(`http://localhost:3000/api/articles/${articleId}`, {
-          price: this.form.price,
-        });
+        axios.put(
+          `http://10.117.129.194:8080/api/articles/${articleId}`,
+          {
+            price: this.form.price,
+          },
+          {
+            headers: {
+              "X-Server-Select": "mongo",
+            },
+          }
+        );
       }
       if (this.form.detail !== "") {
-        axios.put(`http://localhost:3000/api/articles/${articleId}`, {
-          detail: this.form.detail,
-        });
+        axios.put(
+          `http://10.117.129.194:8080/api/articles/${articleId}`,
+          {
+            detail: this.form.detail,
+          },
+          {
+            headers: {
+              "X-Server-Select": "mongo",
+            },
+          }
+        );
+      }
+      if (this.form.picture !== "") {
+        axios.put(
+          `http://10.117.129.194:8080/api/articles/${articleId}`,
+          {
+            picture: this.form.picture,
+          },
+          {
+            headers: {
+              "X-Server-Select": "mongo",
+            },
+          }
+        );
       }
       this.reload();
     },
     reload() {
       location.reload();
+    },
+    handleImage(e) {
+      const selectedImage = e.target.files[0];
+      this.createBase64Image(selectedImage);
+    },
+    createBase64Image(fileObject) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        this.image = e.target.result;
+      };
+      reader.readAsDataURL(fileObject);
     },
     scrollToTop() {
       window.scrollTo(0, 0);

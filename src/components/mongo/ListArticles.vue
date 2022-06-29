@@ -129,6 +129,15 @@
           v-model="form.detail"
         />
       </div>
+      <div class="form-group">
+        <img style="" :src="image" alt="" />
+        <input
+          @change="handleImage"
+          class="custom-input"
+          type="file"
+          accept="image/*"
+        />
+      </div>
       &nbsp;
       <div @click="scrollToTop">
         <div class="form-group">
@@ -142,7 +151,7 @@
 <script>
 import DataService from "../../services/DataService";
 import axios from "axios";
-// const restaurantId = "62baeeeac68d60c802700ed2";
+// const restaurantId = "62bc06825573eae221135afa";
 import jwt_decode from "jwt-decode";
 const user = JSON.parse(localStorage.getItem("user"));
 
@@ -160,6 +169,7 @@ export default {
         type: "",
         price: "",
         detail: "",
+        picture: "",
       },
     };
   },
@@ -210,6 +220,27 @@ export default {
     //     });
     // },
 
+    // Test with Burger King
+    // retrieveArticles() {
+    //   DataService.getOneRestaurant(restaurantId).then((response) => {
+    //     this.restaurantArticles = response.data.restaurant.articles;
+    //     console.log(response.data.restaurant.articles);
+    //     const allRestaurantArticles = this.restaurantArticles;
+    //     const allArticles = this.articles;
+    //     allRestaurantArticles.forEach((element) => {
+    //       console.log(element);
+    //       DataService.getOneArticle(element)
+    //         .then((response) => {
+    //           allArticles.push(response.data.article);
+    //           console.log(allArticles);
+    //         })
+    //         .catch((e) => {
+    //           console.log(e);
+    //         });
+    //     });
+    //   });
+    // },
+
     refreshList() {
       this.retrieveArticles();
       this.currentArticle = null;
@@ -249,6 +280,7 @@ export default {
       this.reload();
     },
     updateArticle() {
+      this.form.picture = this.image;
       const articleId = this.currentArticle._id;
       if (this.form.name !== "") {
         axios.put(`http://localhost:3000/api/articles/${articleId}`, {
@@ -270,10 +302,27 @@ export default {
           detail: this.form.detail,
         });
       }
+      if (this.form.picture !== "") {
+        axios.put(`http://localhost:3000/api/articles/${articleId}`, {
+          picture: this.form.picture,
+        });
+      }
       this.reload();
     },
     reload() {
       location.reload();
+    },
+    handleImage(e) {
+      const selectedImage = e.target.files[0];
+      this.createBase64Image(selectedImage);
+    },
+    createBase64Image(fileObject) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        this.image = e.target.result;
+      };
+      reader.readAsDataURL(fileObject);
     },
     scrollToTop() {
       window.scrollTo(0, 0);

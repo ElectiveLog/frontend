@@ -24,7 +24,6 @@
           required="required"
         />
       </div>
-      -->
       <div class="form-group">
         <label for="address">Adresse *</label>
         <input
@@ -56,8 +55,8 @@
 
 <script>
 import axios from "axios";
-import jwt_decode from "jwt-decode";
-const user = JSON.parse(localStorage.getItem("user"));
+// import jwt_decode from "jwt-decode";
+// const user = JSON.parse(localStorage.getItem("user"));
 
 export default {
   name: "PostFormAxios",
@@ -69,17 +68,16 @@ export default {
         address: "",
         picture: "",
       },
-      image: "",
     };
   },
   methods: {
-    decodeToken(token) {
-      return jwt_decode(token);
-    },
+    // decodeToken(token) {
+    //   return jwt_decode(token);
+    // },
     submitForm() {
       this.form.picture = this.image;
-      this.payloadUser = this.decodeToken(user.accessToken);
-      this.form.idRestaurateur = this.payloadUser.userId;
+      // this.payloadUser = this.decodeToken(user.accessToken);
+      // this.form.idRestaurateur = this.payloadUser.userId;
       axios
         .post("http://localhost:3000/api/restaurants/create", this.form)
         .then((res) => {

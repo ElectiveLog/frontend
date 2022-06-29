@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="card-header">
-      <h4 class="card-heading">Modifier son profile</h4>
+      <h4 class="card-heading">Modifier son profil</h4>
     </div>
     <form class="card mb-4" @submit.prevent="handleEdit">
       <div class="card-body">

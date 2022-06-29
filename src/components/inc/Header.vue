@@ -1,7 +1,27 @@
 <template>
   <div class="header">
     <div class="container">
-      <router-link to="/"
+      <router-link v-if="!currentUser" to="/"
+        ><img
+          class="logo"
+          src="../../../public/assets/logo.png"
+          alt="CES'EATS LOGO"
+      /></router-link>
+      <router-link v-if="currentUser && currentRole == 'Client'" to="/"
+        ><img
+          class="logo"
+          src="../../../public/assets/logo.png"
+          alt="CES'EATS LOGO"
+      /></router-link>
+      <router-link v-if="currentUser && currentRole == 'Livreur'" to="/account"
+        ><img
+          class="logo"
+          src="../../../public/assets/logo.png"
+          alt="CES'EATS LOGO"
+      /></router-link>
+      <router-link
+        v-if="currentUser && currentRole == 'Restaurateur'"
+        to="/account"
         ><img
           class="logo"
           src="../../../public/assets/logo.png"
@@ -25,7 +45,7 @@
           text="Mon compte"
           toggle-class="customDropdown"
         >
-          <b-dropdown-item to="/statistics"
+          <b-dropdown-item v-if="currentRole == 'Restaurateur'" to="/statistics"
             >Statistiques
             <b-icon-bar-chart-line-fill class="icon">
             </b-icon-bar-chart-line-fill>
@@ -47,23 +67,28 @@
 </template>
 
 <script>
+import jwt_decode from "jwt-decode";
 export default {
   name: "Header",
   computed: {
     orders() {
       return this.$store.state.cart.length;
     },
+    currentRole() {
+      const payloadUser = jwt_decode(this.$store.state.auth.user.accessToken);
+      return payloadUser.role;
+    },
     currentUser() {
       return this.$store.state.auth.user;
-    },
+    }
   },
   methods: {
     logOut() {
       this.$store.dispatch("auth/logout");
       this.$store.state.auth.user = null;
       this.$router.push("/login");
-    },
-  },
+    }
+  }
 };
 </script>
 

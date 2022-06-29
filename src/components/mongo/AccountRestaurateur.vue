@@ -210,6 +210,7 @@
         >
 
         <b-table
+          v-else
           hover
           small
           outlined

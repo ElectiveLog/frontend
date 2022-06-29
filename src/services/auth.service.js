@@ -1,6 +1,6 @@
 import axios from "axios";
-// const API_URL = "http://localhost:8080/users/";
-const API_URL = "http://localhost:5000/users/";
+const API_URL = "http://localhost:8080/users/";
+// const API_URL = "http://localhost:5000/users/";
 class AuthService {
   login(user) {
     console.log(user);
@@ -9,15 +9,15 @@ class AuthService {
         API_URL + "login",
         {
           email: user.email,
-          password: user.password,
+          password: user.password
         },
         {
           headers: {
             // "X-Server-Select": "auth"
-          },
+          }
         }
       )
-      .then((response) => {
+      .then(response => {
         if (response.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
         }
@@ -41,12 +41,12 @@ class AuthService {
         city: user.city,
         country: user.country,
         phoneNumber: user.phoneNumber,
-        sponsorshipCode: user.sponsorshipCode,
+        sponsorshipCode: user.sponsorshipCode
       },
       {
         headers: {
           // "X-Server-Select": "auth"
-        },
+        }
       }
     );
   }

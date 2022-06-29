@@ -64,14 +64,11 @@ export default {
   },
   methods: {
     handleLogin() {
-      console.log("handleLogin");
       this.loading = true;
 
       if (this.user.email && this.user.password) {
-        console.log("handleLogin: login");
         this.$store.dispatch("auth/login", this.user).then(
           response => {
-            console.log("fdsq" + JSON.stringify(response));
             if (response.status == 203) {
               this.$notify({
                 group: "foo",
@@ -111,7 +108,7 @@ export default {
                 text: "Bienvenue " + this.user.email,
                 duration: 8000
               });
-              this.$router.push("/");
+              this.$router.push("/account");
               location.reload();
             }
           },

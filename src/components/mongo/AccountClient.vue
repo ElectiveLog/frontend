@@ -286,17 +286,17 @@ export default {
       fields: [
         {
           key: "Commande",
-          label: "Commande",
+          label: "Commande"
         },
         {
           key: "prix",
-          label: "Prix",
+          label: "Prix"
         },
         { key: "livreur", label: "Livreur" },
         { key: "restaurant", label: "Restaurant" },
         { key: "status", label: "Status" },
-        { key: "show_details", label: "Details" },
-      ],
+        { key: "show_details", label: "Details" }
+      ]
     };
   },
   methods: {
@@ -306,9 +306,9 @@ export default {
         method: "put",
         url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
         headers: {
-          Authorization: "Bearer " + user.accessToken,
+          Authorization: "Bearer " + user.accessToken
         },
-        data: this.userData,
+        data: this.userData
       };
 
       axios(config)
@@ -318,21 +318,59 @@ export default {
             title: "Modification réussie",
             type: "success",
             text: "Vos modifications ont été enregistrées",
-            duration: 8000,
+            duration: 8000
           });
         })
-        .catch(function (error) {
+        .catch(function(error) {
+          console.log(error);
+        });
+      console.log("ijifejife");
+      var configLog = {
+        method: "post",
+        url: "http://localhost:8080/api/logs/create",
+        headers: {
+          "X-Server-Select": "mongo"
+        },
+        data: {
+          type: "Modification",
+          description: payloadUser.email + "(Client) a modifié son compte."
+        }
+      };
+      axios(configLog)
+        .then(response => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(error => {
           console.log(error);
         });
     },
     handleDelete() {
       const payloadUser = this.decodeToken(user.accessToken);
+
+      var configLog = {
+        method: "post",
+        url: "http://localhost:8080/api/logs/create",
+        headers: {
+          "X-Server-Select": "mongo"
+        },
+        data: {
+          type: "Suppression",
+          description: payloadUser.email + "(Client) a supprimé son compte."
+        }
+      };
+      axios(configLog)
+        .then(response => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(error => {
+          console.log(error);
+        });
       var config = {
         method: "delete",
         url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
         headers: {
-          Authorization: "Bearer " + user.accessToken,
-        },
+          Authorization: "Bearer " + user.accessToken
+        }
       };
 
       axios(config)
@@ -342,18 +380,18 @@ export default {
             title: "Suppression réussie",
             type: "success",
             text: "Votre compte a été supprimé",
-            duration: 8000,
+            duration: 8000
           });
           this.$store.dispatch("auth/logout");
           this.$router.push("/login");
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error);
         });
     },
     decodeToken(token) {
       return jwt_decode(token);
-    },
+    }
   },
   created() {
     const payloadUser = this.decodeToken(user.accessToken);
@@ -361,33 +399,33 @@ export default {
       method: "get",
       url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
       headers: {
-        Authorization: "Bearer " + user.accessToken,
-      },
+        Authorization: "Bearer " + user.accessToken
+      }
     };
 
     axios(config)
-      .then((response) => {
+      .then(response => {
         this.userData = response.data;
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
-
+    console.log(payloadUser.userId);
     var configCommande = {
       method: "get",
       url: "http://10.117.129.194:8080/api/orders/client/" + payloadUser.userId,
       headers: {
-        "X-Server-Select": "mongo",
-      },
+        "X-Server-Select": "mongo"
+      }
     };
 
     axios(configCommande)
-      .then((response) => {
+      .then(response => {
         var i = 1;
         var y = 1;
-        response.data.order.forEach((element) => {
+        response.data.order.forEach(element => {
           var priceCommande = 0;
-          element.articles.forEach((article) => {
+          element.articles.forEach(article => {
             priceCommande += article.price;
           });
           if (this.userData.sponsorshipCode) {
@@ -398,12 +436,12 @@ export default {
             method: "get",
             url: "http://10.117.129.194:8080/users/" + element.idLivreur,
             headers: {
-              Authorization: "Bearer " + user.accessToken,
-            },
+              Authorization: "Bearer " + user.accessToken
+            }
           };
 
           axios(config)
-            .then((response) => {
+            .then(response => {
               if (element.state == "prepared") {
                 this.historyCommandes.push({
                   Commande: "Commande n°" + i,
@@ -412,13 +450,16 @@ export default {
                   restaurant: element.idRestaurant.name,
                   status: "livrée",
                   date: element.createdAt.split("T")[0],
-                  heure: element.createdAt.split("T").pop().split(".")[0],
+                  heure: element.createdAt
+                    .split("T")
+                    .pop()
+                    .split(".")[0],
                   addresse: this.userData.address,
                   streetNumber: this.userData.streetNumber,
                   city: this.userData.city,
                   phoneNumber: this.userData.phoneNumber,
                   country: this.userData.country,
-                  parnainage: this.userData.sponsorshipCode,
+                  parnainage: this.userData.sponsorshipCode
                 });
                 i++;
               } else {
@@ -426,28 +467,31 @@ export default {
                   Commande: "Commande n°" + y,
                   prix: priceCommande + "€",
                   livreur: response.data.name,
-                  restaurant: element.idRestaurant.name,
+                  // restaurant: element.idRestaurant.name,
                   status: element.state,
                   date: element.createdAt.split("T")[0],
-                  heure: element.createdAt.split("T").pop().split(".")[0],
+                  heure: element.createdAt
+                    .split("T")
+                    .pop()
+                    .split(".")[0],
                   addresse: this.userData.address,
                   streetNumber: this.userData.streetNumber,
                   city: this.userData.city,
                   phoneNumber: this.userData.phoneNumber,
                   country: this.userData.country,
-                  parnainage: this.userData.sponsorshipCode,
+                  parnainage: this.userData.sponsorshipCode
                 });
                 y++;
               }
             })
-            .catch(function (error) {
+            .catch(function(error) {
               console.log(error);
             });
         });
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
-  },
+  }
 };
 </script>

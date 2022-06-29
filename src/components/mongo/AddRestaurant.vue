@@ -66,8 +66,8 @@ export default {
         name: "",
         idRestaurateur: "",
         address: "",
-        picture: "",
-      },
+        picture: ""
+      }
     };
   },
   methods: {
@@ -81,15 +81,15 @@ export default {
       axios
         .post("http://10.117.129.194:8080/api/restaurants/create", this.form, {
           headers: {
-            "X-Server-Select": "mongo",
-          },
+            "X-Server-Select": "mongo"
+          }
         })
-        .then((res) => {
+        .then(res => {
           //Perform Success Action
           console.log("donnéee" + res.data);
           location.reload();
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
           // error.response.status Check status code
           console.log("err: " + error);
@@ -110,12 +110,12 @@ export default {
     createBase64Image(fileObject) {
       const reader = new FileReader();
 
-      reader.onload = (e) => {
+      reader.onload = e => {
         this.image = e.target.result;
       };
       reader.readAsDataURL(fileObject);
-    },
-  },
+    }
+  }
 };
 </script>
 

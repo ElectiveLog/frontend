@@ -11,31 +11,21 @@
           <div class="center">
             <img v-bind:src="articles.picture" />
           </div>
-          <h4>{{ articles.name }}</h4>
-          <a>{{ articles.price }}</a>
+          <h5>{{ articles.name }}</h5>
+          <a>{{ articles.price }} €</a>
           <a>{{ articles.detail }}</a>
+          <button class="green_button styled_button">Ajouter</button>
         </li>
       </ul>
     </div>
-    <button @click="test()">test</button>
   </div>
 </template>
 
 <script>
-// import DataService from "../services/DataService";
-// export default {
-//   name: "articles-list",
-//   methods: {
-//     test() {
-//       console.log(this.$route.params.id);
-//     },
-//   },
-//   props: {
-//     listofarticles: Object,
-//   },
-// };
-
 import DataService from "../services/DataService";
+let restaurantId = "";
+let articles = "";
+let listOfArticles = [];
 export default {
   name: "articles-list",
   data() {
@@ -44,18 +34,34 @@ export default {
       currentArticle: null,
       currentIndex: -1,
       title: "",
+      restaurantId: "",
+      listOfArticles: [],
     };
   },
   methods: {
     // to get all
     retrieveArticles() {
-      DataService.getAllArticles()
+      //   console.log(restaurantId);
+      listOfArticles = [];
+      DataService.getOneRestaurant(restaurantId)
         .then((response) => {
-          this.articles = response.data.articles;
-          console.log(response.data.articles);
+          articles = response.data.restaurant.articles;
+          //   console.log(articles);
+          articles.forEach((element) => {
+            console.log(element);
+            DataService.getOneArticle(element)
+              .then((response) => {
+                listOfArticles.push(response.data.article);
+                console.log(listOfArticles);
+              })
+              .catch((e) => {
+                console.log(e);
+              });
+            this.articles = listOfArticles;
+          });
         })
-        .catch((e) => {
-          console.log(e);
+        .catch((error) => {
+          console.log(error);
         });
     },
 
@@ -78,11 +84,13 @@ export default {
     scrollToTop() {
       window.scrollTo(0, 0);
     },
-    test() {
-      console.log(this.$route.params.id);
+    getRestaurantId() {
+      restaurantId = this.$route.params.id;
+      //   console.log(restaurantId);
     },
   },
   mounted() {
+    this.getRestaurantId();
     this.retrieveArticles();
   },
 };

@@ -55,8 +55,8 @@ export default {
     setActiveRestaurant(restaurant, index) {
       this.currentRestaurant = restaurant;
       this.currentIndex = index;
-      restaurantId = this.currentRestaurant._id;
-      console.log(restaurantId);
+      this.restaurantId = this.currentRestaurant._id;
+      // console.log(restaurantId);
     },
     reload() {
       location.reload();
@@ -67,6 +67,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.effect {
+  cursor: pointer;
+}
+</style>
 
 <style>
 .list {
@@ -91,7 +97,6 @@ img {
 }
 
 .effect {
-  cursor: pointer;
   transform: translateY(0);
   transition: transform 0.3s ease-out 0s;
   margin-bottom: 10px;

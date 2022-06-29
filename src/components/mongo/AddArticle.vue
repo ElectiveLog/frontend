@@ -89,7 +89,11 @@ export default {
       this.form.picture = this.image;
       // get all the articles in the restaurant
       axios
-        .get(`http://localhost:3000/api/restaurants/${restaurantId}`)
+        .get(`http://localhost:8080/api/restaurants/${restaurantId}`, {
+          headers: {
+            "X-Server-Select": "mongo"
+          }
+        })
         .then(res => {
           this.articles = res.data.restaurant.articles;
           console.log("liste des articles dans le restau :");
@@ -97,7 +101,11 @@ export default {
         });
 
       axios
-        .post("http://localhost:3000/api/articles/create", this.form)
+        .post("http://localhost:8080/api/articles/create", this.form, {
+          headers: {
+            "X-Server-Select": "mongo"
+          }
+        })
         .then(res => {
           //Perform Success Action
 
@@ -115,9 +123,17 @@ export default {
           allArticles.push(articleId);
 
           // envoie de la nouvelle liste d'articles dans le restaurant
-          axios.put(`http://localhost:3000/api/restaurants/${restaurantId}`, {
-            articles: allArticles
-          });
+          axios.put(
+            `http://localhost:8080/api/restaurants/${restaurantId}`,
+            {
+              articles: allArticles
+            },
+            {
+              headers: {
+                "X-Server-Select": "mongo"
+              }
+            }
+          );
         })
         .catch(() => {
           // error.response.status Check status code

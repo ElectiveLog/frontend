@@ -110,12 +110,20 @@ export default {
       console.log(this.cart);
       const idClient = "62bc06825573eae121135afa";
 
-      axios.post("http://localhost:3000/api/orders/create", {
-        idClient: idClient,
-        idRestaurant: restaurantId,
-        articles: this.cart,
-        state: "commande"
-      });
+      axios.post(
+        "http://localhost:8080/api/orders/create",
+        {
+          idClient: idClient,
+          idRestaurant: restaurantId,
+          articles: this.cart,
+          state: "commande"
+        },
+        {
+          headers: {
+            "X-Server-Select": "mongo"
+          }
+        }
+      );
       this.emptyCart();
       this.validation = "Votre commande a bien été validée";
     },

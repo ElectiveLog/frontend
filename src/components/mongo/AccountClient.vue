@@ -410,7 +410,7 @@ export default {
       .catch(error => {
         console.log(error);
       });
-
+    console.log(payloadUser.userId);
     var configCommande = {
       method: "get",
       url: "http://localhost:8080/api/orders/client/" + payloadUser.userId,
@@ -467,7 +467,7 @@ export default {
                   Commande: "Commande n°" + y,
                   prix: priceCommande + "€",
                   livreur: response.data.name,
-                  restaurant: element.idRestaurant.name,
+                  // restaurant: element.idRestaurant.name,
                   status: element.state,
                   date: element.createdAt.split("T")[0],
                   heure: element.createdAt

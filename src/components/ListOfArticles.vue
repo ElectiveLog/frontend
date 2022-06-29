@@ -115,12 +115,20 @@ export default {
     createOrder() {
       console.log(restaurantId);
       console.log(this.cart);
-      axios.post("http://localhost:3000/api/orders/create", {
-        idClient: this.idClient,
-        idRestaurant: restaurantId,
-        articles: this.cart,
-        state: "commande",
-      });
+      axios.post(
+        "http://10.117.129.194:8080/api/orders/create",
+        {
+          idClient: this.idClient,
+          idRestaurant: restaurantId,
+          articles: this.cart,
+          state: "commande",
+        },
+        {
+          headers: {
+            "X-Server-Select": "mongo",
+          },
+        }
+      );
       this.emptyCart();
       this.validation = "Votre commande a bien été validée";
     },

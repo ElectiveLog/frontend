@@ -446,76 +446,107 @@ export default {
       }
     });
     this.series.data = [
-      (this.commandsPerHour[0] * 100) /
-        this.commandesForThisRestaurant.length || 0,
-      (this.commandsPerHour[1] * 100) /
-        this.commandesForThisRestaurant.length || 0,
-      (this.commandsPerHour[2] * 100) /
-        this.commandesForThisRestaurant.length || 0,
-      (this.commandsPerHour[3] * 100) /
-        this.commandesForThisRestaurant.length || 0,
-      (this.commandsPerHour[4] * 100) /
-        this.commandesForThisRestaurant.length || 0,
-      (this.commandsPerHour[5] * 100) /
-        this.commandesForThisRestaurant.length || 0,
-      (this.commandsPerHour[6] * 100) /
-        this.commandesForThisRestaurant.length || 0,
-      (this.commandsPerHour[7] * 100) /
-        this.commandesForThisRestaurant.length || 0,
-      parseInt(
-        Number.parseFloat(
-          (this.commandsPerHour[8] * 100) /
-            this.commandesForThisRestaurant.length
-        ).toFixed(2)
-      ) || 0,
-      parseInt(
-        Number.parseFloat(
-          (this.commandsPerHour[9] * 100) /
-            this.commandesForThisRestaurant.length
-        ).toFixed(2)
-      ) || 0,
+      Number.parseFloat(
+        (this.commandsPerHour[0] * 100) / this.commandesForThisRestaurant.length
+      ).toFixed(2) || 0,
+      Number.parseFloat(
+        (this.commandsPerHour[1] * 100) / this.commandesForThisRestaurant.length
+      ).toFixed(2) || 0,
+      Number.parseFloat(
+        (this.commandsPerHour[2] * 100) / this.commandesForThisRestaurant.length
+      ).toFixed(2) || 0,
+      Number.parseFloat(
+        (this.commandsPerHour[3] * 100) / this.commandesForThisRestaurant.length
+      ).toFixed(2) || 0,
+      Number.parseFloat(
+        (this.commandsPerHour[4] * 100) / this.commandesForThisRestaurant.length
+      ).toFixed(2) || 0,
+      Number.parseFloat(
+        (this.commandsPerHour[5] * 100) / this.commandesForThisRestaurant.length
+      ).toFixed(2) || 0,
+      Number.parseFloat(
+        (this.commandsPerHour[6] * 100) / this.commandesForThisRestaurant.length
+      ).toFixed(2) || 0,
+      Number.parseFloat(
+        (this.commandsPerHour[7] * 100) / this.commandesForThisRestaurant.length
+      ).toFixed(2) || 0,
+      Number.parseFloat(
+        (this.commandsPerHour[8] * 100) / this.commandesForThisRestaurant.length
+      ).toFixed(2) || 0,
+      Number.parseFloat(
+        (this.commandsPerHour[9] * 100) / this.commandesForThisRestaurant.length
+      ).toFixed(2) || 0,
+      Number.parseFloat(
+        (this.commandsPerHour[10] * 100) /
+          this.commandesForThisRestaurant.length
+      ).toFixed(2) || 0,
+      Number.parseFloat(
+        (this.commandsPerHour[11] * 100) /
+          this.commandesForThisRestaurant.length
+      ).toFixed(2) || 0,
 
-      (this.commandsPerHour[10] * 100) /
-        this.commandesForThisRestaurant.length || 0,
-      (this.commandsPerHour[11] * 100) /
-        this.commandesForThisRestaurant.length || 0,
-      parseInt(
-        Number.parseFloat(
-          (this.commandsPerHour[12] * 100) /
-            this.commandesForThisRestaurant.length
-        ).toFixed(2)
-      ) || 0,
-      (this.commandsPerHour[13] * 100) /
-        this.commandesForThisRestaurant.length || 0,
-      (this.commandsPerHour[14] * 100) /
-        this.commandesForThisRestaurant.length || 0,
-      (this.commandsPerHour[15] * 100) /
-        this.commandesForThisRestaurant.length || 0,
-      (this.commandsPerHour[16] * 100) /
-        this.commandesForThisRestaurant.length || 0,
-      (this.commandsPerHour[17] * 100) /
-        this.commandesForThisRestaurant.length || 0,
-      (this.commandsPerHour[18] * 100) /
-        this.commandesForThisRestaurant.length || 0,
-      (this.commandsPerHour[19] * 100) /
-        this.commandesForThisRestaurant.length || 0,
-      (this.commandsPerHour[20] * 100) /
-        this.commandesForThisRestaurant.length || 0,
-      (this.commandsPerHour[21] * 100) /
-        this.commandesForThisRestaurant.length || 0,
-      (this.commandsPerHour[22] * 100) /
-        this.commandesForThisRestaurant.length || 0,
-      (this.commandsPerHour[23] * 100) /
-        this.commandesForThisRestaurant.length || 0
+      Number.parseFloat(
+        (this.commandsPerHour[12] * 100) /
+          this.commandesForThisRestaurant.length
+      ).toFixed(2) || 0,
+      Number.parseFloat(
+        (this.commandsPerHour[13] * 100) /
+          this.commandesForThisRestaurant.length
+      ).toFixed(2) || 0,
+      Number.parseFloat(
+        (this.commandsPerHour[14] * 100) /
+          this.commandesForThisRestaurant.length
+      ).toFixed(2) || 0,
+      Number.parseFloat(
+        (this.commandsPerHour[15] * 100) /
+          this.commandesForThisRestaurant.length
+      ).toFixed(2) || 0,
+      Number.parseFloat(
+        (this.commandsPerHour[16] * 100) /
+          this.commandesForThisRestaurant.length
+      ).toFixed(2) || 0,
+      Number.parseFloat(
+        (this.commandsPerHour[17] * 100) /
+          this.commandesForThisRestaurant.length
+      ).toFixed(2) || 0,
+      Number.parseFloat(
+        (this.commandsPerHour[18] * 100) /
+          this.commandesForThisRestaurant.length
+      ).toFixed(2) || 0,
+      Number.parseFloat(
+        (this.commandsPerHour[19] * 100) /
+          this.commandesForThisRestaurant.length
+      ).toFixed(2) || 0,
+      Number.parseFloat(
+        (this.commandsPerHour[20] * 100) /
+          this.commandesForThisRestaurant.length
+      ).toFixed(2) || 0,
+      Number.parseFloat(
+        (this.commandsPerHour[21] * 100) /
+          this.commandesForThisRestaurant.length
+      ).toFixed(2) || 0,
+      Number.parseFloat(
+        (this.commandsPerHour[22] * 100) /
+          this.commandesForThisRestaurant.length
+      ).toFixed(2) || 0,
+      Number.parseFloat(
+        (this.commandsPerHour[23] * 100) /
+          this.commandesForThisRestaurant.length
+      ).toFixed(2) || 0
     ];
     console.log(this.series.data);
+    i = 0;
+    this.series.data.forEach(data => {
+      if (data === "NaN") this.series.data[i] = 0;
+      i++;
+    });
 
     this.updateSeriesLine();
   }
 };
 </script>
 
-<style>
+<style scoped>
 .small {
   max-width: 600px;
   margin: 150px auto;

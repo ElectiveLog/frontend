@@ -671,3 +671,9 @@ code {
 .valid-feedback {
   color: #2acc80;
 }
+
+@media screen and (max-width: 600px) {
+  .responsive_login {
+    width: max-content;
+  }
+}

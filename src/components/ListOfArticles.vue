@@ -115,7 +115,6 @@ export default {
     createOrder() {
       console.log(restaurantId);
       console.log(this.cart);
-
       axios.post("http://localhost:3000/api/orders/create", {
         idClient: this.idClient,
         idRestaurant: restaurantId,

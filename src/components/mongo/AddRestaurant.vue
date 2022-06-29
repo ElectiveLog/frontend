@@ -79,7 +79,11 @@ export default {
       this.payloadUser = this.decodeToken(user.accessToken);
       this.form.idRestaurateur = this.payloadUser.userId;
       axios
-        .post("http://localhost:3000/api/restaurants/create", this.form)
+        .post("http://10.117.129.194:8080/api/restaurants/create", this.form, {
+          headers: {
+            "X-Server-Select": "mongo",
+          },
+        })
         .then((res) => {
           //Perform Success Action
           console.log("donnéee" + res.data);

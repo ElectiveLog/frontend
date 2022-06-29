@@ -46,7 +46,7 @@
                     class="form-control"
                     type="number"
                     name="number"
-                    placeholder="Numéro"
+                    placeholder="Numéro de rue"
                     v-model="user.streetNumber"
                   />
                 </div>
@@ -148,8 +148,7 @@ export default {
     var axios = require("axios");
     var config = {
       method: "get",
-      // url: "http://localhost:8080/roles/",
-      url: "http://localhost:5000/roles/",
+      url: "http://10.117.129.194:8080/roles/",
       headers: {
         Authorization:
           "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlc3RhdXJhdGV1ckByZXN0YXVyYXRldXIucmVzdGF1cmF0ZXVyIiwibmFtZSI6InJlc3RhdXJhdGV1ciIsInJvbGUiOiJSZXN0YXVyYXRldXIiLCJ1c2VySWQiOiJjbDRzZ3M3OGMwMDAzMDFweW15bDEweDZvIiwiaWF0IjoxNjU2NDAzNDE2LCJleHAiOjE2NTcwMDgyMTZ9.-K-Q1EXnCx7WcKrQm9OHDceqZQwexdohM3aBn08HgQk",

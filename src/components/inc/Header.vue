@@ -54,12 +54,18 @@
           <b-dropdown-item to="/account">
             Compte <b-icon-person-fill class="icon"></b-icon-person-fill>
           </b-dropdown-item>
-          <b-dropdown-item to="/cart"
-            >Panier
-            <b-icon-cart-fill class="icon"></b-icon-cart-fill>&ensp;<span>{{
-              orders
-            }}</span></b-dropdown-item
+          <!-- <b-dropdown-item to="/Restaurants">
+            Tous les restaurants
+          </b-dropdown-item> -->
+          <b-dropdown-item v-if="currentRole == 'Restaurateur'" to="/Articles">
+            Gérer mes articles
+          </b-dropdown-item>
+          <b-dropdown-item
+            v-if="currentRole == 'Restaurateur'"
+            to="/MyRestaurant"
           >
+            Gérer mon restaurant
+          </b-dropdown-item>
           <b-dropdown-item @click.prevent="logOut">Deconnexion</b-dropdown-item>
         </b-dropdown>
       </div>

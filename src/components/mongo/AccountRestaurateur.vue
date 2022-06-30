@@ -12,7 +12,7 @@
               <input
                 class="form-control"
                 type="text"
-                placeholder="Username"
+                placeholder="Nom"
                 v-model="userData.name"
               />
             </div>
@@ -34,7 +34,7 @@
               <input
                 class="form-control"
                 type="text"
-                placeholder="Home Address"
+                placeholder="Adresse"
                 v-model="userData.address"
               />
             </div>
@@ -49,7 +49,7 @@
     </form>
 
     <div class="card-header">
-      <h4 class="card-heading">Commandes en attente</h4>
+      <h4 class="card-heading">Commande·s en attente</h4>
       <b-alert v-if="waitCommandes.length == 0" show
         >Aucune commande en attente!!!</b-alert
       >
@@ -73,7 +73,7 @@
             @click="handleEditStatus(row.item)"
             class="green_button styled_button"
           >
-            Validé
+            Valider
           </b-button>
         </template>
         <template #cell(show_details)="row">
@@ -101,7 +101,7 @@
             </b-row>
             <b-row class="mb-2">
               <b-col sm="3" class="text-sm-right"
-                ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+                ><b>Numéro de rue: </b>{{ row.item.streetNumber }}</b-col
               >
             </b-row>
             <b-row class="mb-2">
@@ -130,7 +130,7 @@
     </div>
 
     <div class="card-header">
-      <h4 class="card-heading">Commandes en cours</h4>
+      <h4 class="card-heading">Commande·s en cours</h4>
       <b-alert v-if="inProgressCommandes.length == 0" show
         >Aucune commande en cours !</b-alert
       >
@@ -173,7 +173,7 @@
             </b-row>
             <b-row class="mb-2">
               <b-col sm="3" class="text-sm-right"
-                ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+                ><b>Numéro de rue: </b>{{ row.item.streetNumber }}</b-col
               >
             </b-row>
             <b-row class="mb-2">
@@ -247,7 +247,7 @@
               </b-row>
               <b-row class="mb-2">
                 <b-col sm="3" class="text-sm-right"
-                  ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+                  ><b>Numéro de rue: </b>{{ row.item.streetNumber }}</b-col
                 >
               </b-row>
               <b-row class="mb-2">
@@ -327,7 +327,7 @@ export default {
           key: "prix",
           label: "Prix"
         },
-        { key: "Articles", label: "articles" },
+        { key: "articles", label: "Articles" },
         {
           key: "livreur",
           label: "Livreur"
@@ -342,7 +342,7 @@ export default {
         },
         {
           key: "actions",
-          label: "Actions"
+          label: "Action"
         },
         { key: "show_details", label: "Details" }
       ],
@@ -367,13 +367,17 @@ export default {
   },
   methods: {
     handleEditStatus(commande) {
+      this.$socket.emit("OrderAcceptRestaurant", "1");
       var data = JSON.stringify({
         state: "preparation"
       });
 
       var config = {
         method: "put",
-        url: "http://10.117.129.194:8080/api/orders/" + commande.id,
+        url:
+          window.location.origin.split(":80")[0] +
+          ":8080/api/orders/" +
+          commande.id,
         headers: {
           "X-Server-Select": "mongo",
           Authorization:
@@ -402,7 +406,10 @@ export default {
       const payloadUser = this.decodeToken(user.accessToken);
       var config = {
         method: "put",
-        url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
+        url:
+          window.location.origin.split(":80")[0] +
+          ":8080/users/" +
+          payloadUser.userId,
         headers: {
           Authorization: "Bearer " + user.accessToken
         },
@@ -425,7 +432,7 @@ export default {
 
       var configLog = {
         method: "post",
-        url: "http://localhost:8080/api/logs/create",
+        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
         headers: {
           "X-Server-Select": "mongo"
         },
@@ -447,7 +454,7 @@ export default {
       const payloadUser = this.decodeToken(user.accessToken);
       var configLog = {
         method: "post",
-        url: "http://localhost:8080/api/logs/create",
+        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
         headers: {
           "X-Server-Select": "mongo"
         },
@@ -466,7 +473,10 @@ export default {
         });
       var config = {
         method: "delete",
-        url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
+        url:
+          window.location.origin.split(":80")[0] +
+          ":8080/users/" +
+          payloadUser.userId,
         headers: {
           Authorization: "Bearer " + user.accessToken
         }
@@ -496,7 +506,10 @@ export default {
     const payloadUser = this.decodeToken(user.accessToken);
     var config = {
       method: "get",
-      url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
+      url:
+        window.location.origin.split(":80")[0] +
+        ":8080/users/" +
+        payloadUser.userId,
       headers: {
         Authorization: "Bearer " + user.accessToken
       }
@@ -513,7 +526,8 @@ export default {
     var configRestaurant = {
       method: "get",
       url:
-        "http://10.117.129.194:8080/api/restaurants/restaurateur/" +
+        window.location.origin.split(":80")[0] +
+        ":8080/api/restaurants/restaurateur/" +
         payloadUser.userId,
       headers: {
         "X-Server-Select": "mongo"
@@ -529,7 +543,8 @@ export default {
           var config = {
             method: "get",
             url:
-              "http://10.117.129.194:8080/api/orders/restaurant/" +
+              window.location.origin.split(":80")[0] +
+              ":8080/api/orders/restaurant/" +
               restaurant._id,
             headers: {
               "X-Server-Select": "mongo"
@@ -542,7 +557,10 @@ export default {
                 var priceCommande = 0;
                 var configLivreur = {
                   method: "get",
-                  url: "http://10.117.129.194:8080/users/" + order.idLivreur,
+                  url:
+                    window.location.origin.split(":80")[0] +
+                    ":8080/users/" +
+                    order.idLivreur,
                   headers: {
                     Authorization: "Bearer " + user.accessToken
                   }
@@ -558,7 +576,10 @@ export default {
 
                 var configClient = {
                   method: "get",
-                  url: "http://10.117.129.194:8080/users/" + order.idClient,
+                  url:
+                    window.location.origin.split(":80")[0] +
+                    ":8080/users/" +
+                    order.idClient,
                   headers: {
                     Authorization: "Bearer " + user.accessToken
                   }
@@ -572,6 +593,7 @@ export default {
                     order.city = response.data.city;
                     order.country = response.data.country;
                     order.phoneNumber = response.data.phoneNumber;
+                    order.sponsorshipCode = response.data.sponsorshipCode;
                   })
                   .catch(function(error) {
                     console.log(error);
@@ -649,7 +671,7 @@ export default {
                     city: order.city,
                     country: order.country,
                     phoneNumber: order.phoneNumber,
-                    status: "livrée",
+                    status: "Livrée",
                     parnainage: order.sponsorshipCode,
                     date: order.createdAt.split("T")[0],
                     heure: order.createdAt

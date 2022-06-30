@@ -1,5 +1,5 @@
 <template>
-  <div class="list row">
+  <div v-if="this.haveARestaurant == false" class="list row">
     <h2>Ajouter un restaurant</h2>
     <form v-on:submit.prevent="submitForm">
       <div class="form-group">
@@ -36,7 +36,6 @@
         />
       </div>
       <div class="form-group">
-        <img style="" :src="image" alt="" />
         <input
           @change="handleImage"
           class="custom-input"
@@ -54,10 +53,11 @@
 </template>
 
 <script>
+import DataService from "../../services/DataService";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 const user = JSON.parse(localStorage.getItem("user"));
-
+let haveARestaurant;
 export default {
   name: "PostFormAxios",
   data() {
@@ -67,51 +67,49 @@ export default {
         idRestaurateur: "",
         address: "",
         picture: ""
-      }
+      },
+      haveARestaurant: false
     };
   },
   methods: {
     decodeToken(token) {
       return jwt_decode(token);
     },
+    retrieveRestaurant() {
+      this.payloadUser = this.decodeToken(user.accessToken);
+      this.userId = this.payloadUser.userId;
+      DataService.getAllRestaurantsByRestaurateur(this.payloadUser.userId)
+        .then(response => {
+          this.restaurantId = response.data.restaurants[0]._id;
+          console.log("Utilisateur: " + this.userId);
+          console.log("le restau: " + this.restaurantId);
+          DataService.getOneRestaurant(this.restaurantId)
+            .then(response => {
+              this.restaurant = response.data.restaurant;
+              console.log(this.restaurant);
+              if (this.restaurant) {
+                this.haveARestaurant = true;
+                console.log(this.haveARestaurant);
+              }
+            })
+            .catch(e => {
+              console.log(e);
+            });
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
     submitForm() {
       this.form.picture = this.image;
       this.payloadUser = this.decodeToken(user.accessToken);
       this.form.idRestaurateur = this.payloadUser.userId;
-      var configLog = {
-        method: "post",
-        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
-        headers: {
-          "X-Server-Select": "mongo"
-        },
-        data: {
-          type: "Création",
-          description:
-            "Création du restaurant : " +
-            this.form.name +
-            " par " +
-            this.payloadUser.name +
-            "."
-        }
-      };
-      axios(configLog)
-        .then(response => {
-          console.log(JSON.stringify(response.data));
-        })
-        .catch(error => {
-          console.log(error);
-        });
       axios
-        .post(
-          window.location.origin.split(":80")[0] +
-            ":8080/api/restaurants/create",
-          this.form,
-          {
-            headers: {
-              "X-Server-Select": "mongo"
-            }
+        .post("http://10.117.129.194:8080/api/restaurants/create", this.form, {
+          headers: {
+            "X-Server-Select": "mongo"
           }
-        )
+        })
         .then(res => {
           //Perform Success Action
           console.log("donnéee" + res.data);
@@ -142,7 +140,14 @@ export default {
         this.image = e.target.result;
       };
       reader.readAsDataURL(fileObject);
+    },
+    isItFalse() {
+      console.log(haveARestaurant);
     }
+  },
+  mounted() {
+    this.retrieveRestaurant();
+    this.isItFalse();
   }
 };
 </script>

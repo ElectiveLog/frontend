@@ -36,7 +36,7 @@
                 class="form-control"
                 type="number"
                 v-model="userData.streetNumber"
-                placeholder="Numéro"
+                placeholder="Numéro de rue"
               />
             </div>
           </div>
@@ -46,7 +46,7 @@
               <input
                 class="form-control"
                 type="text"
-                placeholder="Home Address"
+                placeholder="Adresse"
                 v-model="userData.address"
               />
             </div>
@@ -94,7 +94,7 @@
     </form>
 
     <div class="card-header">
-      <h4 class="card-heading">Commandes en cours</h4>
+      <h4 class="card-heading">Commande·s en cours</h4>
       <b-alert v-if="inProgressCommandes.length == 0" show
         >Aucune commande en cours !</b-alert
       >
@@ -137,7 +137,7 @@
             </b-row>
             <b-row class="mb-2">
               <b-col sm="3" class="text-sm-right"
-                ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+                ><b>Numéro de rue: </b>{{ row.item.streetNumber }}</b-col
               >
             </b-row>
             <b-row class="mb-2">
@@ -209,7 +209,7 @@
               </b-row>
               <b-row class="mb-2">
                 <b-col sm="3" class="text-sm-right"
-                  ><b>Numéro: </b>{{ row.item.streetNumber }}</b-col
+                  ><b>Numéro de rue: </b>{{ row.item.streetNumber }}</b-col
                 >
               </b-row>
               <b-row class="mb-2">
@@ -299,12 +299,22 @@ export default {
       ]
     };
   },
+  // mounted: function(){
+  //           this.socket.on('OrderIsAccept', (data) => {
+  //             this.messages = [...this.messages, data];
+  //             console.log("coucu")
+  //         });
+
+  // },
   methods: {
     handleEdit() {
       const payloadUser = this.decodeToken(user.accessToken);
       var config = {
         method: "put",
-        url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
+        url:
+          window.location.origin.split(":80")[0] +
+          ":8080/users/" +
+          payloadUser.userId,
         headers: {
           Authorization: "Bearer " + user.accessToken
         },
@@ -327,7 +337,7 @@ export default {
       console.log("ijifejife");
       var configLog = {
         method: "post",
-        url: "http://localhost:8080/api/logs/create",
+        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
         headers: {
           "X-Server-Select": "mongo"
         },
@@ -349,7 +359,7 @@ export default {
 
       var configLog = {
         method: "post",
-        url: "http://localhost:8080/api/logs/create",
+        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
         headers: {
           "X-Server-Select": "mongo"
         },
@@ -367,7 +377,10 @@ export default {
         });
       var config = {
         method: "delete",
-        url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
+        url:
+          window.location.origin.split(":80")[0] +
+          ":8080/users/" +
+          payloadUser.userId,
         headers: {
           Authorization: "Bearer " + user.accessToken
         }
@@ -394,10 +407,14 @@ export default {
     }
   },
   created() {
+    console.log(window.location.origin.split(":80")[0]);
     const payloadUser = this.decodeToken(user.accessToken);
     var config = {
       method: "get",
-      url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
+      url:
+        window.location.origin.split(":80")[0] +
+        ":8080/users/" +
+        payloadUser.userId,
       headers: {
         Authorization: "Bearer " + user.accessToken
       }
@@ -413,7 +430,10 @@ export default {
     console.log(payloadUser.userId);
     var configCommande = {
       method: "get",
-      url: "http://10.117.129.194:8080/api/orders/client/" + payloadUser.userId,
+      url:
+        window.location.origin.split(":80")[0] +
+        ":8080/api/orders/client/" +
+        payloadUser.userId,
       headers: {
         "X-Server-Select": "mongo"
       }
@@ -434,7 +454,10 @@ export default {
 
           var config = {
             method: "get",
-            url: "http://10.117.129.194:8080/users/" + element.idLivreur,
+            url:
+              window.location.origin.split(":80")[0] +
+              ":8080/users/" +
+              element.idLivreur,
             headers: {
               Authorization: "Bearer " + user.accessToken
             }
@@ -448,7 +471,7 @@ export default {
                   prix: priceCommande + "€",
                   livreur: response.data.name,
                   restaurant: element.idRestaurant.name,
-                  status: "livrée",
+                  status: "Livrée",
                   date: element.createdAt.split("T")[0],
                   heure: element.createdAt
                     .split("T")
@@ -467,7 +490,7 @@ export default {
                   Commande: "Commande n°" + y,
                   prix: priceCommande + "€",
                   livreur: response.data.name,
-                  // restaurant: element.idRestaurant.name,
+                  restaurant: element.idRestaurant.name,
                   status: element.state,
                   date: element.createdAt.split("T")[0],
                   heure: element.createdAt

@@ -1,6 +1,13 @@
 <template>
   <div class="row">
     <div>
+      <router-link to="/">
+        <b-icon-arrow-left
+          class="icon"
+          font-scale="1.5"
+          shift-v="1"
+        ></b-icon-arrow-left
+      ></router-link>
       <h5 class="space_bottom">
         Articles dans le panier : {{ Object.keys(this.cart).length }}
       </h5>
@@ -35,11 +42,11 @@
           <h5>{{ articles.name }}</h5>
           <a>{{ articles.price }} €</a>
           <a>{{ articles.detail }}</a>
+          <div class="center">
+            <button class="green_button styled_button center">Ajouter</button>
+          </div>
         </li>
       </ul>
-      <div class="center">
-        <button class="green_button styled_button center">Ajouter</button>
-      </div>
     </div>
   </div>
 </template>
@@ -115,8 +122,31 @@ export default {
     createOrder() {
       console.log(restaurantId);
       console.log(this.cart);
+      this.$socket.emit("OrderCreate", "1");
+      var configLog = {
+        method: "post",
+        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+        headers: {
+          "X-Server-Select": "mongo"
+        },
+        data: {
+          type: "Création",
+          description:
+            "Création d'une commande par un client : " +
+            this.idClient +
+            " pour le restaurant : " +
+            restaurantId
+        }
+      };
+      axios(configLog)
+        .then(response => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(error => {
+          console.log(error);
+        });
       axios.post(
-        "http://10.117.129.194:8080/api/orders/create",
+        window.location.origin.split(":80")[0] + ":8080/api/orders/create",
         {
           idClient: this.idClient,
           idRestaurant: restaurantId,

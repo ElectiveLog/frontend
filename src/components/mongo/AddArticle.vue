@@ -89,7 +89,8 @@ export default {
       },
       articles: {
         articles: ""
-      }
+      },
+      restaurantName: ""
     };
   },
   methods: {
@@ -114,6 +115,7 @@ export default {
         )
         .then(res => {
           this.restaurantId = res.data.restaurants[0]._id;
+          this.restaurantName = res.data.restaurants[0].name;
           console.log("Utilisateur: " + this.userId);
           console.log("le restau: " + this.restaurantId);
         });
@@ -136,12 +138,40 @@ export default {
         });
 
       axios
-        .post("http://10.117.129.194:8080/api/articles/create", this.form, {
-          headers: {
-            "X-Server-Select": "mongo"
+        .post(
+          window.location.origin.split(":80")[0] + ":8080/api/articles/create",
+          this.form,
+          {
+            headers: {
+              "X-Server-Select": "mongo"
+            }
           }
-        })
+        )
         .then(res => {
+          var configLog = {
+            method: "post",
+            url:
+              window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+            headers: {
+              "X-Server-Select": "mongo"
+            },
+            data: {
+              type: "Création",
+              description:
+                "Ajout de l'article : " +
+                this.form.name +
+                " à " +
+                this.restaurantName +
+                "."
+            }
+          };
+          axios(configLog)
+            .then(response => {
+              console.log(JSON.stringify(response.data));
+            })
+            .catch(error => {
+              console.log(error);
+            });
           //Perform Success Action
 
           // get this article ID

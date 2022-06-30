@@ -31,7 +31,7 @@
 
           <div class="col-sm-6 col-md-4">
             <div class="mb-4">
-              <label class="form-label">Numéro</label>
+              <label class="form-label">Numéro de rue</label>
               <input
                 class="form-control"
                 type="number"
@@ -238,6 +238,7 @@
       </div>
     </div>
     <b-button
+      style="margin-top: 10px; margin-left: 10px"
       id="red_button styled_button"
       @click="$bvModal.show('bv-modal-example')"
       variant="danger"
@@ -313,10 +314,7 @@ export default {
       const payloadUser = this.decodeToken(user.accessToken);
       var config = {
         method: "put",
-        url:
-          window.location.origin.split(":80")[0] +
-          ":8080/users/" +
-          payloadUser.userId,
+        url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
         headers: {
           Authorization: "Bearer " + user.accessToken
         },
@@ -339,7 +337,7 @@ export default {
       console.log("ijifejife");
       var configLog = {
         method: "post",
-        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+        url: "http://10.117.129.194:8080/api/logs/create",
         headers: {
           "X-Server-Select": "mongo"
         },
@@ -361,7 +359,7 @@ export default {
 
       var configLog = {
         method: "post",
-        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+        url: "http://10.117.129.194:8080/api/logs/create",
         headers: {
           "X-Server-Select": "mongo"
         },

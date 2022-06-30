@@ -2,17 +2,17 @@
   <div class="small">
     <VueApexCharts
       ref="realtimeChart"
-      type="line"
+      type="bar"
       height="350"
       :options="chartOptions"
       :series="series"
     ></VueApexCharts>
     <p>
-      Nombre de commandes totales passées par les clients :
+      Nombre de commandes total passées par les clients :
       {{ numberCommandesTotals }}
     </p>
-    <p>Nombre d'articles en cours : {{ numberArticles }}</p>
-    <p>Nombre de clients uniques : {{ numberClientsTotals }}</p>
+    <p>Nombre d'articles en ligne : {{ numberArticles }}</p>
+    <p>Nombre de clients : {{ numberClientsTotals }}</p>
     <p>Moyenne du prix de tous les paniers : {{ meanCard }} €</p>
   </div>
 </template>
@@ -33,13 +33,13 @@ export default {
       this.$refs.realtimeChart.updateSeries(
         [
           {
-            data: this.series.data,
-          },
+            data: this.series.data
+          }
         ],
         false,
         true
       );
-    },
+    }
   },
   data() {
     return {
@@ -65,8 +65,8 @@ export default {
       series: [
         {
           name: "Nombre de commandes (%)",
-          data: [],
-        },
+          data: []
+        }
       ],
       chartOptions: {
         xaxis: {
@@ -94,48 +94,49 @@ export default {
             "20",
             "21",
             "22",
-            "23",
-          ],
+            "23"
+          ]
         },
         yaxis: {
           min: 0,
-          max: 100,
+          max: 100
         },
         title: {
           text: "Pourcentage du nombre de commandes par heures",
-          align: "left",
-        },
-      },
+          align: "left"
+        }
+      }
     };
   },
   async created() {
+    console.log("created");
     const payloadUser = this.decodeToken(user.accessToken);
     var configRoles = {
       method: "get",
-      url: window.location.origin.split(":80")[0] + ":8080/roles/",
+      url: "http://10.117.129.194:8080/roles/",
       headers: {
-        Authorization: "Bearer " + user.accessToken,
-      },
+        Authorization: "Bearer " + user.accessToken
+      }
     };
-    await axios(configRoles).then((response) => {
-      response.data.forEach((role) => {
+    await axios(configRoles).then(response => {
+      response.data.forEach(role => {
         this.roles.push({
           id: role.id,
-          name: role.name,
+          name: role.name
         });
       });
     });
     //Get nb users
     var configUsers = {
       method: "get",
-      url: window.location.origin.split(":80")[0] + ":8080/users",
+      url: "http://10.117.129.194:8080/users",
       headers: {
-        Authorization: "Bearer " + user.accessToken,
-      },
+        Authorization: "Bearer " + user.accessToken
+      }
     };
-    await axios(configUsers).then((response) => {
-      response.data.forEach((user) => {
-        var role = this.roles.find((role) => role.id === user.roleId);
+    await axios(configUsers).then(response => {
+      response.data.forEach(user => {
+        var role = this.roles.find(role => role.id === user.roleId);
         this.users.push({
           id: user.id,
           Name: user.name,
@@ -145,28 +146,28 @@ export default {
           City: user.city,
           SponsorshipCode: user.sponsorshipCode,
           Date: user.createdAt.split("T")[0],
-          Heure: user.createdAt.split("T").pop().split(".")[0],
+          Heure: user.createdAt
+            .split("T")
+            .pop()
+            .split(".")[0]
         });
       });
     });
     //Get nb livreurs
     var roleLivreurId = "";
-    this.roles.forEach((role) => {
+    this.roles.forEach(role => {
       if (role.name === "Livreur") roleLivreurId = role.id;
     });
 
     var configLivreurs = {
       method: "get",
-      url:
-        window.location.origin.split(":80")[0] +
-        ":8080/users/get/role/" +
-        roleLivreurId,
+      url: "http://10.117.129.194:8080/users/get/role/" + roleLivreurId,
       headers: {
-        Authorization: "Bearer " + user.accessToken,
-      },
+        Authorization: "Bearer " + user.accessToken
+      }
     };
-    await axios(configLivreurs).then((response) => {
-      response.data.forEach((livreur) => {
+    await axios(configLivreurs).then(response => {
+      response.data.forEach(livreur => {
         this.livreurs.push({
           id: livreur.id,
           Name: livreur.name,
@@ -174,27 +175,27 @@ export default {
           Adresse: livreur.address,
           Role: "Livreur",
           Date: livreur.createdAt.split("T")[0],
-          Heure: livreur.createdAt.split("T").pop().split(".")[0],
+          Heure: livreur.createdAt
+            .split("T")
+            .pop()
+            .split(".")[0]
         });
       });
     });
     //Get nb clients
     var roleClientId = "";
-    this.roles.forEach((role) => {
+    this.roles.forEach(role => {
       if (role.name === "Client") roleClientId = role.id;
     });
     var configClients = {
       method: "get",
-      url:
-        window.location.origin.split(":80")[0] +
-        ":8080/users/get/role/" +
-        roleClientId,
+      url: "http://10.117.129.194:8080/users/get/role/" + roleClientId,
       headers: {
-        Authorization: "Bearer " + user.accessToken,
-      },
+        Authorization: "Bearer " + user.accessToken
+      }
     };
-    await axios(configClients).then((response) => {
-      response.data.forEach((client) => {
+    await axios(configClients).then(response => {
+      response.data.forEach(client => {
         this.clients.push({
           id: client.id,
           Name: client.name,
@@ -202,27 +203,27 @@ export default {
           Adresse: client.address,
           Role: "Client",
           Date: client.createdAt.split("T")[0],
-          Heure: client.createdAt.split("T").pop().split(".")[0],
+          Heure: client.createdAt
+            .split("T")
+            .pop()
+            .split(".")[0]
         });
       });
     });
     //Get nb restaurateurs
     var roleRestaurateurId = "";
-    this.roles.forEach((role) => {
+    this.roles.forEach(role => {
       if (role.name === "Restaurateur") roleRestaurateurId = role.id;
     });
     var configRestaurateurs = {
       method: "get",
-      url:
-        window.location.origin.split(":80")[0] +
-        ":8080/users/get/role/" +
-        roleRestaurateurId,
+      url: "http://10.117.129.194:8080/users/get/role/" + roleRestaurateurId,
       headers: {
-        Authorization: "Bearer " + user.accessToken,
-      },
+        Authorization: "Bearer " + user.accessToken
+      }
     };
-    await axios(configRestaurateurs).then((response) => {
-      response.data.forEach((restaurateur) => {
+    await axios(configRestaurateurs).then(response => {
+      response.data.forEach(restaurateur => {
         this.restaurateurs.push({
           id: restaurateur.id,
           Name: restaurateur.name,
@@ -230,27 +231,27 @@ export default {
           Adresse: restaurateur.address,
           Role: "Restaurateur",
           Date: restaurateur.createdAt.split("T")[0],
-          Heure: restaurateur.createdAt.split("T").pop().split(".")[0],
+          Heure: restaurateur.createdAt
+            .split("T")
+            .pop()
+            .split(".")[0]
         });
       });
     });
     //Get nb commerciaux
     var roleCommerciauxId = "";
-    this.roles.forEach((role) => {
+    this.roles.forEach(role => {
       if (role.name === "Commercial") roleCommerciauxId = role.id;
     });
     var configCommerciaux = {
       method: "get",
-      url:
-        window.location.origin.split(":80")[0] +
-        ":8080/users/get/role/" +
-        roleCommerciauxId,
+      url: "http://10.117.129.194:8080/users/get/role/" + roleCommerciauxId,
       headers: {
-        Authorization: "Bearer " + user.accessToken,
-      },
+        Authorization: "Bearer " + user.accessToken
+      }
     };
-    await axios(configCommerciaux).then((response) => {
-      response.data.forEach((commerciaux) => {
+    await axios(configCommerciaux).then(response => {
+      response.data.forEach(commerciaux => {
         this.commerciaux.push({
           id: commerciaux.id,
           Name: commerciaux.name,
@@ -258,27 +259,27 @@ export default {
           Adresse: commerciaux.address,
           Role: "Commercial",
           Date: commerciaux.createdAt.split("T")[0],
-          Heure: commerciaux.createdAt.split("T").pop().split(".")[0],
+          Heure: commerciaux.createdAt
+            .split("T")
+            .pop()
+            .split(".")[0]
         });
       });
     });
     //Get nb technique
     var roleTechniqueId = "";
-    this.roles.forEach((role) => {
+    this.roles.forEach(role => {
       if (role.name === "Technique") roleTechniqueId = role.id;
     });
     var configTechniques = {
       method: "get",
-      url:
-        window.location.origin.split(":80")[0] +
-        ":8080/users/get/role/" +
-        roleTechniqueId,
+      url: "http://10.117.129.194:8080/users/get/role/" + roleTechniqueId,
       headers: {
-        Authorization: "Bearer " + user.accessToken,
-      },
+        Authorization: "Bearer " + user.accessToken
+      }
     };
-    await axios(configTechniques).then((response) => {
-      response.data.forEach((technique) => {
+    await axios(configTechniques).then(response => {
+      response.data.forEach(technique => {
         this.techniques.push({
           id: technique.id,
           Name: technique.name,
@@ -286,27 +287,27 @@ export default {
           Adresse: technique.address,
           Role: "Technique",
           Date: technique.createdAt.split("T")[0],
-          Heure: technique.createdAt.split("T").pop().split(".")[0],
+          Heure: technique.createdAt
+            .split("T")
+            .pop()
+            .split(".")[0]
         });
       });
     });
     //Get nb technique
     var roleDevTiersId = "";
-    this.roles.forEach((role) => {
+    this.roles.forEach(role => {
       if (role.name === "Developpeur Tiers") roleDevTiersId = role.id;
     });
     var configDevTiers = {
       method: "get",
-      url:
-        window.location.origin.split(":80")[0] +
-        ":8080/users/get/role/" +
-        roleDevTiersId,
+      url: "http://10.117.129.194:8080/users/get/role/" + roleDevTiersId,
       headers: {
-        Authorization: "Bearer " + user.accessToken,
-      },
+        Authorization: "Bearer " + user.accessToken
+      }
     };
-    await axios(configDevTiers).then((response) => {
-      response.data.forEach((devTiers) => {
+    await axios(configDevTiers).then(response => {
+      response.data.forEach(devTiers => {
         this.devTiers.push({
           id: devTiers.id,
           Name: devTiers.name,
@@ -314,45 +315,51 @@ export default {
           Adresse: devTiers.address,
           Role: "Developpeur Tiers",
           Date: devTiers.createdAt.split("T")[0],
-          Heure: devTiers.createdAt.split("T").pop().split(".")[0],
+          Heure: devTiers.createdAt
+            .split("T")
+            .pop()
+            .split(".")[0]
         });
       });
     });
     //Get nb commandes
     var configOrders = {
       method: "get",
-      url: window.location.origin.split(":80")[0] + ":8080/api/orders/",
+      url: "http://10.117.129.194:8080/api/orders/",
       headers: {
         Authorization: "Bearer " + user.accessToken,
-        "X-Server-Select": "mongo",
-      },
+        "X-Server-Select": "mongo"
+      }
     };
-    await axios(configOrders).then((response) => {
-      response.data.orders.forEach((order) => {
+    await axios(configOrders).then(response => {
+      response.data.orders.forEach(order => {
         this.commandes.push({
           id: order._id,
           Date: order.createdAt.split("T")[0],
-          Heure: order.createdAt.split("T").pop().split(".")[0],
+          Heure: order.createdAt
+            .split("T")
+            .pop()
+            .split(".")[0],
           IdClient: order.idClient,
           IdLivreur: order.idLivreur,
           IdRestaurant: order.idRestaurant,
           Articles: order.articles,
           ActiveCodeSponsorhsip: order.activeCodeSponsorhsip,
-          State: order.state,
+          State: order.state
         });
       });
     });
     //Get nb restaurants
     var configRestaurant = {
       method: "get",
-      url: window.location.origin.split(":80")[0] + ":8080/api/restaurants/",
+      url: "http://10.117.129.194:8080/api/restaurants/",
       headers: {
         Authorization: "Bearer " + user.accessToken,
-        "X-Server-Select": "mongo",
-      },
+        "X-Server-Select": "mongo"
+      }
     };
-    await axios(configRestaurant).then((response) => {
-      response.data.restaurants.forEach((restaurant) => {
+    await axios(configRestaurant).then(response => {
+      response.data.restaurants.forEach(restaurant => {
         this.restaurants.push({
           id: restaurant._id,
           Name: restaurant.name,
@@ -360,35 +367,41 @@ export default {
           Articles: restaurant.articles,
           IdRestaurateur: restaurant.idRestaurateur,
           Date: restaurant.createdAt.split("T")[0],
-          Heure: restaurant.createdAt.split("T").pop().split(".")[0],
+          Heure: restaurant.createdAt
+            .split("T")
+            .pop()
+            .split(".")[0]
         });
       });
     });
     //Get articles
     var configArticles = {
       method: "get",
-      url: window.location.origin.split(":80")[0] + ":8080/api/articles/",
+      url: "http://10.117.129.194:8080/api/articles/",
       headers: {
         Authorization: "Bearer " + user.accessToken,
-        "X-Server-Select": "mongo",
-      },
+        "X-Server-Select": "mongo"
+      }
     };
-    await axios(configArticles).then((response) => {
-      response.data.articles.forEach((article) => {
+    await axios(configArticles).then(response => {
+      response.data.articles.forEach(article => {
         this.articles.push({
           id: article._id,
           Name: article.name,
           Description: article.detail,
           Prix: article.price,
           Date: article.createdAt.split("T")[0],
-          Heure: article.createdAt.split("T").pop().split(".")[0],
+          Heure: article.createdAt
+            .split("T")
+            .pop()
+            .split(".")[0]
         });
       });
     });
     this.restaurantOfRestaurateur = this.restaurants.filter(
-      (restaurant) => restaurant.IdRestaurateur == payloadUser.userId
+      restaurant => restaurant.IdRestaurateur == payloadUser.userId
     )[0];
-    this.commandes.forEach((commande) => {
+    this.commandes.forEach(commande => {
       if (commande.IdRestaurant == this.restaurantOfRestaurateur.id) {
         this.numberCommandesTotals++;
         this.commandesForThisRestaurant.push(commande);
@@ -405,18 +418,20 @@ export default {
       }
     }
     var priceCommande = 0;
-    this.commandesForThisRestaurant.forEach((commande) => {
-      commande.Articles.forEach((article) => {
-        this.articles.forEach((article2) => {
+    this.commandesForThisRestaurant.forEach(commande => {
+      commande.Articles.forEach(article => {
+        this.articles.forEach(article2 => {
           if (article._id == article2.id) {
             priceCommande += article2.Prix;
           }
         });
       });
     });
-    this.meanCard = priceCommande / this.numberCommandesTotals;
+    this.meanCard = Number.parseFloat(
+      priceCommande / this.numberCommandesTotals
+    ).toFixed(2);
 
-    this.commandesForThisRestaurant.forEach((commande) => {
+    this.commandesForThisRestaurant.forEach(commande => {
       console.log(commande);
       if (!this.commandsPerHour[parseInt(commande.Heure.split(":")[0])]) {
         if (commande.Heure.split(":")[0][0] === "0") {
@@ -520,17 +535,17 @@ export default {
       Number.parseFloat(
         (this.commandsPerHour[23] * 100) /
           this.commandesForThisRestaurant.length
-      ).toFixed(2) || 0,
+      ).toFixed(2) || 0
     ];
     console.log(this.series.data);
     i = 0;
-    this.series.data.forEach((data) => {
+    this.series.data.forEach(data => {
       if (data === "NaN") this.series.data[i] = 0;
       i++;
     });
 
     this.updateSeriesLine();
-  },
+  }
 };
 </script>
 

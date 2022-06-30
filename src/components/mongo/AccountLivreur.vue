@@ -82,9 +82,9 @@
                 {{ row.item.heure }}</b-col
               >
             </b-row>
-            <b-row v-if="row.item.parainage != null" class="mb-2">
+            <b-row v-if="row.item.Parrainage != null" class="mb-2">
               <b-col sm="3" class="text-sm-right"
-                ><b>Parainage: </b>{{ row.item.parainage }}</b-col
+                ><b>Parrainage: </b>{{ row.item.Parrainage }}</b-col
               >
             </b-row>
             <b-row class="mb-2">
@@ -163,9 +163,9 @@
                 {{ row.item.heure }}</b-col
               >
             </b-row>
-            <b-row v-if="row.item.parainage != null" class="mb-2">
+            <b-row v-if="row.item.Parrainage != null" class="mb-2">
               <b-col sm="3" class="text-sm-right"
-                ><b>Parainage: </b>{{ row.item.parainage }}</b-col
+                ><b>Parrainage: </b>{{ row.item.Parrainage }}</b-col
               >
             </b-row>
             <b-row class="mb-2">
@@ -236,9 +236,9 @@
                   {{ row.item.heure }}</b-col
                 >
               </b-row>
-              <b-row v-if="row.item.parainage != null" class="mb-2">
+              <b-row v-if="row.item.Parrainage != null" class="mb-2">
                 <b-col sm="3" class="text-sm-right"
-                  ><b>Parainage: </b>{{ row.item.parainage }}</b-col
+                  ><b>Parrainage: </b>{{ row.item.Parrainage }}</b-col
                 >
               </b-row>
               <b-row class="mb-2">
@@ -272,6 +272,7 @@
       </div>
     </div>
     <b-button
+      style="margin-top: 10px; margin-left: 10px"
       id="red_button styled_button"
       @click="$bvModal.show('bv-modal-example')"
       variant="danger"
@@ -321,46 +322,49 @@ export default {
       fields: [
         {
           key: "Commande",
-          label: "Commande",
+          label: "Commande"
         },
         {
           key: "prix",
-          label: "Prix",
+          label: "Prix"
         },
         {
           key: "client",
-          label: "Client",
+          label: "Client"
         },
         {
           key: "restaurant",
-          label: "Restaurant",
+          label: "Restaurant"
         },
         {
           key: "status",
-          label: "Status",
+          label: "Status"
         },
         {
           key: "actions",
-          label: "Action",
+          label: "Action"
         },
-        { key: "show_details", label: "Details" },
+        { key: "show_details", label: "Details" }
       ],
       fieldsMore: [
         {
           key: "Commande",
-          label: "Commande",
+          label: "Commande"
         },
         {
           key: "prix",
-          label: "Prix",
+          label: "Prix"
         },
-        { key: "articles", label: "Article·s" },
+        {
+          key: "restaurant",
+          label: "Restaurant"
+        },
         { key: "livreur", label: "Livreur" },
         { key: "client", label: "Client" },
         { key: "status", label: "Status" },
-        { key: "show_details", label: "Details" },
+        { key: "show_details", label: "Details" }
       ],
-      historyCommandes: [],
+      historyCommandes: []
     };
   },
   methods: {
@@ -371,21 +375,21 @@ export default {
           title: "Erreur",
           type: "error",
           text: "Vous avez déjà une commande en cours!!!",
-          duration: 8000,
+          duration: 8000
         });
       }
       this.$socket.emit("OrderAcceptLivreur", "1");
       const payloadUser = this.decodeToken(user.accessToken);
       var data = JSON.stringify({
         state: "livraison",
-        idLivreur: payloadUser.userId,
+        idLivreur: payloadUser.userId
       });
 
       var configLog = {
         method: "post",
-        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+        url: "http://10.117.129.194:8080/api/logs/create",
         headers: {
-          "X-Server-Select": "mongo",
+          "X-Server-Select": "mongo"
         },
         data: {
           type: "StatusCommande",
@@ -393,30 +397,27 @@ export default {
             payloadUser.email +
             " a modifié le status de la commande " +
             commande.id +
-            " à livraison.",
-        },
+            " à livraison."
+        }
       };
       axios(configLog)
-        .then((response) => {
+        .then(response => {
           console.log(JSON.stringify(response.data));
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
 
       var config = {
         method: "put",
-        url:
-          window.location.origin.split(":80")[0] +
-          ":8080/api/orders/" +
-          commande.id,
+        url: "http://10.117.129.194:8080/api/orders/" + commande.id,
         headers: {
           "X-Server-Select": "mongo",
           Authorization:
             "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTU3NTg3MjUsImV4cCI6MTY1NjM2MzUyNX0.vHdiEc98ELrbBDbeZeG-851qS_SLSHJW8HDJX7mPgjs",
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        data: data,
+        data: data
       };
 
       axios(config)
@@ -426,11 +427,11 @@ export default {
             title: "Commande validée",
             type: "success",
             text: "La commande a été validée avec succès",
-            duration: 8000,
+            duration: 8000
           });
           location.reload();
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error);
         });
     },
@@ -438,15 +439,15 @@ export default {
       const payloadUser = this.decodeToken(user.accessToken);
       var data = JSON.stringify({
         state: "prepared",
-        idLivreur: payloadUser.userId,
+        idLivreur: payloadUser.userId
       });
       this.$socket.emit("OrderLivre", "1");
 
       var configLog = {
         method: "post",
-        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+        url: "http://10.117.129.194:8080/api/logs/create",
         headers: {
-          "X-Server-Select": "mongo",
+          "X-Server-Select": "mongo"
         },
         data: {
           type: "StatusCommande",
@@ -454,30 +455,27 @@ export default {
             payloadUser.email +
             " a modifié le status de la commande " +
             commande.id +
-            " à prepared.",
-        },
+            " à prepared."
+        }
       };
       axios(configLog)
-        .then((response) => {
+        .then(response => {
           console.log(JSON.stringify(response.data));
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
 
       var config = {
         method: "put",
-        url:
-          window.location.origin.split(":80")[0] +
-          ":8080/api/orders/" +
-          commande.id,
+        url: "http://10.117.129.194:8080/api/orders/" + commande.id,
         headers: {
           "X-Server-Select": "mongo",
           Authorization:
             "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTU3NTg3MjUsImV4cCI6MTY1NjM2MzUyNX0.vHdiEc98ELrbBDbeZeG-851qS_SLSHJW8HDJX7mPgjs",
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        data: data,
+        data: data
       };
 
       axios(config)
@@ -487,11 +485,11 @@ export default {
             title: "Commande validée",
             type: "success",
             text: "La commande a été validée avec succès",
-            duration: 8000,
+            duration: 8000
           });
           location.reload();
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error);
         });
     },
@@ -499,14 +497,11 @@ export default {
       const payloadUser = this.decodeToken(user.accessToken);
       var config = {
         method: "put",
-        url:
-          window.location.origin.split(":80")[0] +
-          ":8080/users/" +
-          payloadUser.userId,
+        url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
         headers: {
-          Authorization: "Bearer " + user.accessToken,
+          Authorization: "Bearer " + user.accessToken
         },
-        data: this.userData,
+        data: this.userData
       };
 
       axios(config)
@@ -516,28 +511,28 @@ export default {
             title: "Modification réussie",
             type: "success",
             text: "Vos modifications ont été enregistrées",
-            duration: 8000,
+            duration: 8000
           })
         )
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error);
         });
       var configLog = {
         method: "post",
-        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+        url: "http://10.117.129.194:8080/api/logs/create",
         headers: {
-          "X-Server-Select": "mongo",
+          "X-Server-Select": "mongo"
         },
         data: {
           type: "Modification",
-          description: payloadUser.email + "(Livreur) a modifié son compte.",
-        },
+          description: payloadUser.email + "(Livreur) a modifié son compte."
+        }
       };
       axios(configLog)
-        .then((response) => {
+        .then(response => {
           console.log(JSON.stringify(response.data));
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     },
@@ -545,31 +540,28 @@ export default {
       const payloadUser = this.decodeToken(user.accessToken);
       var configLog = {
         method: "post",
-        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+        url: "http://10.117.129.194:8080/api/logs/create",
         headers: {
-          "X-Server-Select": "mongo",
+          "X-Server-Select": "mongo"
         },
         data: {
           type: "Suppression",
-          description: payloadUser.email + "(Livreur) a supprimé son compte.",
-        },
+          description: payloadUser.email + "(Livreur) a supprimé son compte."
+        }
       };
       axios(configLog)
-        .then((response) => {
+        .then(response => {
           console.log(JSON.stringify(response.data));
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
       var config = {
         method: "delete",
-        url:
-          window.location.origin.split(":80")[0] +
-          ":8080/users/" +
-          payloadUser.userId,
+        url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
         headers: {
-          Authorization: "Bearer " + user.accessToken,
-        },
+          Authorization: "Bearer " + user.accessToken
+        }
       };
 
       axios(config)
@@ -579,70 +571,62 @@ export default {
             title: "Suppression réussie",
             type: "success",
             text: "Votre compte a été supprimé",
-            duration: 8000,
+            duration: 8000
           });
           this.$store.dispatch("auth/logout");
           this.$router.push("/login");
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error);
         });
     },
     decodeToken(token) {
       return jwt_decode(token);
-    },
+    }
   },
   created() {
     const payloadUser = this.decodeToken(user.accessToken);
     console.log(payloadUser);
     var config = {
       method: "get",
-      url:
-        window.location.origin.split(":80")[0] +
-        ":8080/users/" +
-        payloadUser.userId,
+      url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
       headers: {
-        Authorization: "Bearer " + user.accessToken,
-      },
+        Authorization: "Bearer " + user.accessToken
+      }
     };
 
     axios(config)
-      .then((response) => {
+      .then(response => {
         this.userData = response.data;
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
 
     var configpreparation = {
       method: "get",
-      url:
-        window.location.origin.split(":80")[0] +
-        ":8080/api/orders/status/preparation",
+      url: "http://10.117.129.194:8080/api/orders/status/preparation",
       headers: {
-        "X-Server-Select": "mongo",
-      },
+        "X-Server-Select": "mongo"
+      }
     };
 
     axios(configpreparation)
-      .then((response) => {
-        response.data.order.forEach((element) => {
+      .then(response => {
+        response.data.order.forEach(element => {
           var priceCommande = 0;
-          element.articles.forEach((article) => {
+          element.articles.forEach(article => {
             priceCommande += article.price;
           });
 
           var config = {
             method: "get",
-            url:
-              window.location.origin.split(":80")[0] +
-              ":8080/users/" +
-              element.idClient,
+            url: "http://10.117.129.194:8080/users/" + element.idClient,
             headers: {
-              Authorization: "Bearer " + user.accessToken,
-            },
+              Authorization: "Bearer " + user.accessToken
+            }
           };
-          axios(config).then((response) => {
+          axios(config).then(response => {
             if (response.data.sponsorshipCode) {
               priceCommande = priceCommande * 0.9;
             }
@@ -660,49 +644,47 @@ export default {
               status: element.state,
               parnainage: response.data.sponsorshipCode,
               date: element.createdAt.split("T")[0],
-              heure: element.createdAt.split("T").pop().split(".")[0],
+              heure: element.createdAt
+                .split("T")
+                .pop()
+                .split(".")[0]
             });
           });
         });
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.log(error);
       });
 
     var configCommande = {
       method: "get",
       url:
-        window.location.origin.split(":80")[0] +
-        ":8080/api/orders/livreur/" +
-        payloadUser.userId,
+        "http://10.117.129.194:8080/api/orders/livreur/" + payloadUser.userId,
       headers: {
-        "X-Server-Select": "mongo",
-      },
+        "X-Server-Select": "mongo"
+      }
     };
 
     axios(configCommande)
-      .then((response) => {
+      .then(response => {
         console.log(response.dataorder);
         var i = 1;
-        response.data.order.forEach((element) => {
+        response.data.order.forEach(element => {
           var priceCommande = 0;
-          element.articles.forEach((article) => {
+          element.articles.forEach(article => {
             priceCommande += article.price;
           });
 
           var config = {
             method: "get",
-            url:
-              window.location.origin.split(":80")[0] +
-              ":8080/users/" +
-              element.idClient,
+            url: "http://10.117.129.194:8080/users/" + element.idClient,
             headers: {
-              Authorization: "Bearer " + user.accessToken,
-            },
+              Authorization: "Bearer " + user.accessToken
+            }
           };
 
           axios(config)
-            .then((response) => {
+            .then(response => {
               if (response.data.sponsorshipCode) {
                 priceCommande = priceCommande * 0.9;
               }
@@ -721,7 +703,10 @@ export default {
                   status: element.state,
                   parnainage: response.data.sponsorshipCode,
                   date: element.createdAt.split("T")[0],
-                  heure: element.createdAt.split("T").pop().split(".")[0],
+                  heure: element.createdAt
+                    .split("T")
+                    .pop()
+                    .split(".")[0]
                 });
                 i++;
               } else if (element.state == "prepared") {
@@ -738,19 +723,23 @@ export default {
                   status: "Livrée",
                   parnainage: response.data.sponsorshipCode,
                   date: element.createdAt.split("T")[0],
-                  heure: element.createdAt.split("T").pop().split(".")[0],
+                  heure: element.createdAt
+                    .split("T")
+                    .pop()
+                    .split(".")[0]
                 });
                 i++;
               }
+              console.log(this.historyCommandes);
             })
-            .catch(function (error) {
+            .catch(function(error) {
               console.log(error);
             });
         });
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
-  },
+  }
 };
 </script>

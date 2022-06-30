@@ -66,8 +66,8 @@ export default {
         name: "",
         idRestaurateur: "",
         address: "",
-        picture: "",
-      },
+        picture: ""
+      }
     };
   },
   methods: {
@@ -80,9 +80,9 @@ export default {
       this.form.idRestaurateur = this.payloadUser.userId;
       var configLog = {
         method: "post",
-        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+        url: "http://10.117.129.194:8080/api/logs/create",
         headers: {
-          "X-Server-Select": "mongo",
+          "X-Server-Select": "mongo"
         },
         data: {
           type: "Création",
@@ -91,14 +91,14 @@ export default {
             this.form.name +
             " par " +
             this.payloadUser.name +
-            ".",
-        },
+            "."
+        }
       };
       axios(configLog)
-        .then((response) => {
+        .then(response => {
           console.log(JSON.stringify(response.data));
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
       axios
@@ -108,16 +108,16 @@ export default {
           this.form,
           {
             headers: {
-              "X-Server-Select": "mongo",
-            },
+              "X-Server-Select": "mongo"
+            }
           }
         )
-        .then((res) => {
+        .then(res => {
           //Perform Success Action
           console.log("donnéee" + res.data);
           location.reload();
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
           // error.response.status Check status code
           console.log("err: " + error);
@@ -138,12 +138,12 @@ export default {
     createBase64Image(fileObject) {
       const reader = new FileReader();
 
-      reader.onload = (e) => {
+      reader.onload = e => {
         this.image = e.target.result;
       };
       reader.readAsDataURL(fileObject);
-    },
-  },
+    }
+  }
 };
 </script>
 

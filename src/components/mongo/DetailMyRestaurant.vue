@@ -105,8 +105,8 @@ export default {
       form: {
         name: "",
         address: "",
-        picture: "",
-      },
+        picture: ""
+      }
     };
   },
   methods: {
@@ -120,12 +120,12 @@ export default {
         axios.put(
           `http://10.117.129.194:8080/api/restaurants/${restaurantId}`,
           {
-            name: this.form.name,
+            name: this.form.name
           },
           {
             headers: {
-              "X-Server-Select": "mongo",
-            },
+              "X-Server-Select": "mongo"
+            }
           }
         );
       }
@@ -133,12 +133,12 @@ export default {
         axios.put(
           `http://10.117.129.194:8080/api/restaurants/${restaurantId}`,
           {
-            address: this.form.address,
+            address: this.form.address
           },
           {
             headers: {
-              "X-Server-Select": "mongo",
-            },
+              "X-Server-Select": "mongo"
+            }
           }
         );
       }
@@ -146,12 +146,12 @@ export default {
         axios.put(
           `http://10.117.129.194:8080/api/restaurants/${restaurantId}`,
           {
-            picture: this.form.picture,
+            picture: this.form.picture
           },
           {
             headers: {
-              "X-Server-Select": "mongo",
-            },
+              "X-Server-Select": "mongo"
+            }
           }
         );
       }
@@ -161,12 +161,12 @@ export default {
       this.payloadUser = this.decodeToken(user.accessToken);
       this.userId = this.payloadUser.userId;
       DataService.getAllRestaurantsByRestaurateur(this.payloadUser.userId)
-        .then((response) => {
+        .then(response => {
           this.restaurantId = response.data.restaurants[0]._id;
           console.log("Utilisateur: " + this.userId);
           console.log("le restau: " + this.restaurantId);
           DataService.getOneRestaurant(this.restaurantId)
-            .then((response) => {
+            .then(response => {
               this.restaurant = response.data.restaurant;
               console.log(this.restaurant);
               if (this.restaurant) {
@@ -174,11 +174,11 @@ export default {
                 console.log(this.haveARestaurant);
               }
             })
-            .catch((e) => {
+            .catch(e => {
               console.log(e);
             });
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
         });
     },
@@ -192,11 +192,11 @@ export default {
     },
     deleteRestaurant() {
       DataService.deleteRestaurant(this.restaurantId)
-        .then((response) => {
+        .then(response => {
           console.log(response.data.restaurants);
           this.refreshList();
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
         });
       // this.reload();
@@ -209,11 +209,11 @@ export default {
     },
     createBase64Image(fileObject) {
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = e => {
         this.image = e.target.result;
       };
       reader.readAsDataURL(fileObject);
-    },
+    }
     // searchName() {
     //   DataService.find(this.name)
     //     .then((response) => {
@@ -227,7 +227,7 @@ export default {
   },
   mounted() {
     this.retrieveRestaurant();
-  },
+  }
 };
 </script>
 <style>

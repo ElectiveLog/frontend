@@ -104,9 +104,7 @@ export default {
       //get the restaurant id
       await axios
         .get(
-          `http://10.117.129.194:8080/api/restaurants/restaurateur/${
-            this.userId
-          }`,
+          `http://10.117.129.194:8080/api/restaurants/restaurateur/${this.userId}`,
           {
             headers: {
               "X-Server-Select": "mongo"
@@ -138,20 +136,15 @@ export default {
         });
 
       axios
-        .post(
-          window.location.origin.split(":80")[0] + ":8080/api/articles/create",
-          this.form,
-          {
-            headers: {
-              "X-Server-Select": "mongo"
-            }
+        .post("http://10.117.129.194:8080/api/articles/create", this.form, {
+          headers: {
+            "X-Server-Select": "mongo"
           }
-        )
+        })
         .then(res => {
           var configLog = {
             method: "post",
-            url:
-              window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+            url: "http://10.117.129.194:8080/api/logs/create",
             headers: {
               "X-Server-Select": "mongo"
             },

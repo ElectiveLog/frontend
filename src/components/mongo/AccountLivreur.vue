@@ -82,9 +82,9 @@
                 {{ row.item.heure }}</b-col
               >
             </b-row>
-            <b-row v-if="row.item.parainage != null" class="mb-2">
+            <b-row v-if="row.item.Parrainage != null" class="mb-2">
               <b-col sm="3" class="text-sm-right"
-                ><b>Parainage: </b>{{ row.item.parainage }}</b-col
+                ><b>Parrainage: </b>{{ row.item.Parrainage }}</b-col
               >
             </b-row>
             <b-row class="mb-2">
@@ -163,9 +163,9 @@
                 {{ row.item.heure }}</b-col
               >
             </b-row>
-            <b-row v-if="row.item.parainage != null" class="mb-2">
+            <b-row v-if="row.item.Parrainage != null" class="mb-2">
               <b-col sm="3" class="text-sm-right"
-                ><b>Parainage: </b>{{ row.item.parainage }}</b-col
+                ><b>Parrainage: </b>{{ row.item.Parrainage }}</b-col
               >
             </b-row>
             <b-row class="mb-2">
@@ -236,9 +236,9 @@
                   {{ row.item.heure }}</b-col
                 >
               </b-row>
-              <b-row v-if="row.item.parainage != null" class="mb-2">
+              <b-row v-if="row.item.Parrainage != null" class="mb-2">
                 <b-col sm="3" class="text-sm-right"
-                  ><b>Parainage: </b>{{ row.item.parainage }}</b-col
+                  ><b>Parrainage: </b>{{ row.item.Parrainage }}</b-col
                 >
               </b-row>
               <b-row class="mb-2">
@@ -351,7 +351,10 @@ export default {
           key: "prix",
           label: "Prix"
         },
-        { key: "articles", label: "Article·s" },
+        {
+          key: "restaurant",
+          label: "Restaurant"
+        },
         { key: "livreur", label: "Livreur" },
         { key: "client", label: "Client" },
         { key: "status", label: "Status" },
@@ -380,7 +383,7 @@ export default {
 
       var configLog = {
         method: "post",
-        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+        url: "http://10.117.129.194:8080/api/logs/create",
         headers: {
           "X-Server-Select": "mongo"
         },
@@ -403,10 +406,7 @@ export default {
 
       var config = {
         method: "put",
-        url:
-          window.location.origin.split(":80")[0] +
-          ":8080/api/orders/" +
-          commande.id,
+        url: "http://10.117.129.194:8080/api/orders/" + commande.id,
         headers: {
           "X-Server-Select": "mongo",
           Authorization:
@@ -441,7 +441,7 @@ export default {
 
       var configLog = {
         method: "post",
-        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+        url: "http://10.117.129.194:8080/api/logs/create",
         headers: {
           "X-Server-Select": "mongo"
         },
@@ -464,10 +464,7 @@ export default {
 
       var config = {
         method: "put",
-        url:
-          window.location.origin.split(":80")[0] +
-          ":8080/api/orders/" +
-          commande.id,
+        url: "http://10.117.129.194:8080/api/orders/" + commande.id,
         headers: {
           "X-Server-Select": "mongo",
           Authorization:
@@ -496,10 +493,7 @@ export default {
       const payloadUser = this.decodeToken(user.accessToken);
       var config = {
         method: "put",
-        url:
-          window.location.origin.split(":80")[0] +
-          ":8080/users/" +
-          payloadUser.userId,
+        url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
         headers: {
           Authorization: "Bearer " + user.accessToken
         },
@@ -521,7 +515,7 @@ export default {
         });
       var configLog = {
         method: "post",
-        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+        url: "http://10.117.129.194:8080/api/logs/create",
         headers: {
           "X-Server-Select": "mongo"
         },
@@ -542,7 +536,7 @@ export default {
       const payloadUser = this.decodeToken(user.accessToken);
       var configLog = {
         method: "post",
-        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+        url: "http://10.117.129.194:8080/api/logs/create",
         headers: {
           "X-Server-Select": "mongo"
         },
@@ -560,10 +554,7 @@ export default {
         });
       var config = {
         method: "delete",
-        url:
-          window.location.origin.split(":80")[0] +
-          ":8080/users/" +
-          payloadUser.userId,
+        url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
         headers: {
           Authorization: "Bearer " + user.accessToken
         }
@@ -594,10 +585,7 @@ export default {
     console.log(payloadUser);
     var config = {
       method: "get",
-      url:
-        window.location.origin.split(":80")[0] +
-        ":8080/users/" +
-        payloadUser.userId,
+      url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
       headers: {
         Authorization: "Bearer " + user.accessToken
       }
@@ -613,9 +601,7 @@ export default {
 
     var configpreparation = {
       method: "get",
-      url:
-        window.location.origin.split(":80")[0] +
-        ":8080/api/orders/status/preparation",
+      url: "http://10.117.129.194:8080/api/orders/status/preparation",
       headers: {
         "X-Server-Select": "mongo"
       }
@@ -631,10 +617,7 @@ export default {
 
           var config = {
             method: "get",
-            url:
-              window.location.origin.split(":80")[0] +
-              ":8080/users/" +
-              element.idClient,
+            url: "http://10.117.129.194:8080/users/" + element.idClient,
             headers: {
               Authorization: "Bearer " + user.accessToken
             }
@@ -672,9 +655,7 @@ export default {
     var configCommande = {
       method: "get",
       url:
-        window.location.origin.split(":80")[0] +
-        ":8080/api/orders/livreur/" +
-        payloadUser.userId,
+        "http://10.117.129.194:8080/api/orders/livreur/" + payloadUser.userId,
       headers: {
         "X-Server-Select": "mongo"
       }
@@ -692,10 +673,7 @@ export default {
 
           var config = {
             method: "get",
-            url:
-              window.location.origin.split(":80")[0] +
-              ":8080/users/" +
-              element.idClient,
+            url: "http://10.117.129.194:8080/users/" + element.idClient,
             headers: {
               Authorization: "Bearer " + user.accessToken
             }
@@ -748,6 +726,7 @@ export default {
                 });
                 i++;
               }
+              console.log(this.historyCommandes);
             })
             .catch(function(error) {
               console.log(error);

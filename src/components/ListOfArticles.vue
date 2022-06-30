@@ -125,7 +125,7 @@ export default {
       this.$socket.emit("OrderCreate", "1");
       var configLog = {
         method: "post",
-        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+        url: "http://10.117.129.194:8080/api/logs/create",
         headers: {
           "X-Server-Select": "mongo"
         },
@@ -146,7 +146,7 @@ export default {
           console.log(error);
         });
       axios.post(
-        window.location.origin.split(":80")[0] + ":8080/api/orders/create",
+        "http://10.117.129.194:8080/api/orders/create",
         {
           idClient: this.idClient,
           idRestaurant: restaurantId,

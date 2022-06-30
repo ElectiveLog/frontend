@@ -2,17 +2,17 @@
   <div class="small">
     <VueApexCharts
       ref="realtimeChart"
-      type="line"
+      type="bar"
       height="350"
       :options="chartOptions"
       :series="series"
     ></VueApexCharts>
     <p>
-      Nombre de commandes totales passées par les clients :
+      Nombre de commandes total passées par les clients :
       {{ numberCommandesTotals }}
     </p>
-    <p>Nombre d'articles en cours : {{ numberArticles }}</p>
-    <p>Nombre de clients uniques : {{ numberClientsTotals }}</p>
+    <p>Nombre d'articles en ligne : {{ numberArticles }}</p>
+    <p>Nombre de clients : {{ numberClientsTotals }}</p>
     <p>Moyenne du prix de tous les paniers : {{ meanCard }} €</p>
   </div>
 </template>
@@ -109,10 +109,11 @@ export default {
     };
   },
   async created() {
+    console.log("created");
     const payloadUser = this.decodeToken(user.accessToken);
     var configRoles = {
       method: "get",
-      url: window.location.origin.split(":80")[0] + ":8080/roles/",
+      url: "http://10.117.129.194:8080/roles/",
       headers: {
         Authorization: "Bearer " + user.accessToken
       }
@@ -128,7 +129,7 @@ export default {
     //Get nb users
     var configUsers = {
       method: "get",
-      url: window.location.origin.split(":80")[0] + ":8080/users",
+      url: "http://10.117.129.194:8080/users",
       headers: {
         Authorization: "Bearer " + user.accessToken
       }
@@ -160,10 +161,7 @@ export default {
 
     var configLivreurs = {
       method: "get",
-      url:
-        window.location.origin.split(":80")[0] +
-        ":8080/users/get/role/" +
-        roleLivreurId,
+      url: "http://10.117.129.194:8080/users/get/role/" + roleLivreurId,
       headers: {
         Authorization: "Bearer " + user.accessToken
       }
@@ -191,10 +189,7 @@ export default {
     });
     var configClients = {
       method: "get",
-      url:
-        window.location.origin.split(":80")[0] +
-        ":8080/users/get/role/" +
-        roleClientId,
+      url: "http://10.117.129.194:8080/users/get/role/" + roleClientId,
       headers: {
         Authorization: "Bearer " + user.accessToken
       }
@@ -222,10 +217,7 @@ export default {
     });
     var configRestaurateurs = {
       method: "get",
-      url:
-        window.location.origin.split(":80")[0] +
-        ":8080/users/get/role/" +
-        roleRestaurateurId,
+      url: "http://10.117.129.194:8080/users/get/role/" + roleRestaurateurId,
       headers: {
         Authorization: "Bearer " + user.accessToken
       }
@@ -253,10 +245,7 @@ export default {
     });
     var configCommerciaux = {
       method: "get",
-      url:
-        window.location.origin.split(":80")[0] +
-        ":8080/users/get/role/" +
-        roleCommerciauxId,
+      url: "http://10.117.129.194:8080/users/get/role/" + roleCommerciauxId,
       headers: {
         Authorization: "Bearer " + user.accessToken
       }
@@ -284,10 +273,7 @@ export default {
     });
     var configTechniques = {
       method: "get",
-      url:
-        window.location.origin.split(":80")[0] +
-        ":8080/users/get/role/" +
-        roleTechniqueId,
+      url: "http://10.117.129.194:8080/users/get/role/" + roleTechniqueId,
       headers: {
         Authorization: "Bearer " + user.accessToken
       }
@@ -315,10 +301,7 @@ export default {
     });
     var configDevTiers = {
       method: "get",
-      url:
-        window.location.origin.split(":80")[0] +
-        ":8080/users/get/role/" +
-        roleDevTiersId,
+      url: "http://10.117.129.194:8080/users/get/role/" + roleDevTiersId,
       headers: {
         Authorization: "Bearer " + user.accessToken
       }
@@ -342,7 +325,7 @@ export default {
     //Get nb commandes
     var configOrders = {
       method: "get",
-      url: window.location.origin.split(":80")[0] + ":8080/api/orders/",
+      url: "http://10.117.129.194:8080/api/orders/",
       headers: {
         Authorization: "Bearer " + user.accessToken,
         "X-Server-Select": "mongo"
@@ -369,7 +352,7 @@ export default {
     //Get nb restaurants
     var configRestaurant = {
       method: "get",
-      url: window.location.origin.split(":80")[0] + ":8080/api/restaurants/",
+      url: "http://10.117.129.194:8080/api/restaurants/",
       headers: {
         Authorization: "Bearer " + user.accessToken,
         "X-Server-Select": "mongo"
@@ -394,7 +377,7 @@ export default {
     //Get articles
     var configArticles = {
       method: "get",
-      url: window.location.origin.split(":80")[0] + ":8080/api/articles/",
+      url: "http://10.117.129.194:8080/api/articles/",
       headers: {
         Authorization: "Bearer " + user.accessToken,
         "X-Server-Select": "mongo"
@@ -444,7 +427,9 @@ export default {
         });
       });
     });
-    this.meanCard = priceCommande / this.numberCommandesTotals;
+    this.meanCard = Number.parseFloat(
+      priceCommande / this.numberCommandesTotals
+    ).toFixed(2);
 
     this.commandesForThisRestaurant.forEach(commande => {
       console.log(commande);

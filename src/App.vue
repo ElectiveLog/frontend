@@ -108,7 +108,7 @@ export default {
 
     // const configCommandeLivreur = {
     //   method: "get",
-    //   url: window.location.origin.split(":80")[0] + ":8080/api/orders/",
+    //   url: "http://10.117.129.194:8080/api/orders/",
     //   headers: {
     //     "X-Server-Select": "mongo"
     //   }

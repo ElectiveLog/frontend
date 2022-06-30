@@ -275,8 +275,7 @@ export default {
 
           var configLog = {
             method: "post",
-            url:
-              window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+            url: "http://10.117.129.194:8080/api/logs/create",
             headers: {
               "X-Server-Select": "mongo"
             },
@@ -340,7 +339,7 @@ export default {
 
       var configLog = {
         method: "post",
-        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+        url: "http://10.117.129.194:8080/api/logs/create",
         headers: {
           "X-Server-Select": "mongo"
         },

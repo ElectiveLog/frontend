@@ -16,7 +16,7 @@ import VueSocketIO from "vue-socket.io";
 Vue.use(
   new VueSocketIO({
     debug: true,
-    connection: window.location.origin.split(":80")[0] + ":3006",
+    connection: "http://10.117.129.194:3006",
     vuex: {
       store,
       actionPrefix: "SOCKET_",

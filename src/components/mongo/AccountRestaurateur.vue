@@ -374,10 +374,7 @@ export default {
 
       var config = {
         method: "put",
-        url:
-          window.location.origin.split(":80")[0] +
-          ":8080/api/orders/" +
-          commande.id,
+        url: "http://10.117.129.194:8080/api/orders/" + commande.id,
         headers: {
           "X-Server-Select": "mongo",
           Authorization:
@@ -406,10 +403,7 @@ export default {
       const payloadUser = this.decodeToken(user.accessToken);
       var config = {
         method: "put",
-        url:
-          window.location.origin.split(":80")[0] +
-          ":8080/users/" +
-          payloadUser.userId,
+        url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
         headers: {
           Authorization: "Bearer " + user.accessToken
         },
@@ -432,7 +426,7 @@ export default {
 
       var configLog = {
         method: "post",
-        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+        url: "http://10.117.129.194:8080/api/logs/create",
         headers: {
           "X-Server-Select": "mongo"
         },
@@ -454,7 +448,7 @@ export default {
       const payloadUser = this.decodeToken(user.accessToken);
       var configLog = {
         method: "post",
-        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+        url: "http://10.117.129.194:8080/api/logs/create",
         headers: {
           "X-Server-Select": "mongo"
         },
@@ -473,10 +467,7 @@ export default {
         });
       var config = {
         method: "delete",
-        url:
-          window.location.origin.split(":80")[0] +
-          ":8080/users/" +
-          payloadUser.userId,
+        url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
         headers: {
           Authorization: "Bearer " + user.accessToken
         }
@@ -506,10 +497,7 @@ export default {
     const payloadUser = this.decodeToken(user.accessToken);
     var config = {
       method: "get",
-      url:
-        window.location.origin.split(":80")[0] +
-        ":8080/users/" +
-        payloadUser.userId,
+      url: "http://10.117.129.194:8080/users/" + payloadUser.userId,
       headers: {
         Authorization: "Bearer " + user.accessToken
       }
@@ -526,8 +514,7 @@ export default {
     var configRestaurant = {
       method: "get",
       url:
-        window.location.origin.split(":80")[0] +
-        ":8080/api/restaurants/restaurateur/" +
+        "http://10.117.129.194:8080/api/restaurants/restaurateur/" +
         payloadUser.userId,
       headers: {
         "X-Server-Select": "mongo"
@@ -543,8 +530,7 @@ export default {
           var config = {
             method: "get",
             url:
-              window.location.origin.split(":80")[0] +
-              ":8080/api/orders/restaurant/" +
+              "http://10.117.129.194:8080/api/orders/restaurant/" +
               restaurant._id,
             headers: {
               "X-Server-Select": "mongo"
@@ -557,10 +543,7 @@ export default {
                 var priceCommande = 0;
                 var configLivreur = {
                   method: "get",
-                  url:
-                    window.location.origin.split(":80")[0] +
-                    ":8080/users/" +
-                    order.idLivreur,
+                  url: "http://10.117.129.194:8080/users/" + order.idLivreur,
                   headers: {
                     Authorization: "Bearer " + user.accessToken
                   }
@@ -576,10 +559,7 @@ export default {
 
                 var configClient = {
                   method: "get",
-                  url:
-                    window.location.origin.split(":80")[0] +
-                    ":8080/users/" +
-                    order.idClient,
+                  url: "http://10.117.129.194:8080/users/" + order.idClient,
                   headers: {
                     Authorization: "Bearer " + user.accessToken
                   }

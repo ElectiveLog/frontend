@@ -10,7 +10,7 @@
       <router-link class="none" :to="`/listofarticles/${restaurantId}`">
         <ul class="list-group">
           <li class="list-group-item">
-            <div class="center">
+            <div class="center responsive_img">
               <img v-bind:src="restaurant.picture" />
             </div>
             <h4>{{ restaurant.name }}</h4>
@@ -56,7 +56,6 @@ export default {
       this.currentRestaurant = restaurant;
       this.currentIndex = index;
       this.restaurantId = this.currentRestaurant._id;
-      // console.log(restaurantId);
     },
     reload() {
       location.reload();
@@ -106,5 +105,11 @@ img {
 .none {
   all: initial;
   cursor: pointer;
+}
+
+@media screen and (max-width: 600px) {
+  .responsive_img {
+    width: 200px;
+  }
 }
 </style>

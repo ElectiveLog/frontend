@@ -29,7 +29,7 @@
     >
       <ul class="list-group">
         <li class="list-group-item">
-          <div class="center">
+          <div class="center responsive_img">
             <img v-bind:src="articles.picture" />
           </div>
           <h5>{{ articles.name }}</h5>
@@ -167,5 +167,11 @@ export default {
 <style scoped>
 .space_bottom {
   margin-bottom: 20px;
+}
+
+@media screen and (max-width: 600px) {
+  .responsive_img {
+    width: 200px;
+  }
 }
 </style>

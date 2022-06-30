@@ -381,8 +381,7 @@ export default {
         url: "http://10.117.129.194:8080/api/orders/" + commande.id,
         headers: {
           "X-Server-Select": "mongo",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTU3NTg3MjUsImV4cCI6MTY1NjM2MzUyNX0.vHdiEc98ELrbBDbeZeG-851qS_SLSHJW8HDJX7mPgjs",
+          Authorization: "Bearer" + user.accessToken,
           "Content-Type": "application/json"
         },
         data: data

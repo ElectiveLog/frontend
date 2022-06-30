@@ -294,6 +294,7 @@ export default {
           key: "prix",
           label: "Prix"
         },
+        { key: "articles", label: "Articles" },
         { key: "livreur", label: "Livreur" },
         { key: "restaurant", label: "Restaurant" },
         { key: "status", label: "Status" },
@@ -444,12 +445,19 @@ export default {
         var y = 1;
         response.data.order.forEach(element => {
           var priceCommande = 0;
+          var articlesNames = "";
           element.articles.forEach(article => {
             priceCommande += article.price;
+            articlesNames += article.name + ", ";
           });
           if (this.userData.sponsorshipCode) {
             priceCommande = priceCommande * 0.9;
           }
+
+          const articleNames = articlesNames.substring(
+            0,
+            articlesNames.length - 2
+          );
 
           var config = {
             method: "get",
@@ -469,6 +477,7 @@ export default {
                   Commande: "Commande n°" + i,
                   prix: priceCommande + "€",
                   livreur: response.data.name,
+                  articles: articleNames,
                   restaurant: element.idRestaurant.name,
                   status: "Livrée",
                   date: element.createdAt.split("T")[0],
@@ -489,6 +498,7 @@ export default {
                   Commande: "Commande n°" + y,
                   prix: priceCommande + "€",
                   livreur: response.data.name,
+                  articles: articleNames,
                   restaurant: element.idRestaurant.name,
                   status: element.state,
                   date: element.createdAt.split("T")[0],

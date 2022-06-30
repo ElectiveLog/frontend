@@ -272,6 +272,7 @@
       </div>
     </div>
     <b-button
+      style="margin-top: 10px; margin-left: 10px"
       id="red_button styled_button"
       @click="$bvModal.show('bv-modal-example')"
       variant="danger"

@@ -122,6 +122,7 @@ export default {
     createOrder() {
       console.log(restaurantId);
       console.log(this.cart);
+      this.$socket.emit("OrderCreate", "1");
       var configLog = {
         method: "post",
         url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",

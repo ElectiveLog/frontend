@@ -299,6 +299,13 @@ export default {
       ]
     };
   },
+  // mounted: function(){
+  //           this.socket.on('OrderIsAccept', (data) => {
+  //             this.messages = [...this.messages, data];
+  //             console.log("coucu")
+  //         });
+
+  // },
   methods: {
     handleEdit() {
       const payloadUser = this.decodeToken(user.accessToken);

@@ -371,6 +371,7 @@ export default {
           duration: 8000
         });
       }
+      this.$socket.emit("OrderAcceptLivreur", "1");
       const payloadUser = this.decodeToken(user.accessToken);
       var data = JSON.stringify({
         state: "livraison",
@@ -436,6 +437,7 @@ export default {
         state: "prepared",
         idLivreur: payloadUser.userId
       });
+      this.$socket.emit("OrderLivre", "1");
 
       var configLog = {
         method: "post",

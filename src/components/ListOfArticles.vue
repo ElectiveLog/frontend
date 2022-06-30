@@ -42,11 +42,11 @@
           <h5>{{ articles.name }}</h5>
           <a>{{ articles.price }} €</a>
           <a>{{ articles.detail }}</a>
+          <div class="center">
+            <button class="green_button styled_button center">Ajouter</button>
+          </div>
         </li>
       </ul>
-      <div class="center">
-        <button class="green_button styled_button center">Ajouter</button>
-      </div>
     </div>
   </div>
 </template>
@@ -80,7 +80,7 @@ export default {
       articlesCart: [],
       state: "commande",
       validation: "",
-      totalPrice: "0"
+      totalPrice: "0",
     };
   },
   methods: {
@@ -94,23 +94,23 @@ export default {
       //   console.log(restaurantId);
       listOfArticles = [];
       DataService.getOneRestaurant(restaurantId)
-        .then(response => {
+        .then((response) => {
           articles = response.data.restaurant.articles;
           //   console.log(articles);
-          articles.forEach(element => {
+          articles.forEach((element) => {
             console.log(element);
             DataService.getOneArticle(element)
-              .then(response => {
+              .then((response) => {
                 listOfArticles.push(response.data.article);
                 console.log(listOfArticles);
               })
-              .catch(e => {
+              .catch((e) => {
                 console.log(e);
               });
             this.articles = listOfArticles;
           });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     },
@@ -126,7 +126,7 @@ export default {
         method: "post",
         url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
         headers: {
-          "X-Server-Select": "mongo"
+          "X-Server-Select": "mongo",
         },
         data: {
           type: "Création",
@@ -134,14 +134,14 @@ export default {
             "Création d'une commande par un client : " +
             this.idClient +
             " pour le restaurant : " +
-            restaurantId
-        }
+            restaurantId,
+        },
       };
       axios(configLog)
-        .then(response => {
+        .then((response) => {
           console.log(JSON.stringify(response.data));
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
       axios.post(
@@ -150,12 +150,12 @@ export default {
           idClient: this.idClient,
           idRestaurant: restaurantId,
           articles: this.cart,
-          state: "commande"
+          state: "commande",
         },
         {
           headers: {
-            "X-Server-Select": "mongo"
-          }
+            "X-Server-Select": "mongo",
+          },
         }
       );
       this.emptyCart();
@@ -184,12 +184,12 @@ export default {
     getRestaurantId() {
       restaurantId = this.$route.params.id;
       //   console.log(restaurantId);
-    }
+    },
   },
   mounted() {
     this.getRestaurantId();
     this.retrieveArticles();
-  }
+  },
 };
 </script>
 

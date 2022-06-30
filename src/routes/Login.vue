@@ -53,14 +53,14 @@ export default {
     return {
       user: new User("", ""),
       loading: false,
-      message: "",
+      message: ""
     };
   },
   computed: {
     loggedIn() {
       console.log(this.$store.state);
       return this.$store.state.auth.status.loggedIn;
-    },
+    }
   },
   methods: {
     handleLogin() {
@@ -68,14 +68,14 @@ export default {
 
       if (this.user.email && this.user.password) {
         this.$store.dispatch("auth/login", this.user).then(
-          (response) => {
+          response => {
             if (response.status == 203) {
               this.$notify({
                 group: "foo",
                 title: "Erreur",
                 type: "error",
                 text: response.data,
-                duration: 8000,
+                duration: 8000
               });
               this.loading = false;
               this.message = response;
@@ -86,21 +86,21 @@ export default {
                   window.location.origin.split(":80")[0] +
                   ":8080/api/logs/create",
                 headers: {
-                  "X-Server-Select": "mongo",
+                  "X-Server-Select": "mongo"
                 },
                 data: {
                   type: "Connexion",
                   description:
                     "Connexion réussie sur le frontoffice de : " +
                     this.user.email +
-                    "",
-                },
+                    ""
+                }
               };
               axios(configLog)
-                .then((response) => {
+                .then(response => {
                   console.log(JSON.stringify(response.data));
                 })
-                .catch((error) => {
+                .catch(error => {
                   console.log(error);
                 });
               this.$notify({
@@ -108,13 +108,13 @@ export default {
                 title: "Connexion réussie",
                 type: "success",
                 text: "Bienvenue " + this.user.email,
-                duration: 8000,
+                duration: 8000
               });
               this.$router.push("/account");
               location.reload();
             }
           },
-          (error) => {
+          error => {
             this.loading = false;
             this.message =
               (error.response && error.response.data) ||
@@ -123,7 +123,7 @@ export default {
           }
         );
       }
-    },
-  },
+    }
+  }
 };
 </script>

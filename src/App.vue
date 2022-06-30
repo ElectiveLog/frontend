@@ -22,20 +22,20 @@ export default {
   name: "App",
   components: {
     Header,
-    Footer,
+    Footer
   },
   data() {
     return {
       restaurantId: "",
       isConnected: false,
-      socketMessage: "",
+      socketMessage: ""
     };
   },
   sockets: {
-    connect: function () {
+    connect: function() {
       console.log("socket connected");
     },
-    OrderIsCreate: function () {
+    OrderIsCreate: function() {
       const user = JSON.parse(localStorage.getItem("user"));
       const payloadUser = jwt_decode(user.accessToken);
       if (payloadUser.role == "Restaurateur") {
@@ -47,7 +47,7 @@ export default {
       }
     },
 
-    OrderIsAcceptRestaurant: function () {
+    OrderIsAcceptRestaurant: function() {
       const user = JSON.parse(localStorage.getItem("user"));
       const payloadUser = jwt_decode(user.accessToken);
       if (payloadUser.role == "Client") {
@@ -63,7 +63,7 @@ export default {
         }
       }
     },
-    OrderIsAcceptLivreur: function () {
+    OrderIsAcceptLivreur: function() {
       const user = JSON.parse(localStorage.getItem("user"));
       const payloadUser = jwt_decode(user.accessToken);
       if (payloadUser.role == "Restaurateur") {
@@ -78,7 +78,7 @@ export default {
         }
       }
     },
-    OrderIsLivre: function () {
+    OrderIsLivre: function() {
       const user = JSON.parse(localStorage.getItem("user"));
       const payloadUser = jwt_decode(user.accessToken);
       if (payloadUser.role == "Client") {
@@ -86,7 +86,7 @@ export default {
           new Notification("Votre commande a été livrée par le livreur!");
         }
       }
-    },
+    }
   },
   async created() {
     document.title = "CES'EATS";
@@ -108,7 +108,7 @@ export default {
 
     // const configCommandeLivreur = {
     //   method: "get",
-    //   url: window.location.origin.split(":80")[0] + ":8080/api/orders/",
+    //   url: "http://10.117.129.194:8080/api/orders/",
     //   headers: {
     //     "X-Server-Select": "mongo"
     //   }
@@ -286,8 +286,8 @@ export default {
     // }
   },
   methods: {
-    ...mapMutations(["setPlaces"]),
-  },
+    ...mapMutations(["setPlaces"])
+  }
 };
 </script>
 

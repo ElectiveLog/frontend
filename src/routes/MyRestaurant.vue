@@ -13,7 +13,7 @@ export default {
   name: "MyRestaurant",
   components: {
     DetailMyRestaurant,
-    AddMyRestaurant,
-  },
+    AddMyRestaurant
+  }
 };
 </script>

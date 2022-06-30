@@ -102,16 +102,11 @@ export default {
           console.log(error);
         });
       axios
-        .post(
-          window.location.origin.split(":80")[0] +
-            ":8080/api/restaurants/create",
-          this.form,
-          {
-            headers: {
-              "X-Server-Select": "mongo"
-            }
+        .post("http://10.117.129.194:8080/api/restaurants/create", this.form, {
+          headers: {
+            "X-Server-Select": "mongo"
           }
-        )
+        })
         .then(res => {
           //Perform Success Action
           console.log("donnéee" + res.data);

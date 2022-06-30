@@ -57,10 +57,10 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 const user = JSON.parse(localStorage.getItem("user"));
 
-let restaurantId = "";
-let articles = "";
-let listOfArticles = [];
-let cart = [];
+// let restaurantId = "";
+// let articles = "";
+// let listOfArticles = [];
+// let cart = [];
 // let totalPrice = "";
 // let validation = "";
 
@@ -90,23 +90,25 @@ export default {
     retrieveArticles() {
       this.payloadUser = this.decodeToken(user.accessToken);
       this.idClient = this.payloadUser.userId;
-      //   console.log(restaurantId);
-      listOfArticles = [];
-      DataService.getOneRestaurant(restaurantId)
+      console.log("yo");
+      console.log(this.restaurantId);
+      this.listOfArticles = [];
+      DataService.getOneRestaurant(this.restaurantId)
         .then(response => {
-          articles = response.data.restaurant.articles;
+          console.log(response.data);
+          this.articles = response.data.restaurant.articles;
           //   console.log(articles);
-          articles.forEach(element => {
+          this.articles.forEach(element => {
             console.log(element);
             DataService.getOneArticle(element)
               .then(response => {
-                listOfArticles.push(response.data.article);
-                console.log(listOfArticles);
+                this.listOfArticles.push(response.data.article);
+                console.log(this.listOfArticles);
               })
               .catch(e => {
                 console.log(e);
               });
-            this.articles = listOfArticles;
+            this.articles = this.listOfArticles;
           });
         })
         .catch(error => {
@@ -116,10 +118,10 @@ export default {
     emptyCart() {
       this.cart = [];
       this.totalPrice = 0;
-      console.log(cart);
+      console.log(this.cart);
     },
     async createOrder() {
-      console.log(restaurantId);
+      console.log(this.restaurantId);
       console.log(this.cart);
       if (Object.keys(this.cart).length !== 0) {
         var configLog = {
@@ -134,7 +136,7 @@ export default {
               "Création d'une commande par un client : " +
               this.idClient +
               " pour le restaurant : " +
-              restaurantId
+              this.restaurantId
           }
         };
         axios(configLog)
@@ -150,7 +152,7 @@ export default {
           "http://10.117.129.194:8080/api/orders/create",
           {
             idClient: this.idClient,
-            idRestaurant: restaurantId,
+            idRestaurant: this.restaurantId,
             articles: this.cart,
             state: "commande"
           },
@@ -201,7 +203,7 @@ export default {
       window.scrollTo(0, 0);
     },
     getRestaurantId() {
-      restaurantId = this.$route.params.id;
+      this.restaurantId = this.$route.params.id;
       //   console.log(restaurantId);
     }
   },

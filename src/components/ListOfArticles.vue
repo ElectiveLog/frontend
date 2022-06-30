@@ -121,46 +121,64 @@ export default {
     async createOrder() {
       console.log(restaurantId);
       console.log(this.cart);
-      this.$socket.emit("OrderCreate", "1");
-      var configLog = {
-        method: "post",
-        url: "http://10.117.129.194:8080/api/logs/create",
-        headers: {
-          "X-Server-Select": "mongo"
-        },
-        data: {
-          type: "Création",
-          description:
-            "Création d'une commande par un client : " +
-            this.idClient +
-            " pour le restaurant : " +
-            restaurantId
-        }
-      };
-      axios(configLog)
-        .then(response => {
-          console.log(JSON.stringify(response.data));
-        })
-        .catch(error => {
-          console.log(error);
-        });
-      axios.post(
-        "http://10.117.129.194:8080/api/orders/create",
-        {
-          idClient: this.idClient,
-          idRestaurant: restaurantId,
-          articles: this.cart,
-          state: "commande"
-        },
-        {
+      if (Object.keys(this.cart).length !== 0) {
+        var configLog = {
+          method: "post",
+          url: "http://10.117.129.194:8080/api/logs/create",
           headers: {
             "X-Server-Select": "mongo"
+          },
+          data: {
+            type: "Création",
+            description:
+              "Création d'une commande par un client : " +
+              this.idClient +
+              " pour le restaurant : " +
+              restaurantId
           }
-        }
-      );
+        };
+        axios(configLog)
+          .then(response => {
+            console.log(JSON.stringify(response.data));
+          })
+          .catch(error => {
+            console.log(error);
+          });
 
-      this.emptyCart();
-      this.validation = "Votre commande a bien été validée";
+        this.$socket.emit("OrderCreate", "1");
+        axios.post(
+          "http://10.117.129.194:8080/api/orders/create",
+          {
+            idClient: this.idClient,
+            idRestaurant: restaurantId,
+            articles: this.cart,
+            state: "commande"
+          },
+          {
+            headers: {
+              "X-Server-Select": "mongo"
+            }
+          }
+        );
+        this.emptyCart();
+        this.validation = "Votre commande a bien été validée";
+        return this.$notify({
+          group: "foo",
+          title: "Success",
+          type: "success",
+          text: "Votre commande a bien été validée ",
+          duration: 8000
+        });
+      } else {
+        console.log("ko");
+        return this.$notify({
+          group: "foo",
+          title: "Erreur",
+          type: "error",
+          text: "Votre panier est vide ",
+          duration: 8000
+        });
+      }
     },
     refreshList() {
       this.retrieveArticles();

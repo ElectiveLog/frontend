@@ -87,7 +87,6 @@ export default {
     decodeToken(token) {
       return jwt_decode(token);
     },
-    // to get all
     retrieveArticles() {
       this.payloadUser = this.decodeToken(user.accessToken);
       this.idClient = this.payloadUser.userId;
@@ -119,7 +118,7 @@ export default {
       this.totalPrice = 0;
       console.log(cart);
     },
-    createOrder() {
+    async createOrder() {
       console.log(restaurantId);
       console.log(this.cart);
       this.$socket.emit("OrderCreate", "1");
@@ -159,6 +158,7 @@ export default {
           }
         }
       );
+
       this.emptyCart();
       this.validation = "Votre commande a bien été validée";
     },

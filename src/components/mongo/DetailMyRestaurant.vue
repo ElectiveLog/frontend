@@ -105,8 +105,8 @@ export default {
       form: {
         name: "",
         address: "",
-        picture: "",
-      },
+        picture: ""
+      }
     };
   },
   methods: {
@@ -120,12 +120,12 @@ export default {
         axios.put(
           `http://10.117.129.194:8080/api/restaurants/${restaurantId}`,
           {
-            name: this.form.name,
+            name: this.form.name
           },
           {
             headers: {
-              "X-Server-Select": "mongo",
-            },
+              "X-Server-Select": "mongo"
+            }
           }
         );
       }
@@ -133,12 +133,12 @@ export default {
         axios.put(
           `http://10.117.129.194:8080/api/restaurants/${restaurantId}`,
           {
-            address: this.form.address,
+            address: this.form.address
           },
           {
             headers: {
-              "X-Server-Select": "mongo",
-            },
+              "X-Server-Select": "mongo"
+            }
           }
         );
       }
@@ -146,12 +146,12 @@ export default {
         axios.put(
           `http://10.117.129.194:8080/api/restaurants/${restaurantId}`,
           {
-            picture: this.form.picture,
+            picture: this.form.picture
           },
           {
             headers: {
-              "X-Server-Select": "mongo",
-            },
+              "X-Server-Select": "mongo"
+            }
           }
         );
       }
@@ -209,11 +209,11 @@ export default {
     },
     createBase64Image(fileObject) {
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = e => {
         this.image = e.target.result;
       };
       reader.readAsDataURL(fileObject);
-    },
+    }
     // searchName() {
     //   DataService.find(this.name)
     //     .then((response) => {

@@ -57,8 +57,13 @@
           <!-- <b-dropdown-item to="/Restaurants">
             Tous les restaurants
           </b-dropdown-item> -->
-          <b-dropdown-item to="/Articles"> Gérer mes articles </b-dropdown-item>
-          <b-dropdown-item to="/MyRestaurant">
+          <b-dropdown-item v-if="currentRole == 'Restaurateur'" to="/Articles">
+            Gérer mes articles
+          </b-dropdown-item>
+          <b-dropdown-item
+            v-if="currentRole == 'Restaurateur'"
+            to="/MyRestaurant"
+          >
             Gérer mon restaurant
           </b-dropdown-item>
           <b-dropdown-item @click.prevent="logOut">Deconnexion</b-dropdown-item>

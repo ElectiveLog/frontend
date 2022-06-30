@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="card-header">
-      <h4 class="card-heading">Modifier son profil</h4>
+      <h4 class="card-heading">Modifier mon profil</h4>
     </div>
     <form class="card mb-4" @submit.prevent="handleEdit">
       <div class="card-body">
@@ -237,34 +237,35 @@
         >
       </div>
     </div>
-
     <b-button
       id="red_button styled_button"
       @click="$bvModal.show('bv-modal-example')"
       variant="danger"
     >
-      Supprimer son compte
+      Supprimer mon compte
     </b-button>
-
     <div>
       <b-modal id="bv-modal-example" hide-footer hide-header hide-backdrop>
         <div class="d-block text-center">
-          <h3>
+          <h5>
             Etes vous sur de vouloir supprimer le compte {{ userData.email }}
-          </h3>
+          </h5>
+          <b-button
+            class="mt-3"
+            block
+            @click="$bvModal.hide('bv-modal-example')"
+            >Annuler</b-button
+          >
+          &emsp;
+          <b-button
+            class="mt-3"
+            block
+            @click="$bvModal.hide('bv-modal-example')"
+            variant="danger"
+            v-on:click="handleDelete"
+            >Supprimer le compte</b-button
+          >
         </div>
-        <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example')"
-          >Annuler</b-button
-        >
-        &emsp;
-        <b-button
-          class="mt-3"
-          block
-          @click="$bvModal.hide('bv-modal-example')"
-          variant="danger"
-          v-on:click="handleDelete"
-          >Supprimer le compte</b-button
-        >
       </b-modal>
     </div>
   </div>

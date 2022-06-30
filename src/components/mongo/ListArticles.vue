@@ -36,9 +36,9 @@
       <button class="m-2 red_button styled_button" @click="deleteArticle()">
         Supprimer
       </button>
-      <button class="m-2 blue_button styled_button" @click="updateArticle()">
+      <!-- <button class="m-2 blue_button styled_button" @click="updateArticle()">
         Modifier
-      </button>
+      </button> -->
       <button
         class="m-2 grey_button styled_button"
         @click="unsetActiveArticle()"
@@ -312,7 +312,7 @@ export default {
           },
         }
       );
-      this.reload();
+      // this.reload();
       // this.refreshList();
       this.validation = "Suppression réussie, actualisez la liste.";
     },
@@ -384,7 +384,8 @@ export default {
           }
         );
       }
-      this.reload();
+      // this.reload();
+      this.validation = "Modification réussie, actualisez la liste.";
     },
     reload() {
       location.reload();
@@ -433,7 +434,14 @@ a {
   text-decoration: none;
   color: black;
 }
+a:hover {
+  text-decoration: none;
+  color: black;
+}
 .space_up {
   margin-top: 10px;
+}
+.list-group-item {
+  cursor: pointer;
 }
 </style>

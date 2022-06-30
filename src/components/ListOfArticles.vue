@@ -87,7 +87,6 @@ export default {
     decodeToken(token) {
       return jwt_decode(token);
     },
-    // to get all
     retrieveArticles() {
       this.payloadUser = this.decodeToken(user.accessToken);
       this.idClient = this.payloadUser.userId;
@@ -119,25 +118,27 @@ export default {
       this.totalPrice = 0;
       console.log(cart);
     },
-    createOrder() {
+    async createOrder() {
       console.log(restaurantId);
       console.log(this.cart);
-      axios.post(
-        "http://10.117.129.194:8080/api/orders/create",
-        {
-          idClient: this.idClient,
-          idRestaurant: restaurantId,
-          articles: this.cart,
-          state: "commande",
-        },
-        {
-          headers: {
-            "X-Server-Select": "mongo",
+      if (Object.keys(this.cart).length !== 0) {
+        await axios.post(
+          "http://10.117.129.194:8080/api/orders/create",
+          {
+            idClient: this.idClient,
+            idRestaurant: restaurantId,
+            articles: this.cart,
+            state: "commande",
           },
-        }
-      );
-      this.emptyCart();
-      this.validation = "Votre commande a bien été validée";
+          {
+            headers: {
+              "X-Server-Select": "mongo",
+            },
+          }
+        );
+        this.emptyCart();
+        this.validation = "Votre commande a bien été validée";
+      }
     },
     refreshList() {
       this.retrieveArticles();

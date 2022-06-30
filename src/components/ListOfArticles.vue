@@ -80,37 +80,36 @@ export default {
       articlesCart: [],
       state: "commande",
       validation: "",
-      totalPrice: "0"
+      totalPrice: "0",
     };
   },
   methods: {
     decodeToken(token) {
       return jwt_decode(token);
     },
-    // to get all
     retrieveArticles() {
       this.payloadUser = this.decodeToken(user.accessToken);
       this.idClient = this.payloadUser.userId;
       //   console.log(restaurantId);
       listOfArticles = [];
       DataService.getOneRestaurant(restaurantId)
-        .then(response => {
+        .then((response) => {
           articles = response.data.restaurant.articles;
           //   console.log(articles);
-          articles.forEach(element => {
+          articles.forEach((element) => {
             console.log(element);
             DataService.getOneArticle(element)
-              .then(response => {
+              .then((response) => {
                 listOfArticles.push(response.data.article);
                 console.log(listOfArticles);
               })
-              .catch(e => {
+              .catch((e) => {
                 console.log(e);
               });
             this.articles = listOfArticles;
           });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     },
@@ -119,7 +118,7 @@ export default {
       this.totalPrice = 0;
       console.log(cart);
     },
-    createOrder() {
+    async createOrder() {
       console.log(restaurantId);
       console.log(this.cart);
       this.$socket.emit("OrderCreate", "1");
@@ -127,7 +126,7 @@ export default {
         method: "post",
         url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
         headers: {
-          "X-Server-Select": "mongo"
+          "X-Server-Select": "mongo",
         },
         data: {
           type: "Création",
@@ -135,30 +134,32 @@ export default {
             "Création d'une commande par un client : " +
             this.idClient +
             " pour le restaurant : " +
-            restaurantId
-        }
+            restaurantId,
+        },
       };
       axios(configLog)
-        .then(response => {
+        .then((response) => {
           console.log(JSON.stringify(response.data));
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
-      axios.post(
-        window.location.origin.split(":80")[0] + ":8080/api/orders/create",
-        {
-          idClient: this.idClient,
-          idRestaurant: restaurantId,
-          articles: this.cart,
-          state: "commande"
-        },
-        {
-          headers: {
-            "X-Server-Select": "mongo"
+      if (Object.keys(this.cart).length !== 0) {
+        axios.post(
+          window.location.origin.split(":80")[0] + ":8080/api/orders/create",
+          {
+            idClient: this.idClient,
+            idRestaurant: restaurantId,
+            articles: this.cart,
+            state: "commande",
+          },
+          {
+            headers: {
+              "X-Server-Select": "mongo",
+            },
           }
-        }
-      );
+        );
+      }
       this.emptyCart();
       this.validation = "Votre commande a bien été validée";
     },
@@ -185,12 +186,12 @@ export default {
     getRestaurantId() {
       restaurantId = this.$route.params.id;
       //   console.log(restaurantId);
-    }
+    },
   },
   mounted() {
     this.getRestaurantId();
     this.retrieveArticles();
-  }
+  },
 };
 </script>
 

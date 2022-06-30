@@ -137,13 +137,13 @@ export default {
       successful: false,
       message: "",
       roledata: ["Livreur", "Client", "Restaurateur"],
-      allRoledata: []
+      allRoledata: [],
     };
   },
   computed: {
     loggedIn() {
       return this.$store.state.auth.status.loggedIn;
-    }
+    },
   },
   created() {
     var axios = require("axios");
@@ -152,14 +152,14 @@ export default {
       url: window.location.origin.split(":80")[0] + ":8080/roles/",
       headers: {
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNsaWVudEBjbGllbnQuY2xpZW50IiwibmFtZSI6ImNsaWVudGZkIiwicm9sZSI6IkNsaWVudCIsInVzZXJJZCI6ImNsNHNmc3NmNTAwMDEwMXB5ZXVwbnR5NXIiLCJpYXQiOjE2NTY0MDY4MzYsImV4cCI6MTY1NzAxMTYzNn0.ufvyvR3ngfSmK2kTYD_6BC2myzU4lheW1Kp6-UsliOs"
-      }
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNsaWVudEBjbGllbnQuY2xpZW50IiwibmFtZSI6ImNsaWVudGZkIiwicm9sZSI6IkNsaWVudCIsInVzZXJJZCI6ImNsNHNmc3NmNTAwMDEwMXB5ZXVwbnR5NXIiLCJpYXQiOjE2NTY0MDY4MzYsImV4cCI6MTY1NzAxMTYzNn0.ufvyvR3ngfSmK2kTYD_6BC2myzU4lheW1Kp6-UsliOs",
+      },
     };
     axios(config)
-      .then(response => {
+      .then((response) => {
         this.allRoledata = response.data;
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("fdsqf" + error);
       });
   },
@@ -180,16 +180,16 @@ export default {
           title: "Role",
           type: "error",
           text: "Veuillez choisir un rôle",
-          duration: 8000
+          duration: 8000,
         });
       } else {
-        this.allRoledata.forEach(element => {
+        this.allRoledata.forEach((element) => {
           if (element.name === this.user.roleId) {
             this.user.roleId = element.id;
           }
         });
         this.$store.dispatch("auth/register", this.user).then(
-          data => {
+          (data) => {
             this.message = data.message;
             this.successful = true;
 
@@ -204,7 +204,7 @@ export default {
                   "L'adresse mail " +
                   this.user.email +
                   " possède déjà un compte. Veuillez vous connecter.",
-                duration: 8000
+                duration: 8000,
               });
             } else if (
               data ==
@@ -215,9 +215,8 @@ export default {
                 group: "foo",
                 title: "Inscription échouée",
                 type: "error",
-                text:
-                  "L'adresse email que vous avez entrée n'appartient pas à un utilisateur de votre role",
-                duration: 8000
+                text: "L'adresse email que vous avez entrée n'appartient pas à un utilisateur de votre role",
+                duration: 8000,
               });
             } else if (data == "Error when creating the user") {
               this.successful = false;
@@ -225,9 +224,8 @@ export default {
                 group: "foo",
                 title: "Inscription échouée",
                 type: "error",
-                text:
-                  "Un problème inconnu est survenu lors de la création de votre compte. Veuillez réessayer.",
-                duration: 8000
+                text: "Un problème inconnu est survenu lors de la création de votre compte. Veuillez réessayer.",
+                duration: 8000,
               });
             } else {
               this.$notify({
@@ -239,12 +237,12 @@ export default {
                   this.user.email +
                   " !" +
                   "Vous pouvez vous connecter.",
-                duration: 8000
+                duration: 8000,
               });
               this.$router.push("/login");
             }
           },
-          error => {
+          (error) => {
             this.message =
               (error.response && error.response.data) ||
               error.message ||
@@ -253,8 +251,8 @@ export default {
           }
         );
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped></style>

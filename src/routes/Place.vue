@@ -17,15 +17,15 @@ import OptionList from "@/components/OptionList";
 export default {
   name: "Place",
   components: {
-    OptionList
+    OptionList,
   },
   computed: {
     place() {
       const { id } = this.$route.params;
       return this.$store.state.places.find(
-        item => item.id === parseInt(id, 10)
+        (item) => item.id === parseInt(id, 10)
       );
-    }
-  }
+    },
+  },
 };
 </script>

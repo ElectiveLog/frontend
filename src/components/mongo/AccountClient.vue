@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="card-header">
-      <h4 class="card-heading">Modifier son profil</h4>
+      <h4 class="card-heading">Modifier mon profil</h4>
     </div>
     <form class="card mb-4" @submit.prevent="handleEdit">
       <div class="card-body">
@@ -237,34 +237,35 @@
         >
       </div>
     </div>
-
     <b-button
       id="red_button styled_button"
       @click="$bvModal.show('bv-modal-example')"
       variant="danger"
     >
-      Supprimer son compte
+      Supprimer mon compte
     </b-button>
-
     <div>
       <b-modal id="bv-modal-example" hide-footer hide-header hide-backdrop>
         <div class="d-block text-center">
-          <h3>
+          <h5>
             Etes vous sur de vouloir supprimer le compte {{ userData.email }}
-          </h3>
+          </h5>
+          <b-button
+            class="mt-3"
+            block
+            @click="$bvModal.hide('bv-modal-example')"
+            >Annuler</b-button
+          >
+          &emsp;
+          <b-button
+            class="mt-3"
+            block
+            @click="$bvModal.hide('bv-modal-example')"
+            variant="danger"
+            v-on:click="handleDelete"
+            >Supprimer le compte</b-button
+          >
         </div>
-        <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example')"
-          >Annuler</b-button
-        >
-        &emsp;
-        <b-button
-          class="mt-3"
-          block
-          @click="$bvModal.hide('bv-modal-example')"
-          variant="danger"
-          v-on:click="handleDelete"
-          >Supprimer le compte</b-button
-        >
       </b-modal>
     </div>
   </div>
@@ -286,17 +287,17 @@ export default {
       fields: [
         {
           key: "Commande",
-          label: "Commande"
+          label: "Commande",
         },
         {
           key: "prix",
-          label: "Prix"
+          label: "Prix",
         },
         { key: "livreur", label: "Livreur" },
         { key: "restaurant", label: "Restaurant" },
         { key: "status", label: "Status" },
-        { key: "show_details", label: "Details" }
-      ]
+        { key: "show_details", label: "Details" },
+      ],
     };
   },
   // mounted: function(){
@@ -316,9 +317,9 @@ export default {
           ":8080/users/" +
           payloadUser.userId,
         headers: {
-          Authorization: "Bearer " + user.accessToken
+          Authorization: "Bearer " + user.accessToken,
         },
-        data: this.userData
+        data: this.userData,
       };
 
       axios(config)
@@ -328,10 +329,10 @@ export default {
             title: "Modification réussie",
             type: "success",
             text: "Vos modifications ont été enregistrées",
-            duration: 8000
+            duration: 8000,
           });
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
       console.log("ijifejife");
@@ -339,18 +340,18 @@ export default {
         method: "post",
         url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
         headers: {
-          "X-Server-Select": "mongo"
+          "X-Server-Select": "mongo",
         },
         data: {
           type: "Modification",
-          description: payloadUser.email + "(Client) a modifié son compte."
-        }
+          description: payloadUser.email + "(Client) a modifié son compte.",
+        },
       };
       axios(configLog)
-        .then(response => {
+        .then((response) => {
           console.log(JSON.stringify(response.data));
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     },
@@ -361,18 +362,18 @@ export default {
         method: "post",
         url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
         headers: {
-          "X-Server-Select": "mongo"
+          "X-Server-Select": "mongo",
         },
         data: {
           type: "Suppression",
-          description: payloadUser.email + "(Client) a supprimé son compte."
-        }
+          description: payloadUser.email + "(Client) a supprimé son compte.",
+        },
       };
       axios(configLog)
-        .then(response => {
+        .then((response) => {
           console.log(JSON.stringify(response.data));
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
       var config = {
@@ -382,8 +383,8 @@ export default {
           ":8080/users/" +
           payloadUser.userId,
         headers: {
-          Authorization: "Bearer " + user.accessToken
-        }
+          Authorization: "Bearer " + user.accessToken,
+        },
       };
 
       axios(config)
@@ -393,18 +394,18 @@ export default {
             title: "Suppression réussie",
             type: "success",
             text: "Votre compte a été supprimé",
-            duration: 8000
+            duration: 8000,
           });
           this.$store.dispatch("auth/logout");
           this.$router.push("/login");
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
     decodeToken(token) {
       return jwt_decode(token);
-    }
+    },
   },
   created() {
     console.log(window.location.origin.split(":80")[0]);
@@ -416,15 +417,15 @@ export default {
         ":8080/users/" +
         payloadUser.userId,
       headers: {
-        Authorization: "Bearer " + user.accessToken
-      }
+        Authorization: "Bearer " + user.accessToken,
+      },
     };
 
     axios(config)
-      .then(response => {
+      .then((response) => {
         this.userData = response.data;
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
     console.log(payloadUser.userId);
@@ -435,17 +436,17 @@ export default {
         ":8080/api/orders/client/" +
         payloadUser.userId,
       headers: {
-        "X-Server-Select": "mongo"
-      }
+        "X-Server-Select": "mongo",
+      },
     };
 
     axios(configCommande)
-      .then(response => {
+      .then((response) => {
         var i = 1;
         var y = 1;
-        response.data.order.forEach(element => {
+        response.data.order.forEach((element) => {
           var priceCommande = 0;
-          element.articles.forEach(article => {
+          element.articles.forEach((article) => {
             priceCommande += article.price;
           });
           if (this.userData.sponsorshipCode) {
@@ -459,12 +460,12 @@ export default {
               ":8080/users/" +
               element.idLivreur,
             headers: {
-              Authorization: "Bearer " + user.accessToken
-            }
+              Authorization: "Bearer " + user.accessToken,
+            },
           };
 
           axios(config)
-            .then(response => {
+            .then((response) => {
               if (element.state == "prepared") {
                 this.historyCommandes.push({
                   Commande: "Commande n°" + i,
@@ -473,16 +474,13 @@ export default {
                   restaurant: element.idRestaurant.name,
                   status: "Livrée",
                   date: element.createdAt.split("T")[0],
-                  heure: element.createdAt
-                    .split("T")
-                    .pop()
-                    .split(".")[0],
+                  heure: element.createdAt.split("T").pop().split(".")[0],
                   addresse: this.userData.address,
                   streetNumber: this.userData.streetNumber,
                   city: this.userData.city,
                   phoneNumber: this.userData.phoneNumber,
                   country: this.userData.country,
-                  parnainage: this.userData.sponsorshipCode
+                  parnainage: this.userData.sponsorshipCode,
                 });
                 i++;
               } else {
@@ -493,28 +491,25 @@ export default {
                   restaurant: element.idRestaurant.name,
                   status: element.state,
                   date: element.createdAt.split("T")[0],
-                  heure: element.createdAt
-                    .split("T")
-                    .pop()
-                    .split(".")[0],
+                  heure: element.createdAt.split("T").pop().split(".")[0],
                   addresse: this.userData.address,
                   streetNumber: this.userData.streetNumber,
                   city: this.userData.city,
                   phoneNumber: this.userData.phoneNumber,
                   country: this.userData.country,
-                  parnainage: this.userData.sponsorshipCode
+                  parnainage: this.userData.sponsorshipCode,
                 });
                 y++;
               }
             })
-            .catch(function(error) {
+            .catch(function (error) {
               console.log(error);
             });
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
-  }
+  },
 };
 </script>

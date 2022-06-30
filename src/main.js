@@ -20,9 +20,9 @@ Vue.use(
     vuex: {
       store,
       actionPrefix: "SOCKET_",
-      mutationPrefix: "SOCKET_"
+      mutationPrefix: "SOCKET_",
     },
-    options: { withCredentials: false } //Optional options
+    options: { withCredentials: false }, //Optional options
   })
 );
 
@@ -36,5 +36,5 @@ new Vue({
   router,
   store,
   // bootstrap,
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount("#app");

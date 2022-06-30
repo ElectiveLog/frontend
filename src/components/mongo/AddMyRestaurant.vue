@@ -66,9 +66,9 @@ export default {
         name: "",
         idRestaurateur: "",
         address: "",
-        picture: ""
+        picture: "",
       },
-      haveARestaurant: false
+      haveARestaurant: false,
     };
   },
   methods: {
@@ -79,12 +79,12 @@ export default {
       this.payloadUser = this.decodeToken(user.accessToken);
       this.userId = this.payloadUser.userId;
       DataService.getAllRestaurantsByRestaurateur(this.payloadUser.userId)
-        .then(response => {
+        .then((response) => {
           this.restaurantId = response.data.restaurants[0]._id;
           console.log("Utilisateur: " + this.userId);
           console.log("le restau: " + this.restaurantId);
           DataService.getOneRestaurant(this.restaurantId)
-            .then(response => {
+            .then((response) => {
               this.restaurant = response.data.restaurant;
               console.log(this.restaurant);
               if (this.restaurant) {
@@ -92,11 +92,11 @@ export default {
                 console.log(this.haveARestaurant);
               }
             })
-            .catch(e => {
+            .catch((e) => {
               console.log(e);
             });
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
     },
@@ -107,15 +107,15 @@ export default {
       axios
         .post("http://10.117.129.194:8080/api/restaurants/create", this.form, {
           headers: {
-            "X-Server-Select": "mongo"
-          }
+            "X-Server-Select": "mongo",
+          },
         })
-        .then(res => {
+        .then((res) => {
           //Perform Success Action
           console.log("donnéee" + res.data);
           location.reload();
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           // error.response.status Check status code
           console.log("err: " + error);
@@ -136,19 +136,19 @@ export default {
     createBase64Image(fileObject) {
       const reader = new FileReader();
 
-      reader.onload = e => {
+      reader.onload = (e) => {
         this.image = e.target.result;
       };
       reader.readAsDataURL(fileObject);
     },
     isItFalse() {
       console.log(haveARestaurant);
-    }
+    },
   },
   mounted() {
     this.retrieveRestaurant();
     this.isItFalse();
-  }
+  },
 };
 </script>
 

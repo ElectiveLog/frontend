@@ -87,15 +87,15 @@ export default {
     },
     currentUser() {
       return this.$store.state.auth.user;
-    }
+    },
   },
   methods: {
     logOut() {
       this.$store.dispatch("auth/logout");
       this.$store.state.auth.user = null;
       this.$router.push("/login");
-    }
-  }
+    },
+  },
 };
 </script>
 

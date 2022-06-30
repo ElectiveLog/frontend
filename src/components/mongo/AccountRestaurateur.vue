@@ -327,7 +327,7 @@ export default {
           key: "prix",
           label: "Prix"
         },
-        { key: "Articles", label: "articles" },
+        { key: "articles", label: "Articles" },
         {
           key: "livreur",
           label: "Livreur"
@@ -367,6 +367,7 @@ export default {
   },
   methods: {
     handleEditStatus(commande) {
+      this.$socket.emit("OrderAcceptRestaurant", "1");
       var data = JSON.stringify({
         state: "preparation"
       });

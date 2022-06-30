@@ -36,7 +36,6 @@
         />
       </div>
       <div class="form-group">
-        <img style="" :src="image" alt="" />
         <input
           @change="handleImage"
           class="custom-input"

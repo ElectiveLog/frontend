@@ -677,3 +677,7 @@ code {
     width: max-content;
   }
 }
+
+.center {
+  text-align: center;
+}

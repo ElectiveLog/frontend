@@ -42,11 +42,11 @@
           <h5>{{ articles.name }}</h5>
           <a>{{ articles.price }} €</a>
           <a>{{ articles.detail }}</a>
+          <div class="center">
+            <button class="green_button styled_button center">Ajouter</button>
+          </div>
         </li>
       </ul>
-      <div class="center">
-        <button class="green_button styled_button center">Ajouter</button>
-      </div>
     </div>
   </div>
 </template>

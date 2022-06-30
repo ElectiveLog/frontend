@@ -57,12 +57,12 @@
           <!-- <b-dropdown-item to="/Restaurants">
             Tous les restaurants
           </b-dropdown-item> -->
-          <b-dropdown-item to="/Articles" v-if="currentRole == 'Restaurateur'">
+          <b-dropdown-item v-if="currentRole == 'Restaurateur'" to="/Articles">
             Gérer mes articles
           </b-dropdown-item>
           <b-dropdown-item
-            to="/MyRestaurant"
             v-if="currentRole == 'Restaurateur'"
+            to="/MyRestaurant"
           >
             Gérer mon restaurant
           </b-dropdown-item>

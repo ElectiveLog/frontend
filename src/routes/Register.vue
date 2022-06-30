@@ -149,7 +149,7 @@ export default {
     var axios = require("axios");
     var config = {
       method: "get",
-      url: "http://10.117.129.194:8080/roles/",
+      url: window.location.origin.split(":80")[0] + ":8080/roles/",
       headers: {
         Authorization:
           "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNsaWVudEBjbGllbnQuY2xpZW50IiwibmFtZSI6ImNsaWVudGZkIiwicm9sZSI6IkNsaWVudCIsInVzZXJJZCI6ImNsNHNmc3NmNTAwMDEwMXB5ZXVwbnR5NXIiLCJpYXQiOjE2NTY0MDY4MzYsImV4cCI6MTY1NzAxMTYzNn0.ufvyvR3ngfSmK2kTYD_6BC2myzU4lheW1Kp6-UsliOs",

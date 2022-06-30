@@ -214,17 +214,6 @@ export default {
       };
       reader.readAsDataURL(fileObject);
     },
-    // updateRestaurant() {
-    //   DataService.updateRestaurant(this.currentRestaurant._id)
-    //     .then((response) => {
-    //       console.log(response.data.restaurants);
-    //       this.refreshList();
-    //     })
-    //     .catch((e) => {
-    //       console.log(e);
-    //     });
-    // },
-
     // searchName() {
     //   DataService.find(this.name)
     //     .then((response) => {

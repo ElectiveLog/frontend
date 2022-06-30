@@ -42,11 +42,11 @@
           <h5>{{ articles.name }}</h5>
           <a>{{ articles.price }} €</a>
           <a>{{ articles.detail }}</a>
+          <div class="center">
+            <button class="green_button styled_button center">Ajouter</button>
+          </div>
         </li>
       </ul>
-      <div class="center">
-        <button class="green_button styled_button center">Ajouter</button>
-      </div>
     </div>
   </div>
 </template>
@@ -121,9 +121,32 @@ export default {
     async createOrder() {
       console.log(restaurantId);
       console.log(this.cart);
+      this.$socket.emit("OrderCreate", "1");
+      var configLog = {
+        method: "post",
+        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+        headers: {
+          "X-Server-Select": "mongo",
+        },
+        data: {
+          type: "Création",
+          description:
+            "Création d'une commande par un client : " +
+            this.idClient +
+            " pour le restaurant : " +
+            restaurantId,
+        },
+      };
+      axios(configLog)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
       if (Object.keys(this.cart).length !== 0) {
-        await axios.post(
-          "http://10.117.129.194:8080/api/orders/create",
+        axios.post(
+          window.location.origin.split(":80")[0] + ":8080/api/orders/create",
           {
             idClient: this.idClient,
             idRestaurant: restaurantId,
@@ -136,9 +159,9 @@ export default {
             },
           }
         );
-        this.emptyCart();
-        this.validation = "Votre commande a bien été validée";
       }
+      this.emptyCart();
+      this.validation = "Votre commande a bien été validée";
     },
     refreshList() {
       this.retrieveArticles();

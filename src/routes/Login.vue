@@ -82,7 +82,9 @@ export default {
             } else {
               var configLog = {
                 method: "post",
-                url: "http://localhost:8080/api/logs/create",
+                url:
+                  window.location.origin.split(":80")[0] +
+                  ":8080/api/logs/create",
                 headers: {
                   "X-Server-Select": "mongo",
                 },

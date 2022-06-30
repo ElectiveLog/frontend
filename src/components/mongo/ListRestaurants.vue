@@ -80,6 +80,7 @@
 
 <script>
 import DataService from "../../services/DataService";
+import axios from "axios";
 export default {
   name: "restaurants-list",
   data() {
@@ -87,17 +88,17 @@ export default {
       restaurants: [],
       currentRestaurant: null,
       currentIndex: -1,
-      title: "",
+      title: ""
     };
   },
   methods: {
     retrieveRestaurants() {
       DataService.getAllRestaurants()
-        .then((response) => {
+        .then(response => {
           this.restaurants = response.data.restaurants;
           console.log(response.data.restaurants);
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
         });
     },
@@ -115,25 +116,63 @@ export default {
       this.currentIndex = null;
     },
     deleteRestaurant() {
+      var configLog = {
+        method: "post",
+        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+        headers: {
+          "X-Server-Select": "mongo"
+        },
+        data: {
+          type: "Suppression",
+          description:
+            "Suppression d'un restaurant" + this.currentRestaurant.name
+        }
+      };
+      axios(configLog)
+        .then(response => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(error => {
+          console.log(error);
+        });
       DataService.deleteRestaurant(this.currentRestaurant._id)
-        .then((response) => {
+        .then(response => {
           console.log(response.data.restaurants);
           this.refreshList();
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
         });
     },
     updateRestaurant() {
+      var configLog = {
+        method: "post",
+        url: window.location.origin.split(":80")[0] + ":8080/api/logs/create",
+        headers: {
+          "X-Server-Select": "mongo"
+        },
+        data: {
+          type: "Modification",
+          description:
+            "Modification d'un restaurant" + this.currentRestaurant.name
+        }
+      };
+      axios(configLog)
+        .then(response => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(error => {
+          console.log(error);
+        });
       DataService.updateRestaurant(this.currentRestaurant._id)
-        .then((response) => {
+        .then(response => {
           console.log(response.data.restaurants);
           this.refreshList();
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
         });
-    },
+    }
 
     // searchName() {
     //   DataService.find(this.name)
@@ -148,7 +187,7 @@ export default {
   },
   mounted() {
     this.retrieveRestaurants();
-  },
+  }
 };
 </script>
 <style>

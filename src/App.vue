@@ -22,11 +22,11 @@ export default {
   name: "App",
   components: {
     Header,
-    Footer,
+    Footer
   },
   data() {
     return {
-      restaurantId: "",
+      restaurantId: ""
     };
   },
   async created() {
@@ -38,24 +38,27 @@ export default {
 
     const configCommandeClient = {
       method: "get",
-      url: "http://10.117.129.194:8080/api/orders/client/" + payloadUser.userId,
+      url:
+        window.location.origin.split(":80")[0] +
+        ":8080/api/orders/client/" +
+        payloadUser.userId,
       headers: {
-        "X-Server-Select": "mongo",
-      },
+        "X-Server-Select": "mongo"
+      }
     };
 
     const configCommandeLivreur = {
       method: "get",
-      url: "http://10.117.129.194:8080/api/orders/",
+      url: window.location.origin.split(":80")[0] + ":8080/api/orders/",
       headers: {
-        "X-Server-Select": "mongo",
-      },
+        "X-Server-Select": "mongo"
+      }
     };
 
     if (payloadUser.role == "Client") {
       axios(configCommandeClient)
-        .then((response) => {
-          response.data.order.forEach((element) => {
+        .then(response => {
+          response.data.order.forEach(element => {
             if (
               (element.state == "preparation" ||
                 element.state == "livraison") &&
@@ -66,24 +69,27 @@ export default {
                   "Votre commande est en cours de preparation!!!"
                 );
                 var data = JSON.stringify({
-                  clientNotified: true,
+                  clientNotified: true
                 });
 
                 var config = {
                   method: "put",
-                  url: "http://10.117.129.194:8080/api/orders/" + element._id,
+                  url:
+                    window.location.origin.split(":80")[0] +
+                    ":8080/api/orders/" +
+                    element._id,
                   headers: {
                     "X-Server-Select": "mongo",
                     Authorization:
                       "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTU3NTg3MjUsImV4cCI6MTY1NjM2MzUyNX0.vHdiEc98ELrbBDbeZeG-851qS_SLSHJW8HDJX7mPgjs",
-                    "Content-Type": "application/json",
+                    "Content-Type": "application/json"
                   },
-                  data: data,
+                  data: data
                 };
 
                 axios(config);
               } else if (Notification.permission !== "denied") {
-                Notification.requestPermission(function (permission) {
+                Notification.requestPermission(function(permission) {
                   if (permission === "granted") {
                     new Notification(
                       "Votre commande est en cours de préparation"
@@ -94,13 +100,13 @@ export default {
             }
           });
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     } else if (payloadUser.role == "Livreur") {
       axios(configCommandeLivreur)
-        .then((response) => {
-          response.data.orders.forEach((element) => {
+        .then(response => {
+          response.data.orders.forEach(element => {
             if (
               element.state == "preparation" &&
               element.livreurNotified == false
@@ -110,24 +116,27 @@ export default {
                   "Vous avez de nouvelles commandes en attente de livraison!!!"
                 );
                 var data = JSON.stringify({
-                  livreurNotified: true,
+                  livreurNotified: true
                 });
 
                 var config = {
                   method: "put",
-                  url: "http://10.117.129.194:8080/api/orders/" + element._id,
+                  url:
+                    window.location.origin.split(":80")[0] +
+                    ":8080/api/orders/" +
+                    element._id,
                   headers: {
                     "X-Server-Select": "mongo",
                     Authorization:
                       "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTU3NTg3MjUsImV4cCI6MTY1NjM2MzUyNX0.vHdiEc98ELrbBDbeZeG-851qS_SLSHJW8HDJX7mPgjs",
-                    "Content-Type": "application/json",
+                    "Content-Type": "application/json"
                   },
-                  data: data,
+                  data: data
                 };
 
                 axios(config);
               } else if (Notification.permission !== "denied") {
-                Notification.requestPermission(function (permission) {
+                Notification.requestPermission(function(permission) {
                   if (permission === "granted") {
                     new Notification(
                       "Votre commande est en cours de préparation"
@@ -138,38 +147,40 @@ export default {
             }
           });
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     } else if (payloadUser.role == "Restaurateur") {
       var configRestaurant = {
         method: "get",
         url:
-          "http://10.117.129.194:8080/api/restaurants/restaurateur/" +
+          window.location.origin.split(":80")[0] +
+          ":8080/api/restaurants/restaurateur/" +
           payloadUser.userId,
         headers: {
-          "X-Server-Select": "mongo",
-        },
+          "X-Server-Select": "mongo"
+        }
       };
       await axios(configRestaurant)
-        .then((response) => {
+        .then(response => {
           this.restaurantId = response.data.restaurants[0]._id;
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
       const configCommandeRestaurateur = {
         method: "get",
         url:
-          "http://10.117.129.194:8080/api/orders/restaurant/" +
+          window.location.origin.split(":80")[0] +
+          ":8080/api/orders/restaurant/" +
           this.restaurantId,
         headers: {
-          "X-Server-Select": "mongo",
-        },
+          "X-Server-Select": "mongo"
+        }
       };
       axios(configCommandeRestaurateur)
-        .then((response) => {
-          response.data.order.forEach((element) => {
+        .then(response => {
+          response.data.order.forEach(element => {
             if (
               element.state == "commande" &&
               element.restaurantNotified == false
@@ -179,24 +190,27 @@ export default {
                   "Vous avez une commande en attente de traitement!!!"
                 );
                 var data = JSON.stringify({
-                  restaurantNotified: true,
+                  restaurantNotified: true
                 });
 
                 var config = {
                   method: "put",
-                  url: "http://10.117.129.194:8080/api/orders/" + element._id,
+                  url:
+                    window.location.origin.split(":80")[0] +
+                    ":8080/api/orders/" +
+                    element._id,
                   headers: {
                     "X-Server-Select": "mongo",
                     Authorization:
                       "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTU3NTg3MjUsImV4cCI6MTY1NjM2MzUyNX0.vHdiEc98ELrbBDbeZeG-851qS_SLSHJW8HDJX7mPgjs",
-                    "Content-Type": "application/json",
+                    "Content-Type": "application/json"
                   },
-                  data: data,
+                  data: data
                 };
 
                 axios(config);
               } else if (Notification.permission !== "denied") {
-                Notification.requestPermission(function (permission) {
+                Notification.requestPermission(function(permission) {
                   if (permission === "granted") {
                     new Notification(
                       "Votre commande est en cours de préparation"
@@ -207,14 +221,14 @@ export default {
             }
           });
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     }
   },
   methods: {
-    ...mapMutations(["setPlaces"]),
-  },
+    ...mapMutations(["setPlaces"])
+  }
 };
 </script>
 

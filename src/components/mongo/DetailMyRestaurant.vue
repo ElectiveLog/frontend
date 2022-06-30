@@ -161,12 +161,12 @@ export default {
       this.payloadUser = this.decodeToken(user.accessToken);
       this.userId = this.payloadUser.userId;
       DataService.getAllRestaurantsByRestaurateur(this.payloadUser.userId)
-        .then((response) => {
+        .then(response => {
           this.restaurantId = response.data.restaurants[0]._id;
           console.log("Utilisateur: " + this.userId);
           console.log("le restau: " + this.restaurantId);
           DataService.getOneRestaurant(this.restaurantId)
-            .then((response) => {
+            .then(response => {
               this.restaurant = response.data.restaurant;
               console.log(this.restaurant);
               if (this.restaurant) {
@@ -174,11 +174,11 @@ export default {
                 console.log(this.haveARestaurant);
               }
             })
-            .catch((e) => {
+            .catch(e => {
               console.log(e);
             });
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
         });
     },
@@ -192,11 +192,11 @@ export default {
     },
     deleteRestaurant() {
       DataService.deleteRestaurant(this.restaurantId)
-        .then((response) => {
+        .then(response => {
           console.log(response.data.restaurants);
           this.refreshList();
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
         });
       // this.reload();
@@ -214,17 +214,6 @@ export default {
       };
       reader.readAsDataURL(fileObject);
     },
-    // updateRestaurant() {
-    //   DataService.updateRestaurant(this.currentRestaurant._id)
-    //     .then((response) => {
-    //       console.log(response.data.restaurants);
-    //       this.refreshList();
-    //     })
-    //     .catch((e) => {
-    //       console.log(e);
-    //     });
-    // },
-
     // searchName() {
     //   DataService.find(this.name)
     //     .then((response) => {
@@ -238,7 +227,7 @@ export default {
   },
   mounted() {
     this.retrieveRestaurant();
-  },
+  }
 };
 </script>
 <style>

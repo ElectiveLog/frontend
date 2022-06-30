@@ -33,17 +33,17 @@ export default {
       currentRestaurant: null,
       currentIndex: -1,
       title: "",
-      restaurantId,
+      restaurantId
     };
   },
   methods: {
     retrieveRestaurants() {
       DataService.getAllRestaurants()
-        .then((response) => {
+        .then(response => {
           this.restaurants = response.data.restaurants;
           console.log(response.data.restaurants);
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
         });
     },
@@ -60,15 +60,15 @@ export default {
     },
     reload() {
       location.reload();
-    },
+    }
   },
   mounted() {
     this.retrieveRestaurants();
-  },
+  }
 };
 </script>
 
-<style>
+<style scoped>
 .list {
   text-align: left;
   max-width: 750px;

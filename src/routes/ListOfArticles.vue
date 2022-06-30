@@ -10,7 +10,7 @@ import ListOfArticles from "@/components/ListOfArticles";
 export default {
   name: "listofarticles",
   components: {
-    ListOfArticles,
-  },
+    ListOfArticles
+  }
 };
 </script>
